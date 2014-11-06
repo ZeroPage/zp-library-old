@@ -1,4 +1,4 @@
-application: django-demoapp
+application: zp-library
 version: 1
 runtime: python27
 api_version: 1
