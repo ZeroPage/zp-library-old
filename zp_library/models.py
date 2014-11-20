@@ -1,8 +1,8 @@
 from google.appengine.ext import ndb
 
 class Book(ndb.Model):
-	ISBN = ndb.StringProperty()
-	title = ndb.StringProperty()
+    ISBN = ndb.StringProperty()
+    title = ndb.StringProperty()
     author = ndb.StringProperty()
     translator = ndb.StringProperty()
     publisher = ndb.StringProperty()
@@ -10,8 +10,8 @@ class Book(ndb.Model):
     description = ndb.TextProperty()
     category = ndb.StringProperty()
     language = ndb.StringProperty()
-    smallThumbnail = ndb.LinkProperty()
-    thumbnail = ndb.LinkProperty()
+    smallThumbnail = ndb.StringProperty()
+    thumbnail = ndb.StringProperty()
     pageCount = ndb.IntegerProperty()
     bookCount = ndb.IntegerProperty()
     donor = ndb.StringProperty()
