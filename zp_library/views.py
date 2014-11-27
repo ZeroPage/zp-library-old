@@ -1,5 +1,6 @@
 from django.views.generic import *
 from zp_library.forms import *
+from zp_library.models import *
 
 import urllib2
 import json
