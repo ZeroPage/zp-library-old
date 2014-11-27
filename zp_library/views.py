@@ -1,5 +1,6 @@
 from django.views.generic import *
 from zp_library.forms import *
+from google.appengine.api import users
 from zp_library.models import *
 
 import urllib2
@@ -12,6 +13,11 @@ class MainPageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(MainPageView, self).get_context_data(**kwargs)
         context['message'] = 'test'
+
+        context['user'] = users.get_current_user()
+        context['logged_in'] = bool(context['user'])
+        context['login_url'] = users.create_login_url()
+        context['logout_url'] = users.create_logout_url('/')
 
         return context
 
