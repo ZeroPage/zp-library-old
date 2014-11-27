@@ -1,5 +1,6 @@
 from django import forms
 
+
 class BookForm(forms.Form):
     ISBN = forms.CharField()
     title = forms.CharField()
@@ -19,4 +20,4 @@ class BookForm(forms.Form):
     def action(self):
         cleaned_data = super(BookForm, self).clean()
 
-        return cleaned_data;
+        return cleaned_data

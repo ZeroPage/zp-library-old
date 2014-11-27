@@ -1,5 +1,6 @@
 from google.appengine.ext import ndb
 
+
 class Book(ndb.Model):
     ISBN = ndb.StringProperty()
     title = ndb.StringProperty()

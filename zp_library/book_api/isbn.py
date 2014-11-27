@@ -30,7 +30,7 @@ def checkISBN(isbn):
     if len(isbn) == 10:
         for index in range(10):
             checksum += isbn[index] * (10-index)
-        return checksum % 11 == 0:
+        return checksum % 11 == 0
     elif len(isbn) == 13:
         for i in range(13):
             if i % 2 == 0:
@@ -38,7 +38,7 @@ def checkISBN(isbn):
             else:
                 checksum += int(isbn[i]) * 3
 
-        return checksum % 10 == 0:
+        return checksum % 10 == 0
 
     else:
         return False
