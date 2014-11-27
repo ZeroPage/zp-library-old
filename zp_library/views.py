@@ -23,7 +23,24 @@ class TestView(FormView):
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
-        form.action()
+        cleaned_data = form.action()
+        book = Book(parent=book_key(cleaned_data['ISBN']))
+
+        book.ISBN = cleaned_data['ISBN']
+        book.title = cleaned_data['title']
+        book.author = cleaned_data['author']
+        book.translator = cleaned_data['translator']
+        book.publisher = cleaned_data['publisher']
+        book.publishedDate = cleaned_data['publishedDate']
+        book.description = cleaned_data['description']
+        book.category = cleaned_data['category']
+        book.language = cleaned_data['language']
+        book.smallThumbnail = cleaned_data['smallThumbnail']
+        book.thumbnail = cleaned_data['thumbnail']
+        book.pageCount = cleaned_data['pageCount']
+        book.bookCount = cleaned_data['bookCount']
+        book.donor = cleaned_data['donor']
+        book.put()
         return super(TestView, self).form_valid(form)
 
 
