@@ -17,5 +17,6 @@ class BookForm(forms.Form):
     donor = forms.CharField()
 
     def action(self):
-        # send email using the self.cleaned_data dictionary
-        pass
+        cleaned_data = super(BookForm, self).clean()
+
+        return cleaned_data;
