@@ -5,16 +5,7 @@
   <body>
     <p>{{ message }}</p>
 
-    {% if logged_in %}
-
-    <p>hello, {{ user }}</p><a href="{{ logout_url }}">LOGOUT</a>
-    <p>insert book data: <a href="/test">here</a></p>
-
-    {% else %}
-
-    <a href="{{ login_url }}">LOGIN</a>
-
-    {% endif %}
+    <a href="/admin">ADMIN</a>
 
     <p>view book list: <a href="/book_list">here</a></p>
 
