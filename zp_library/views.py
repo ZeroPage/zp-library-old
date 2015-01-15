@@ -50,11 +50,11 @@ class TestView(FormView):
         book.put()
         return super(TestView, self).form_valid(form)
 
-class ListView(TemplateView):
+class BookListView(TemplateView):
     template_name = 'zp_library/list.html'
 
     def get_context_data(self, **kwargs):
-        context = super(ListView, self).get_context_data(**kwargs)
+        context = super(BookListView, self).get_context_data(**kwargs)
 
         books_query = Book.query(ancestor=book_key()).order(-Book.registrationDate)
         context['books'] = books_query.fetch(10)
