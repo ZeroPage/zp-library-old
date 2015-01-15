@@ -1,6 +1,4 @@
-# coding=utf-8
 from django.views.generic import *
-from django.http import HttpResponseRedirect
 from zp_library.forms import *
 from google.appengine.api import users
 from zp_library.models import *
@@ -14,28 +12,12 @@ class MainPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MainPageView, self).get_context_data(**kwargs)
-        context['message'] = '지피 도서관에 어서오세요'
+        context['message'] = 'test'
 
-        return context
-
-
-class AdminView(TemplateView):
-    template_name = 'zp_library/admin_page.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not users.get_current_user():
-            return HttpResponseRedirect(users.create_login_url('/admin'))
-
-        return super(AdminView, self).dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(AdminView, self).get_context_data(**kwargs)
-
-        user = users.get_current_user()
-
-        context['is_admin'] = users.is_current_user_admin()
+        context['user'] = users.get_current_user()
+        context['logged_in'] = bool(context['user'])
+        context['login_url'] = users.create_login_url()
         context['logout_url'] = users.create_logout_url('/')
-        context['user'] = user
 
         return context
 
@@ -44,13 +26,6 @@ class TestView(FormView):
     template_name = 'zp_library/form.html'
     form_class = BookForm
     success_url = '/'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not users.is_current_user_admin():
-            return HttpResponseRedirect('/')
-
-        return super(TestView, self).dispatch(request, *args, **kwargs)
-
 
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.
@@ -74,7 +49,6 @@ class TestView(FormView):
         book.donor = cleaned_data['donor']
         book.put()
         return super(TestView, self).form_valid(form)
-
 
 class BookListView(TemplateView):
     template_name = 'zp_library/list.html'
