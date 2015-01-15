@@ -31,7 +31,7 @@ class TestView(FormView):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
         cleaned_data = form.action()
-        book = Book(parent=book_key(cleaned_data['ISBN']))
+        book = Book(parent=book_key())
 
         book.ISBN = cleaned_data['ISBN']
         book.title = cleaned_data['title']
@@ -49,6 +49,17 @@ class TestView(FormView):
         book.donor = cleaned_data['donor']
         book.put()
         return super(TestView, self).form_valid(form)
+
+class ListView(TemplateView):
+    template_name = 'zp_library/list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ListView, self).get_context_data(**kwargs)
+
+        books_query = Book.query(ancestor=book_key()).order(-Book.registrationDate)
+        context['books'] = books_query.fetch(10)
+
+        return context
 
 
 class ParseView(TemplateView):

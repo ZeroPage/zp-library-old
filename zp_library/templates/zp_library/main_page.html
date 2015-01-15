@@ -8,13 +8,15 @@
     {% if logged_in %}
 
     <p>hello, {{ user }}</p><a href="{{ logout_url }}">LOGOUT</a>
-    <p>test <a href="/test">here</a></p>
+    <p>insert book data: <a href="/test">here</a></p>
 
     {% else %}
 
     <a href="{{ login_url }}">LOGIN</a>
 
     {% endif %}
+
+    <p>view book list: <a href="/list">here</a></p>
 
   </body>
 </html>

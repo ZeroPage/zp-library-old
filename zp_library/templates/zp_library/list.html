@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <link type="text/css" rel="stylesheet" href="/static/main.css" />
+  </head>
+  <body>
+
+  {% for book in books %}
+      <p>책 제목: {{ book.title|escape }}<br/>
+          저자: {{ book.author|escape }}
+      </p>
+  {% endfor %}
+
+  </body>
+</html>

@@ -1,7 +1,9 @@
 from google.appengine.ext import ndb
 
-def book_key(book_isbn):
-    return ndb.Key('Book', book_isbn)
+DEFAULT_BOOK_NAME = 'default_book'
+
+def book_key(book_name=DEFAULT_BOOK_NAME):
+    return ndb.Key('Book', book_name)
 
 class Book(ndb.Model):
     ISBN = ndb.StringProperty()
