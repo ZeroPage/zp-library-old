@@ -16,6 +16,17 @@ indexes:
   - name: registrationDate
     direction: desc
 
+- kind: Book
+  ancestor: yes
+  properties:
+  - name: title
+
+- kind: Book
+  ancestor: yes
+  properties:
+  - name: title
+    direction: desc
+
 - kind: Greeting
   ancestor: yes
   properties:
