@@ -82,7 +82,7 @@ class BookListView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(BookListView, self).get_context_data(**kwargs)
 
-        books_query = Book.query(ancestor=book_key()).order(-Book.title)
+        books_query = Book.query(ancestor=book_key()).order(Book.title)
         context['books'] = books_query.fetch(10)
 
         return context
