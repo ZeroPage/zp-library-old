@@ -90,18 +90,23 @@ class BookListView(TemplateView):
 
 class ParseView(TemplateView):
     template_name = 'zp_library/parse.html'
+    isbn = ''
+
+    def dispatch(self, request, *args, **kwargs):
+        self.isbn = request.GET.get('isbn', '9788966260546')
+
+        return super(ParseView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(ParseView, self).get_context_data(**kwargs)
 
-        isbn = '9788966260546'
-        #isbn = request.GET.get('isbn', '9788966260546')
         try:
-            json_result = json.load(urllib2.urlopen('https://www.googleapis.com/books/v1/volumes?q=isbn:' + isbn + '&key=AIzaSyCEFHrF-qRjKkh3p9hvOpY9lhzdOtsS0UE'))
+            json_result = json.load(urllib2.urlopen('https://www.googleapis.com/books/v1/volumes?'
+                                                    + 'q=isbn:' + self.isbn
+                                                    + '&key=AIzaSyCEFHrF-qRjKkh3p9hvOpY9lhzdOtsS0UE'
+                                                    + '&country=KR'))
             context['result'] = json.dumps(json_result, indent=4, ensure_ascii=False, separators=(',', ': '))
         except urllib2.HTTPError, e:
             context['result'] = e.fp.read()
-
-
 
         return context
