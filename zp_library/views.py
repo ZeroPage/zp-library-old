@@ -96,8 +96,12 @@ class ParseView(TemplateView):
 
         isbn = '9788966260546'
         #isbn = request.GET.get('isbn', '9788966260546')
-        json_result = json.load(urllib2.urlopen('https://www.googleapis.com/books/v1/volumes?q=isbn:' + isbn))
+        try:
+            json_result = json.load(urllib2.urlopen('https://www.googleapis.com/books/v1/volumes?q=isbn:' + isbn))
+            context['result'] = json.dumps(json_result, indent=4, ensure_ascii=False, separators=(',', ': '))
+        except urllib2.HTTPError, e:
+            context['result'] = e.fp.read()
 
-        context['result'] = json.dumps(json_result, indent=4, ensure_ascii=False, separators=(',', ': '))
+
 
         return context
