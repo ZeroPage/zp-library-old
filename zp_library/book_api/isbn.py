@@ -1,3 +1,5 @@
+#-*- coding: utf-8 -*-
+
 def convertISBN(isbn):
     checksum = 0
     if len(isbn) == 13 and isbn[:3] == "978":
@@ -42,3 +44,8 @@ def checkISBN(isbn):
 
     else:
         return False
+
+
+if __name__ == "__main__":
+    isbn = str(input())
+    print(convertISBN(isbn))

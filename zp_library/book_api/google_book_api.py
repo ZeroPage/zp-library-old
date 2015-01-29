@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 import urllib
 import json
 
@@ -20,33 +21,38 @@ def query_filter(result_items, keys):
                 keys.remove(key)
             elif type(item[key]) is dict:
                 recursive_dict_search(item[key], keys, result_item)
-
     return result_item
 
+
+class Google:
+    parameter = ("industryIdentifiers", "authors", "title", "publishedDate", "description", "pageCount", "imageLinks", "language")
+    response_result = {}
+    result = {}
+
+    def __init__(self, query_parameters):
+        self.response_result = json.load(
+            urllib.urlopen(
+                "https://www.googleapis.com/books/v1/volumes?q=%s"
+                % "&".join([key + ":" + value for key, value in query_params.iteritems()])
+            )
+        )
+
+    def filter(self):
+        self.result = query_filter(self.response_result["items"], list(self.parameter))
+
+    def pretty(self):
+        return json.dumps(
+            self.result,
+            indent=4,
+            separators=(',', ': ')
+        )
+
+
+
 if __name__ == "__main__":
-    # isbn = "978-89-6626-054-6"
-    # isbn = isbn.replace("-","",4)
-    # print isbn
     query_params = {
         "isbn": "9788979149883"
     }
-    query = []
-    for key, value in query_params.iteritems():
-        query.append(key + ":" + value)
-    print query
-    json_result = json.load(
-        urllib.urlopen(
-            "https://www.googleapis.com/books/v1/volumes?q=%s"
-            % "&".join(query)
-        ))
-    # print json_result
-    print json.dumps(json_result, indent=4, separators=(',', ': '))
-
-    print json.dumps(
-        query_filter(
-            json_result["items"],
-            ["industryIdentifiers", "id", "authors", "title", "publishedDate"]
-        ),
-        indent=4,
-        separators=(',', ': ')
-    )
+    google_api = Google(query_params)
+    google_api.filter()
+    print(google_api.pretty())
