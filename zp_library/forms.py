@@ -15,7 +15,7 @@ class BookForm(forms.Form):
     thumbnail = forms.CharField()
     pageCount = forms.IntegerField()
     bookCount = forms.IntegerField()
-    donor = forms.CharField()
+    donor = forms.CharField(required=False)
 
     def action(self):
         cleaned_data = super(BookForm, self).clean()
