@@ -87,6 +87,22 @@ class BookListView(TemplateView):
 
         return context
 
+class BookDetailView(TemplateView):
+    template_name = 'zp_library/detail.html'
+    isbn = ''
+
+    def dispatch(self, request, *args, **kwargs):
+        self.isbn = request.GET.get('isbn')
+
+        return super(BookDetailView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(BookDetailView, self).get_context_data(**kwargs)
+
+        books_query = Book.query(Book.ISBN == self.isbn)
+        context['books'] = books_query.fetch()
+
+        return context
 
 class ParseView(TemplateView):
     template_name = 'zp_library/parse.html'

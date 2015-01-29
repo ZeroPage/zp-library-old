@@ -5,7 +5,9 @@
   <body>
 
   {% for book in books %}
-      <p>책 제목: {{ book.title|escape }}<br/>
+      <p>
+          <a href="/book_detail/?isbn={{ book.ISBN }}">책 제목: {{ book.title|escape }}</a>
+          <br/>
           저자: {{ book.author|escape }}
       </p>
   {% endfor %}

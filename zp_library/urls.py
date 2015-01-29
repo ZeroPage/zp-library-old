@@ -6,5 +6,6 @@ urlpatterns = [
     url(r'^admin/$', AdminView.as_view(), name='admin'),
     url(r'^test/$', TestView.as_view(), name='test'),
     url(r'^book_list/$', BookListView.as_view(), name='book_list'),
+    url(r'^book_detail/$', BookDetailView.as_view(), name='book_detail'),
     url(r'^parse/$', ParseView.as_view())
 ]
