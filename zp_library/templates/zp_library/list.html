@@ -11,6 +11,18 @@
           저자: {{ book.author|escape }}
       </p>
   {% endfor %}
-
+    <div class="pagination">
+        <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ books.previous_page_number }}">previous</a>
+        {% endif %}
+            <span class="current">
+            Page {{ books.number }} of {{ books.paginator.num_pages }}.
+            </span>
+        {% if contacts.has_next %}
+            <a href="?page={{ books.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+    </div>
   </body>
 </html>

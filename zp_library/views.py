@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from zp_library.forms import *
 from google.appengine.api import users
 from zp_library.models import *
+from django.core.paginator import Paginator, PageNotAnInteger
 
 import urllib2
 import json
@@ -61,12 +62,23 @@ class TestView(FormView):
 
 class BookListView(TemplateView):
     template_name = 'zp_library/list.html'
+    page = 1
+
+    def dispatch(self, request, *args, **kwargs):
+        self.page = request.GET.get('page')
+
+        return super(BookListView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(BookListView, self).get_context_data(**kwargs)
 
         books_query = Book.query(ancestor=book_key()).order(Book.title)
-        context['books'] = books_query.fetch(10)
+        paginator = Paginator(books_query.fetch(), 10)
+
+        try:
+            context['books'] = paginator.page(self.page)
+        except PageNotAnInteger:
+            context['books'] = paginator.page(1)
 
         return context
 
