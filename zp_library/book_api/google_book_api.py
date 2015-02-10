@@ -5,9 +5,10 @@ import json
 
 def recursive_dict_search(dict_item, keys, found_item):
     for key, value in dict_item.iteritems():
-        if key in keys:
+        if key == "industryIdentifiers":
+            found_item["isbn"] = value[1]["identifier"]
+        elif key in keys:
             found_item[key] = value
-            keys.remove(key)
         elif type(dict_item[key]) is dict:
             recursive_dict_search(dict_item[key], keys, found_item)
 
