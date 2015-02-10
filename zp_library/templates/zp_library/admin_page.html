@@ -1,14 +1,15 @@
-<html>
-<head>
-</head>
-<body>
+{% extends "zp_library/base.html" %}
+
+{% block content %}
     <p>admin? {{ is_admin }}</p>
-    <a href="/">BACK</a>
-    <a href="{{ logout_url }}">LOGOUT</a>
+    <div>
+        <a href="/">BACK</a>
+        <a href="{{ logout_url }}">LOGOUT</a>
+    </div>
 
-{% if is_admin %}
-    <p>insert book data: <a href="/test">manual</a> <a href="/add_isbn">auto</a></p>
-{% endif %}
-
-</body>
-</html>
+    {% if is_admin %}
+    <div>
+        <p>insert book data: <a href="/test">manual</a> <a href="/add_isbn">auto</a></p>
+    </div>
+    {% endif %}
+{% endblock %}

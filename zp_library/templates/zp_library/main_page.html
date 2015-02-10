@@ -1,13 +1,9 @@
-<html>
-  <head>
-    <link type="text/css" rel="stylesheet" href="/static/css/main.css" />
-  </head>
-  <body>
+{% extends "zp_library/base.html" %}
+
+{% block content %}
     <p>{{ message }}</p>
 
     <a href="/admin">ADMIN</a>
 
     <p>view book list: <a href="/book_list">here</a></p>
-
-  </body>
-</html>
+{% endblock %}

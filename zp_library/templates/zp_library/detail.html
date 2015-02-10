@@ -1,9 +1,5 @@
-<html>
-  <head>
-    <link type="text/css" rel="stylesheet" href="/static/css/main.css" />
-  </head>
-  <body>
-
+{% extends "zp_library/base.html" %}
+{% block content %}
   {% for book in books %}
       <p>ISBN: {{ book.ISBN|escape }}</p>
       <p>책 제목: {{ book.title|escape }}</p>
@@ -19,6 +15,4 @@
       <p>기증자: {{ book.donor|escape }}</p>
       <p>등록일자: {{ book.registrationDate|escape }}</p>
   {% endfor %}
-
-  </body>
-</html>
+{% endblock %}
