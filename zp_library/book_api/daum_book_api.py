@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 import urllib
 import json
 
@@ -23,30 +24,35 @@ def query_filter(result_items, keys):
 
     return result_item
 
+class Daum:
+    parameter = ("translator", "pub_nm", "category")
+    response_result = {}
+    result = {}
+
+    def __init__(self, query_parameters):
+        self.response_result = json.load(
+            urllib.urlopen(
+                "http://apis.daum.net/search/book?q=%s&apikey=19d3273451bd445399b4cc34a4fdbd45a11e5cee&output=json"
+                % "&".join([key + ":" + value for key, value in query_params.iteritems()])
+            )
+        )
+
+    def filter(self):
+        self.result = query_filter(self.response_result["items"], list(self.parameter))
+
+    def pretty(self):
+        return json.dumps(
+            self.result,
+            indent=4,
+            separators=(',', ': ')
+        )
+
+
+
 if __name__ == "__main__":
-    # isbn = "978-89-6626-054-6"
-    # isbn = isbn.replace("-","",4)
-    # print isbn
     query_params = {
         "isbn": "9788979149883"
     }
-    query = []
-    for key, value in query_params.iteritems():
-        query.append(key + ":" + value)
-    print query
-    json_result = json.load(
-        urllib.urlopen(
-            "http://apis.daum.net/search/book?q=%s&apikey=19d3273451bd445399b4cc34a4fdbd45a11e5cee&output=json"
-            % "&".join(query)
-        ))
-    # print json_result
-    print json.dumps(json_result, indent=4, separators=(',', ': '))
-
-    print json.dumps(
-        query_filter(
-            json_result["items"],
-            ["industryIdentifiers", "id", "authors", "title", "publishedDate"]
-        ),
-        indent=4,
-        separators=(',', ': ')
-    )
+    google_api = Google(query_params)
+    google_api.filter()
+    print(google_api.pretty())
