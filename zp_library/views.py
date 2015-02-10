@@ -114,15 +114,15 @@ class ParseView(TemplateView):
 
 
 class ISBNAddView(FormView):
+    template_name = 'zp_library/form.html'
+    form_class = ISBNForm
+    success_url = '/'
+
     def dispatch(self, request, *args, **kwargs):
         if not users.get_current_user():
             return HttpResponseRedirect(users.create_login_url('/admin'))
 
         return super(ISBNAddView, self).dispatch(request, *args, **kwargs)
-
-    template_name = 'zp_library/form.html'
-    form_class = ISBNForm
-    success_url = '/'
 
     def form_valid(self, form):
         form.action()
