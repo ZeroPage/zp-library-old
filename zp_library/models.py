@@ -24,7 +24,7 @@ class Book(ndb.Model):
     registrationDate = ndb.DateProperty(auto_now_add=True)
 
 
-class User(ndb.Model):
+class UserNdb(ndb.Model):
     id = ndb.StringProperty()
     email = ndb.StringProperty()
     name = ndb.StringProperty(default='name')

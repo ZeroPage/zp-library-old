@@ -1,4 +1,11 @@
+@import url(http://fonts.googleapis.com/css?family=Noto+Sans);
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
 body {
-  font-family: Verdana, Helvetica, sans-serif;
-  background-color: #DDDDDD;
+  font-family: 'Noto Sans', 'Nanum Gothic', sans-serif;
+}
+
+.contents {
+  width: 800px;
+  margin: auto;
 }

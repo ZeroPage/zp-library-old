@@ -13,9 +13,12 @@ import json
 class MainPageView(TemplateView):
     template_name = 'zp_library/main_page.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        return super(MainPageView, self).dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(MainPageView, self).get_context_data(**kwargs)
-        context['message'] = '지피 도서관에 어서오세요'
+        context['message'] = '지피 도서관에 어서오세요.'
 
         return context
 
@@ -29,8 +32,8 @@ class UserView(TemplateView):
         if not user:
             return HttpResponseRedirect(users.create_login_url('/user'))
 
-        if not User.query(User.id == user.user_id()).get():
-            User(id=user.user_id(), email=user.email()).put()
+        if not UserNdb.query(UserNdb.id == user.user_id()).get():
+            UserNdb(id=user.user_id(), email=user.email()).put()
 
         return super(UserView, self).dispatch(request, *args, **kwargs)
 
@@ -40,7 +43,7 @@ class UserView(TemplateView):
         google_user = users.get_current_user()
 
         context['logout_url'] = users.create_logout_url('/')
-        context['google_user'] = User.query(User.id == google_user.user_id()).get()
+        context['google_user'] = UserNdb.query(UserNdb.id == google_user.user_id()).get()
 
         return context
 
