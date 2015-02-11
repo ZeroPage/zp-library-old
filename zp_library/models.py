@@ -1,9 +1,10 @@
 from google.appengine.ext import ndb
 
 DEFAULT_BOOK_NAME = 'default_book'
+DEFAULT_USER_KEY_NAME = 'default_user'
 
 def book_key(book_name=DEFAULT_BOOK_NAME):
-    return ndb.Key('Book', book_name)
+    return ndb.Key(Book, book_name)
 
 class Book(ndb.Model):
     ISBN = ndb.StringProperty()
@@ -21,3 +22,10 @@ class Book(ndb.Model):
     bookCount = ndb.IntegerProperty()
     donor = ndb.StringProperty()
     registrationDate = ndb.DateProperty(auto_now_add=True)
+
+
+class User(ndb.Model):
+    id = ndb.StringProperty()
+    email = ndb.StringProperty()
+    name = ndb.StringProperty(default='name')
+    type = ndb.StringProperty(default='new')

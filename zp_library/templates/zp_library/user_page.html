@@ -1,0 +1,26 @@
+{% extends "zp_library/base.html" %}
+
+{% block content %}
+    <div>
+        <a href="/">BACK</a>
+        <a href="{{ logout_url }}">LOGOUT</a>
+    </div>
+
+    <div>
+        <p>account name: {{ google_user.name }}</p>
+        <p>account type: {{ google_user.type }}</p>
+    </div>
+
+    <div>
+    {% if google_user.type == "admin" %}
+
+        <p>insert book data: <a href="/test">manual</a> <a href="/add_isbn">auto</a></p>
+        <p>manage users: (not yet)</p>
+
+    {% elif google_user.type == "auth" %}
+        <p>request add: (not yet)</p>
+    {% else %}
+        <p>wait for admin auth.</p>
+    {% endif %}
+    </div>
+{% endblock %}

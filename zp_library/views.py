@@ -20,23 +20,27 @@ class MainPageView(TemplateView):
         return context
 
 
-class AdminView(TemplateView):
-    template_name = 'zp_library/admin_page.html'
+class UserView(TemplateView):
+    template_name = 'zp_library/user_page.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if not users.get_current_user():
-            return HttpResponseRedirect(users.create_login_url('/admin'))
-
-        return super(AdminView, self).dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(AdminView, self).get_context_data(**kwargs)
-
         user = users.get_current_user()
 
-        context['is_admin'] = users.is_current_user_admin()
+        if not user:
+            return HttpResponseRedirect(users.create_login_url('/user'))
+
+        if not User.query(User.id == user.user_id()).get():
+            User(id=user.user_id(), email=user.email()).put()
+
+        return super(UserView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(UserView, self).get_context_data(**kwargs)
+
+        google_user = users.get_current_user()
+
         context['logout_url'] = users.create_logout_url('/')
-        context['user'] = user
+        context['google_user'] = User.query(User.id == google_user.user_id()).get()
 
         return context
 
@@ -132,7 +136,7 @@ class ISBNAddView(FormView):
 
     def dispatch(self, request, *args, **kwargs):
         if not users.get_current_user():
-            return HttpResponseRedirect(users.create_login_url('/admin'))
+            return HttpResponseRedirect(users.create_login_url('/user'))
 
         return super(ISBNAddView, self).dispatch(request, *args, **kwargs)
 
