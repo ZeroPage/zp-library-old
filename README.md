@@ -2,4 +2,7 @@ zp-library
 ==========
 
 zeropage library w/ gae
-google app engine + python2 + django
+
+Google App Engine
+python2.7.0
+Django 1.4
