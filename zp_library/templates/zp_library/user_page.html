@@ -7,20 +7,20 @@
     </div>
 
     <div>
-        <p>account name: {{ google_user.name }}</p>
-        <p>account type: {{ google_user.type }}</p>
+        <p>account name: {{ library_user.name }}</p>
+        <p>account type: {{ library_user.type }}</p>
     </div>
 
     <div>
-    {% if google_user.type == "admin" %}
+    {% if library_user.type == "admin" %}
 
         <p>insert book data: <a href="/test">manual</a> <a href="/add_isbn">auto</a></p>
-        <p>manage users: (not yet)</p>
+        <p>manage users: not yet. use db manager :/</p>
 
-    {% elif google_user.type == "auth" %}
-        <p>request add: (not yet)</p>
+    {% elif library_user.type == "auth" %}
+        <p>book add request: (not yet)</p>
     {% else %}
-        <p>wait for admin auth.</p>
+        <p>ask admin to auth</p>
     {% endif %}
     </div>
 {% endblock %}

@@ -1,10 +1,10 @@
 # coding=utf-8
 from django.views.generic import *
-from django.http import HttpResponseRedirect
-from zp_library.forms import *
-from google.appengine.api import users
-from zp_library.models import *
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.paginator import Paginator, PageNotAnInteger
+from zp_library.forms import *
+from zp_library.models import *
+from zp_library import auth
 
 import urllib2
 import json
@@ -27,23 +27,17 @@ class UserView(TemplateView):
     template_name = 'zp_library/user_page.html'
 
     def dispatch(self, request, *args, **kwargs):
-        user = users.get_current_user()
 
-        if not user:
-            return HttpResponseRedirect(users.create_login_url('/user'))
-
-        if not UserNdb.query(UserNdb.id == user.user_id()).get():
-            UserNdb(id=user.user_id(), email=user.email()).put()
+        if not auth.get_library_user():
+            return HttpResponseRedirect(auth.get_login_url('/user'))
 
         return super(UserView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(UserView, self).get_context_data(**kwargs)
 
-        google_user = users.get_current_user()
-
-        context['logout_url'] = users.create_logout_url('/')
-        context['google_user'] = UserNdb.query(UserNdb.id == google_user.user_id()).get()
+        context['logout_url'] = auth.get_logout_url()
+        context['library_user'] = auth.get_library_user()
 
         return context
 
@@ -54,14 +48,16 @@ class TestView(FormView):
     success_url = '/'
 
     def dispatch(self, request, *args, **kwargs):
-        if not users.is_current_user_admin():
-            return HttpResponseRedirect('/')
+        library_user = auth.get_library_user()
+        if not library_user:
+            return HttpResponseRedirect(auth.get_login_url('/test'))
+
+        if not library_user.type == auth.USER_TYPE_ADMIN:
+            return HttpResponse(status=401)
 
         return super(TestView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        # This method is called when valid form data has been POSTed.
-        # It should return an HttpResponse.
         form.action()
 
         return super(TestView, self).form_valid(form)
@@ -138,8 +134,12 @@ class ISBNAddView(FormView):
     success_url = '/'
 
     def dispatch(self, request, *args, **kwargs):
-        if not users.get_current_user():
-            return HttpResponseRedirect(users.create_login_url('/user'))
+        library_user = auth.get_library_user()
+        if not library_user:
+            return HttpResponseRedirect(auth.get_login_url('/add_isbn'))
+
+        if not library_user.type == auth.USER_TYPE_ADMIN:
+            return HttpResponse(status=401)
 
         return super(ISBNAddView, self).dispatch(request, *args, **kwargs)
 
@@ -147,3 +147,25 @@ class ISBNAddView(FormView):
         form.action()
 
         return super(ISBNAddView, self).form_valid(form)
+
+
+class SignUpView(FormView):
+    template_name = 'zp_library/form.html'
+    form_class = NewUserForm
+    success_url = '/'
+
+    def dispatch(self, request, *args, **kwargs):
+        library_user = auth.get_library_user()
+
+        if library_user:
+            return HttpResponseRedirect('/')
+
+        if not auth.get_google_id():
+            return HttpResponseRedirect(auth.get_login_url())
+
+        return super(SignUpView, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.action()
+
+        return super(SignUpView, self).form_valid(form)

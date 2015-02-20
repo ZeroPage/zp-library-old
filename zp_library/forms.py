@@ -1,5 +1,7 @@
 from django import forms
 from zp_library.models import *
+from zp_library import auth
+from google.appengine.api import users
 
 class BookForm(forms.Form):
     ISBN = forms.CharField()
@@ -39,7 +41,7 @@ class BookForm(forms.Form):
 
 
 class ISBNForm(forms.Form):
-    isbn = forms.CharField(widget=forms.Textarea)
+    isbn = forms.CharField(widget=forms.Textarea, help_text="multiple items allowed (split by enter)")
 
     def action(self):
         if self.is_valid():
@@ -62,3 +64,19 @@ class ISBNForm(forms.Form):
                         'donor': 'donor'}
                 book_form = BookForm(data)
                 book_form.action()
+
+
+class NewUserForm(forms.Form):
+    name = forms.CharField(help_text="type real name")
+
+    def action(self):
+        google_user = users.get_current_user()
+
+        if self.is_valid() and google_user and not LibraryUser.query(LibraryUser.id == google_user.user_id()).get():
+            if users.is_current_user_admin():
+                user_type = auth.USER_TYPE_ADMIN
+            else:
+                user_type = auth.USER_TYPE_NEW
+
+            LibraryUser(id=google_user.user_id(), email=google_user.email(),
+                        name=self.cleaned_data['name'], type=user_type).put()

@@ -1,11 +1,15 @@
-@import url(http://fonts.googleapis.com/css?family=Noto+Sans);
+@import url(http://fonts.googleapis.com/css?family=RobotoDraft);
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
 body {
-  font-family: 'Noto Sans', 'Nanum Gothic', sans-serif;
+  font-family: 'RobotoDraft', 'Nanum Gothic', sans-serif;
+}
+
+.nowrap {
+  white-space: nowrap;
 }
 
 .contents {
-  width: 800px;
+  max-width: 800px;
   margin: auto;
 }
