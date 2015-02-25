@@ -2,6 +2,7 @@
 <html ng-app="LibraryApp">
     <head lang="ko">
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- Angulars Material CSS now available via Google CDN; version 0.7 used here -->
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.7.0/angular-material.min.css">
@@ -22,14 +23,37 @@
         <title>{% block title %}ZP Library{% endblock %}</title>
     </head>
     <body ng-controller="LibraryControl">
-        <md-toolbar class="md-warn">
-            <p class="md-toolbar-tools nowrap">
-                <strong>warning: under development</strong>
-            </p>
-        </md-toolbar>
-        <md-content class="contents md-padding">
-            {% block content %}
-            {% endblock %}
-        </md-content>
+        <div class="wrapper" layout="row" flex>
+            <md-sidenav class="sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-md')">
+                <md-toolbar class="md-theme-dark">
+                    <div class="md-toolbar-tools">
+                        <h1 class="md-toolbar-tools">ZP Library</h1>
+                    </div>
+                </md-toolbar>
+                <md-content>
+                    <md-list class="sidenav-list" layout="column" layout-align="start">
+                        <md-button class="md-primary" ng-href="{% url main %}">Home</md-button>
+                        <md-button class="" ng-href="{% url user %}">User</md-button>
+                    </md-list>
+                </md-content>
+            </md-sidenav>
+            <div class="content-body">
+                <md-toolbar layout="row"class="md-warn">
+                    <md-button ng-click="toggleLeft()" class="" hide-gt-md>
+                        MENU
+                    </md-button>
+                    <div>
+                        <p class="md-toolbar-tools nowrap">
+                            <strong>warning: under development</strong>
+                        </p>
+                    </div>
+
+                </md-toolbar>
+                <md-content class="contents md-padding">
+                    {% block content %}
+                    {% endblock %}
+                </md-content>
+            </div>
+        </div>
     </body>
 </html>
