@@ -43,7 +43,7 @@ class BookForm(forms.Form):
             book.put()
 
 class ISBNForm(forms.Form):
-    isbn = forms.CharField(widget=forms.Textarea, help_text="multiple items allowed (split by enter)")
+    isbn = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'multiple items allowed (split by enter)'}))
 
     def action(self):
         if self.is_valid():
@@ -69,7 +69,7 @@ class ISBNForm(forms.Form):
 
 
 class NewUserForm(forms.Form):
-    name = forms.CharField(help_text="type real name")
+    name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'type real name'}))
 
     def action(self):
         google_user = users.get_current_user()

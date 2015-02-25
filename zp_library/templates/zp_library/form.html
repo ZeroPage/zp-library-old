@@ -3,7 +3,17 @@
 {% block content %}
 	<form action="" method="post">
 		{% csrf_token %}
-		{{ form.as_p }}
+        {% for field in form %}
+            <md-input-container>
+                <label>{{ field.label }}</label>
+                {{ field }}
+                <div ng-messages="error">
+                    {% for error in field.errors %}
+                        <div ng-message="error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </md-input-container>
+        {% endfor %}
 		<input type="submit"/>
 	</form>
 {% endblock %}
