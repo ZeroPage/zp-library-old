@@ -1,7 +1,7 @@
 # coding=utf-8
 from django.views.generic import *
 from django.http import HttpResponseRedirect, HttpResponse
-from django.core.paginator import Paginator, PageNotAnInteger
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from zp_library.forms import *
 from zp_library.models import *
 from zp_library import auth
@@ -65,10 +65,11 @@ class TestView(FormView):
 
 class BookListView(TemplateView):
     template_name = 'zp_library/list.html'
-    page = 1
+    current_page = 1
+    paginate_by = 10
 
     def dispatch(self, request, *args, **kwargs):
-        self.page = request.GET.get('page')
+        self.current_page = request.GET.get('page')
 
         return super(BookListView, self).dispatch(request, *args, **kwargs)
 
@@ -76,12 +77,16 @@ class BookListView(TemplateView):
         context = super(BookListView, self).get_context_data(**kwargs)
 
         books_query = Book.query(ancestor=book_key()).order(Book.title)
-        paginator = Paginator(books_query.fetch(), 10)
+        paginator = Paginator(books_query.fetch(), self.paginate_by)
 
         try:
-            context['books'] = paginator.page(self.page)
-        except PageNotAnInteger:
+            context['books'] = paginator.page(self.current_page)
+        except (PageNotAnInteger, EmptyPage):
             context['books'] = paginator.page(1)
+
+        context['page_range'] = range(1, paginator.num_pages)
+        context['is_first'] = self.current_page == 1
+        context['is_last'] = self.current_page == paginator.num_pages
 
         return context
 
