@@ -84,7 +84,7 @@ class BookListView(TemplateView):
         except (PageNotAnInteger, EmptyPage):
             context['books'] = paginator.page(1)
 
-        context['page_range'] = range(1, paginator.num_pages)
+        context['page_range'] = range(1, paginator.num_pages + 1)
         context['is_first'] = self.current_page == 1
         context['is_last'] = self.current_page == paginator.num_pages
 
