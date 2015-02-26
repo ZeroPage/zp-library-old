@@ -5,6 +5,10 @@ body {
   font-family: 'RobotoDraft', 'Nanum Gothic', sans-serif;
 }
 
+.menu-button {
+  width: 80px
+}
+
 .wrapper {
   width: 100%;
   min-height: 100%
@@ -20,9 +24,10 @@ body {
 
 .content-body {
   width: 100%;
+  background-color: lightgray;
 }
 
 .contents {
   max-width: 800px;
-  margin: auto;
+  margin: 20px auto;
 }
