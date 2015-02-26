@@ -7,16 +7,16 @@ class BookForm(forms.Form):
     ISBN = forms.CharField()
     title = forms.CharField()
     author = forms.CharField()
-    translator = forms.CharField()
-    publisher = forms.CharField()
-    publishedDate = forms.DateField()
-    description = forms.CharField(widget=forms.Textarea)
-    category = forms.CharField()
-    language = forms.CharField()
-    smallThumbnail = forms.CharField()
-    thumbnail = forms.CharField()
-    pageCount = forms.IntegerField()
-    bookCount = forms.IntegerField()
+    translator = forms.CharField(required=False)
+    publisher = forms.CharField(required=False)
+    publishedDate = forms.DateField(required=False)
+    description = forms.CharField(widget=forms.Textarea, required=False)
+    category = forms.CharField(required=False)
+    language = forms.CharField(required=False)
+    smallThumbnail = forms.CharField(required=False)
+    thumbnail = forms.CharField(required=False)
+    pageCount = forms.IntegerField(required=False)
+    bookCount = forms.IntegerField(required=False)
     donor = forms.CharField(required=False)
 
     def action(self):
@@ -35,10 +35,12 @@ class BookForm(forms.Form):
             book.smallThumbnail = self.cleaned_data['smallThumbnail']
             book.thumbnail = self.cleaned_data['thumbnail']
             book.pageCount = self.cleaned_data['pageCount']
-            book.bookCount = self.cleaned_data['bookCount']
+            if not self.cleaned_data['bookCount']:
+                book.bookCount = 1
+            else:
+                book.bookCount = self.cleaned_data['bookCount']
             book.donor = self.cleaned_data['donor']
             book.put()
-
 
 class ISBNForm(forms.Form):
     isbn = forms.CharField(widget=forms.Textarea, help_text="multiple items allowed (split by enter)")

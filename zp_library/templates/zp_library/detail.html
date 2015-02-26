@@ -1,18 +1,18 @@
 {% extends "zp_library/base.html" %}
 {% block content %}
-  {% for book in books %}
-      <p>ISBN: {{ book.ISBN|escape }}</p>
-      <p>책 제목: {{ book.title|escape }}</p>
-      <p>저자: {{ book.author|escape }}</p>
-      <p>번역자: {{ book.translator|escape }}</p>
-      <p>출판사: {{ book.publisher|escape }}</p>
-      <p>출판일: {{ book.publishedDate|escape }}</p>
-      <p>설명: {{ book.description|escape }}</p>
-      <p>카테고리: {{ book.category|escape }}</p>
-      <p>언어: {{ book.language|escape }}</p>
-      <p>쪽 수: {{ book.pageCount|escape }}</p>
-      <p>책 보유수: {{ book.bookCount|escape }}</p>
-      <p>기증자: {{ book.donor|escape }}</p>
-      <p>등록일자: {{ book.registrationDate|escape }}</p>
-  {% endfor %}
+    {% for book in books %}
+        <p>ISBN: {{ book.ISBN|escape }}</p>
+        <p>책 제목: {{ book.title|escape }}</p>
+        <p>저자: {{ book.author|escape }}</p>
+        <p>번역자: {{ book.translator|escape }}</p>
+        <p>출판사: {{ book.publisher|escape }}</p>
+        <p>출판일: {{ book.publishedDate|escape }}</p>
+        <p>설명: {{ book.description|escape }}</p>
+        <p>카테고리: {{ book.category|escape }}</p>
+        <p>언어: {{ book.language|escape }}</p>
+        <p>쪽 수: {{ book.pageCount|escape }}</p>
+        <p>책 보유수: {{ book.bookCount|escape }}</p>
+        <p>기증자: {{ book.donor|escape }}</p>
+        <p>등록일자: {{ book.registrationDate|escape }}</p>
+    {% endfor %}
 {% endblock %}
