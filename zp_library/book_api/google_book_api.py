@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import urllib
 import json
 
@@ -34,7 +34,7 @@ class Google:
         self.response_result = json.load(
             urllib.urlopen(
                 "https://www.googleapis.com/books/v1/volumes?q=%s"
-                % "&".join([key + ":" + value for key, value in query_params.iteritems()])
+                % "&".join([key + ":" + value for key, value in query_parameters.iteritems()])
             )
         )
 
