@@ -23,24 +23,24 @@
         <title>{% block title %}ZP Library{% endblock %}</title>
     </head>
     <body ng-controller="LibraryControl">
-        <div class="wrapper" layout="row" flex>
+        <div class="body-wrapper" layout="row" flex>
             <md-sidenav class="sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-md')">
                 <md-toolbar class="">
                     <div class="md-toolbar-tools">
-                        <h1 class="md-toolbar-tools">MENUS</h1>
+                        <h1 class="md-toolbar-tools">MENU</h1>
                     </div>
                 </md-toolbar>
                 <md-content>
                     <md-list class="sidenav-list" layout="column" layout-align="start">
-                        <md-button class="md-primary" ng-href="{% url main %}">Home</md-button>
-                        <md-button class="md-primary" ng-href="{% url user %}">User</md-button>
-                        <md-button class="md-primary" ng-href="{% url book_list %}">List</md-button>
+                        <md-button class="md-primary" ng-href="{% url main %}" ng-click="closeLeft()">Home</md-button>
+                        <md-button class="md-primary" ng-href="{% url user %}" ng-click="closeLeft()">User</md-button>
+                        <md-button class="md-primary" ng-href="{% url book_list %}" ng-click="closeLeft()">List</md-button>
                     </md-list>
                 </md-content>
             </md-sidenav>
-            <div class="content-body">
-                <md-toolbar layout="row"class="md-primary">
-                    <md-button class="menu-button" ng-click="toggleLeft()" hide-gt-md>
+            <div layout="column" class="right-wrapper">
+                <md-toolbar layout="row" class="md-primary md-whiteframe-z2">
+                    <md-button class="menu-button" ng-click="openLeft()" hide-gt-md>
                         MENU
                     </md-button>
                     <div>
@@ -50,10 +50,13 @@
                     </div>
 
                 </md-toolbar>
-                <md-content class="contents md-padding md-whiteframe-z1">
-                    {% block content %}
-                    {% endblock %}
-                </md-content>
+
+                <div md-scroll-y flex class="content-wrapper">
+                    <md-content class="contents md-padding md-whiteframe-z1">
+                        {% block content %}
+                        {% endblock %}
+                    </md-content>
+                </div>
             </div>
         </div>
     </body>
