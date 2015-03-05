@@ -107,6 +107,7 @@ class BookDetailView(TemplateView):
 
         books_query = Book.query(Book.ISBN == self.isbn)
         context['books'] = books_query.fetch()
+        context['isbn'] = self.isbn
 
         return context
 

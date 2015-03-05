@@ -2,7 +2,7 @@ window.onload = function() {
     var takePicture = document.querySelector("#Take-Picture"),
         showPicture = document.createElement("img");
 
-    resultText = document.querySelector("#camera-message");
+    var resultText = document.querySelector("#camera-message");
 
     var canvas = document.getElementById("picture");
     var ctx = canvas.getContext("2d");
@@ -12,7 +12,12 @@ window.onload = function() {
         if(result.length > 0){
             var tempArray = [];
             for(var i = 0; i < result.length; i++) {
-                window.location.replace("/book_detail/?isbn=" + result[i].Value);
+                var value = result[i].Value;
+
+                if (value.length >= 10) {
+                    window.location.replace("/book_detail/?isbn=" + result[i].Value);
+                    break;
+                }
                 //tempArray.push(result[i].Format+" : "+result[i].Value);
             }
             //resultText.innerHTML=tempArray.join("<br />");
@@ -42,6 +47,7 @@ window.onload = function() {
         }
         ctx.stroke();
     });
+
     if(takePicture && showPicture) {
         takePicture.onchange = function (event) {
             var files = event.target.files;

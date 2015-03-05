@@ -1,7 +1,7 @@
 {% extends "zp_library/base.html" %}
 {% block content %}
+    <h2>{{ isbn }}</h2>
     {% for book in books %}
-        <p>ISBN: {{ book.ISBN|escape }}</p>
         <p>책 제목: {{ book.title|escape }}</p>
         <p>저자: {{ book.author|escape }}</p>
         <p>번역자: {{ book.translator|escape }}</p>
