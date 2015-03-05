@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html ng-app="LibraryApp">
     <head lang="ko">
@@ -20,6 +22,8 @@
 
         <script src="/static/js/angular.js"></script>
 
+        {% block head %}{% endblock %}
+
         <title>{% block title %}ZP Library{% endblock %}</title>
     </head>
     <body ng-controller="LibraryControl">
@@ -35,6 +39,7 @@
                         <md-button class="md-primary" ng-href="{% url main %}" ng-click="closeLeft()">Home</md-button>
                         <md-button class="md-primary" ng-href="{% url user %}" ng-click="closeLeft()">User</md-button>
                         <md-button class="md-primary" ng-href="{% url book_list %}" ng-click="closeLeft()">List</md-button>
+                            <md-button class="md-primary" ng-href="{% url camera %}" ng-click="closeLeft()">Camera</md-button>
                     </md-list>
                 </md-content>
             </md-sidenav>

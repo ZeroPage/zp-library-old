@@ -133,6 +133,18 @@ class ParseView(TemplateView):
         return context
 
 
+class CameraView(TemplateView):
+    template_name = 'zp_library/camera.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(CameraView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(CameraView, self).get_context_data(**kwargs)
+
+        return context
+
+
 class ISBNAddView(FormView):
     template_name = 'zp_library/form.html'
     form_class = ISBNForm

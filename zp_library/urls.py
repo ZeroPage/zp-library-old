@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^add_isbn/$', ISBNAddView.as_view(), name='add_isbn'),
     url(r'^book_detail/$', BookDetailView.as_view(), name='book_detail'),
     url(r'^parse/$', ParseView.as_view()),
-    url(r'^signup/$', SignUpView.as_view())
+    url(r'^signup/$', SignUpView.as_view()),
+    url(r'^camera/$', CameraView.as_view(), name='camera')
 ]

@@ -1,0 +1,13 @@
+{% extends "zp_library/base.html" %}
+{% load static %}
+
+{% block head %}
+    <script type="text/javascript" src="{% static "js/job/JOB.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/job/camera.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+    <canvas width="320" height="240" id="picture"></canvas>
+    <input id="Take-Picture" type="file" accept="image/*;capture=camera" />
+    <p id="camera-message"></p>
+{% endblock %}
