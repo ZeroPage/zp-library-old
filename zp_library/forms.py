@@ -2,6 +2,8 @@ from django import forms
 from zp_library.models import *
 from zp_library import auth
 from google.appengine.api import users
+from google.appengine.ext import ndb
+
 
 class BookForm(forms.Form):
     ISBN = forms.CharField()
@@ -21,7 +23,7 @@ class BookForm(forms.Form):
 
     def action(self):
         if self.is_valid():
-            book = Book(parent=book_key())
+            book = Book()
 
             book.ISBN = self.cleaned_data['ISBN']
             book.title = self.cleaned_data['title']
@@ -40,7 +42,9 @@ class BookForm(forms.Form):
             else:
                 book.bookCount = self.cleaned_data['bookCount']
             book.donor = self.cleaned_data['donor']
+            book.key = ndb.Key(Book, self.cleaned_data['ISBN'])
             book.put()
+
 
 class ISBNForm(forms.Form):
     isbn = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'multiple items allowed (split by enter)'}))

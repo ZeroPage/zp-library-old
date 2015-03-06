@@ -76,7 +76,9 @@ class BookListView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(BookListView, self).get_context_data(**kwargs)
 
-        books_query = Book.query(ancestor=book_key()).order(Book.title)
+        context['library_user'] = auth.get_library_user()
+
+        books_query = Book.query().order(Book.title)
         paginator = Paginator(books_query.fetch(), self.paginate_by)
 
         try:
@@ -107,6 +109,25 @@ class BookDetailView(TemplateView):
         context['books'] = books_query.fetch()
 
         return context
+
+
+class BookDeleteView(TemplateView):
+
+    def dispatch(self, request, *args, **kwargs):
+        library_user = auth.get_library_user()
+        isbn = request.GET.get('isbn')
+
+        if not library_user:
+            return HttpResponseRedirect(auth.get_login_url('/book_delete'))
+
+        if not library_user.type == auth.USER_TYPE_ADMIN:
+            return HttpResponse(status=401)
+
+        if library_user.type == auth.USER_TYPE_ADMIN:
+            ndb.Key(Book, isbn).delete()
+            return HttpResponseRedirect('/book_list')
+
+        return super(BookDeleteView, self).dispatch(request, *args, **kwargs)
 
 
 class ParseView(TemplateView):

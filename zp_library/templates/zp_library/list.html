@@ -2,11 +2,13 @@
 
 {% block content %}
     {% for book in books %}
-    <p>
-        <a href="/book_detail/?isbn={{ book.ISBN }}">책 제목: {{ book.title|escape }}</a>
-        <br/>
-        저자: {{ book.author|escape }}
-    </p>
+    <div>
+        <p><a href="/book_detail/?isbn={{ book.ISBN }}">책 제목: {{ book.title|escape }}</a></p>
+        <p>저자: {{ book.author|escape }}</p>
+        {% if library_user.type == "admin" %}
+            <p style="text-align: right"><a href="/book_delete/?isbn={{ book.ISBN }}">삭제</a></p>
+        {% endif %}
+    </div>
     {% endfor %}
     <div class="pagination">
         <span class="step-links">
@@ -23,7 +25,6 @@
                     <a href="?page={{ i }}">{{ i }}</a>
                 {% endif %}
             {% endfor %}
-
 
             {% if books.has_next %}
                 <a href="?page={{ books.next_page_number }}">next</a>

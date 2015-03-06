@@ -3,8 +3,6 @@ from google.appengine.ext import ndb
 DEFAULT_BOOK_NAME = 'default_book'
 DEFAULT_USER_KEY_NAME = 'default_user'
 
-def book_key(book_name=DEFAULT_BOOK_NAME):
-    return ndb.Key(Book, book_name)
 
 class Book(ndb.Model):
     ISBN = ndb.StringProperty()
