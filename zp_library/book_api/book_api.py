@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
+"""
+This module is for Book api.
+"""
 import urllib
 import json
+# from zp_library.book_api import isbn as ISBN
 import unittest
+
 
 def recursive_dict_search(dict_item, keys, found_item):
     for key, value in dict_item.iteritems():
         if key in keys:
             found_item[key] = value
-            keys.remove(key)
         elif type(dict_item[key]) is dict:
             recursive_dict_search(dict_item[key], keys, found_item)
 
@@ -18,21 +22,15 @@ def query_filter(result_items, keys):
         for key, value in item.iteritems():
             if key in keys:
                 result_item[key] = value
-                keys.remove(key)
             elif type(item[key]) is dict:
                 recursive_dict_search(item[key], keys, result_item)
     return result_item
 
 
 class Book:
-    parameter = ()
-    url = ''
-    response = {}
-    result = {}
-    api_key = ''
-
     def filter(self):
-        pass
+        if self.response is not None or self.response is not {}:
+            self.result = query_filter(self.response["items"], self.parameters)
 
     def pretty(self, type_):
         if type_ == "response":
@@ -46,12 +44,12 @@ class Book:
                 separators = (",", ": ")
             )
 
-    def request(self, qurey_parameters):
+    def request(self, request_parameters):
         try:
             self.response = json.load(
                 urllib.urlopen(
                     self.url + 
-                    "&".join([key + ":" + value for key, value in qurey_parameters.iteritems()])
+                    "&".join([key + ":" + value for key, value in request_parameters.iteritems()])
                 )
             )
         except urllib2.HTTPError, e:
@@ -59,52 +57,112 @@ class Book:
 
 
 class Daum(Book):
-    parameter = ("translator", "pub_nm", "category")
+    """
 
+    Request Parameters:
+        intitle: Returns results where the text following this keyword is found in the title.
+        inauthor: Returns results where the text following this keyword is found in the author.
+        inpublisher: Returns results where the text following this keyword is found in the publisher.
+        subject: Returns results where the text following this keyword is listed in the category list of the volume.
+        isbn: Returns results where the text following this keyword is the ISBN number.
+        lccn: Returns results where the text following this keyword is the Library of Congress Control Number.
+        oclc: Returns results where the text following this keyword is the Online Computer Library Center number
+
+    """
     def __init__(self):
-        self.api_key = "19d3273451bd445399b4cc34a4fdbd45a11e5cee"
+        self._api_key = "19d3273451bd445399b4cc34a4fdbd45a11e5cee"
+        self.url = "http://apis.daum.net/search/book?apikey=" + self._api_key +  "&output=json&q="
         self.parameters = ("translator", "pub_nm", "category")
-        self.url = "http://apis.daum.net/search/book?apikey=" + self.api_key +  "&output=json&q="
-
-    # def request(self):
-    #     self.response_result = json.load(
-    #         urllib.urlopen(
-    #             "http://apis.daum.net/search/book?q=%s&apikey=19d3273451bd445399b4cc34a4fdbd45a11e5cee&output=json"
-    #             % "&".join([key + ":" + value for key, value in query_params.iteritems()])
-    #         )
-    #     )
 
     def filter(self):
-        self.result = query_filter(self.response_result["items"], list(self.parameter))
+        super().filter(self.response["items"], self.parameters)
+        self.result = query_filter(self.response["items"], self.parameters)
 
 
 class Google(Book):
+    """
+    
+    example:
+        isbn
+
+    """
     def __init__(self):
-        self.api_key = "AIzaSyCEFHrF-qRjKkh3p9hvOpY9lhzdOtsS0UE"
-        self.url = "https://www.googleapis.com/books/v1/volumes?key=" + self.api_key + "&q="
+        self._api_key = "AIzaSyCEFHrF-qRjKkh3p9hvOpY9lhzdOtsS0UE"
+        self.url = "https://www.googleapis.com/books/v1/volumes?key=" + self._api_key + "&q="
         self.parameters = ("industryIdentifiers", "authors", "title", "publishedDate", "description", "pageCount", "imageLinks", "language")
         
     def filter(self):
-        self.result = query_filter(self.response["items"], list(self.parameters))
+        Book.filter(self)
+
+        isbn = self.result["industryIdentifiers"][0]["identifier"]
+        if len(isbn) == 10:
+            self.result["isbn"] = ISBN.convertISBN(isbn)
+        else:
+            self.result["isbn"] = isbn
+
+        del self.result["industryIdentifiers"]
 
 
 class TestBookAPI(unittest.TestCase):
     def setUp(self):
-        self.query_params = {
+        self.request_parameters = {
             "isbn": "9788979149883"
         }
 
     def test_google_response(self):
         google_api = Google()
-        google_api.request(self.query_params)
+        google_api.request(self.request_parameters)
         self.assertIsNotNone(google_api.response)
+
+    def test_google_filtering(self):
+        google_api = Google()
+        google_api.request(self.request_parameters)
+        google_api.filter()
 
     def test_daum_response(self):
         daum_api = Daum()
-        daum_api.request(self.query_params)
+        daum_api.request(self.request_parameters)
         self.assertIsNotNone(daum_api.response)
+
+    def test_daum_filtering(self):
+        daum_api = Daum()
+        daum_api.request(self.request_parameters)
+        daum_api.filter()
+
+
+class TestGoogleAPI(unittest.TestCase):
+    def setUp(self):
+        self.requset_parameters = {
+            "isbn" : "9788979149883"
+        }
+
+    def test_google_response(self):
+        google_api = Google()
+        google_api.request(self.request_parameters)
+        self.assertIsNotNone(google_api.response)
+
+    def test_google_filtering(self):
+        google_api = Google()
+        google_api.request(self.request_parameters)
+        google_api.filter()
+
+class TestDaumAPI(unittest.TestCase):
+    def setUp(self):
+        self.requset_parameters = {
+            "isbn" : "9788979149883"
+        }
+        
+    def test_daum_response(self):
+        daum_api = Daum()
+        daum_api.request(self.request_parameters)
+        self.assertIsNotNone(daum_api.response)
+
+    def test_daum_filtering(self):
+        daum_api = Daum()
+        daum_api.request(self.request_parameters)
 
 
 if __name__ == "__main__":
+    import isbn as ISBN
     suite = unittest.TestLoader().loadTestsFromTestCase(TestBookAPI)
     unittest.TextTestRunner(verbosity=2).run(suite)

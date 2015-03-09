@@ -47,7 +47,9 @@ class ISBNForm(forms.Form):
 
     def action(self):
         if self.is_valid():
-            isbns = self.cleaned_data['isbn'].splitlines()
+            query = {
+                "isbn": self.cleaned_data['isbn']
+            }
 
             for isbn in isbns:
                 data = {'ISBN': isbn,
