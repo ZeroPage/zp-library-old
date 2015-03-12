@@ -12,6 +12,7 @@ window.onload = function() {
         if(result.length > 0){
             var tempArray = [];
             for(var i = 0; i < result.length; i++) {
+                resultText.innerHTML+=".";
                 var value = result[i].Value;
 
                 if (value.length >= 10) {
@@ -21,6 +22,8 @@ window.onload = function() {
                 //tempArray.push(result[i].Format+" : "+result[i].Value);
             }
             //resultText.innerHTML=tempArray.join("<br />");
+
+            resultText.innerHTML+=" Done. But no ISBN detected. (ISBN should be longer than 10)";
         }else{
             if(result.length === 0) {
                 resultText.innerHTML="Decoding failed.";
@@ -46,6 +49,8 @@ window.onload = function() {
             ctx.rect(result[i].x,result[i].y,result[i].width,result[i].height);
         }
         ctx.stroke();
+
+        resultText.innerHTML="Please Wait";
     });
 
     if(takePicture && showPicture) {

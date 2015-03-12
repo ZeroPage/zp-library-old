@@ -2,6 +2,7 @@
 {% block content %}
     <h2>{{ isbn }}</h2>
     {% for book in books %}
+        <md-divider></md-divider>
         <p>책 제목: {{ book.title|escape }}</p>
         <p>저자: {{ book.author|escape }}</p>
         <p>번역자: {{ book.translator|escape }}</p>

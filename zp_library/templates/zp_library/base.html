@@ -6,8 +6,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
 
-        <!-- Angulars Material CSS now available via Google CDN; version 0.7 used here -->
-        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.7.0/angular-material.min.css">
+        <!-- Angulars Material CSS now available via Google CDN;-->
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.8.2/angular-material.min.css">
         <link rel="stylesheet" href="/static/css/main.css">
 
         <!-- Angular Material Dependencies -->
@@ -17,8 +17,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-route.js"></script>
 
 
-        <!-- Angular Material Javascript now available via Google CDN; version 0.7 used here -->
-        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.7.1/angular-material.min.js"></script>
+        <!-- Angular Material Javascript now available via Google CDN;-->
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.8.2/angular-material.min.js"></script>
 
         <script src="/static/js/angular.js"></script>
 
@@ -28,19 +28,23 @@
     </head>
     <body ng-controller="LibraryControl">
         <div class="body-wrapper" layout="row" flex>
-            <md-sidenav class="sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-md')">
+            <md-sidenav class="sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-md')" layout="column">
                 <md-toolbar class="">
                     <div class="md-toolbar-tools">
                         <h1 class="md-toolbar-tools">MENU</h1>
                     </div>
                 </md-toolbar>
-                <md-content>
+                <md-content layout="column" flex>
                     <md-list class="sidenav-list" layout="column" layout-align="start">
                         <md-button class="md-primary" ng-href="{% url main %}" ng-click="closeLeft()">Home</md-button>
                         <md-button class="md-primary" ng-href="{% url user %}" ng-click="closeLeft()">User</md-button>
                         <md-button class="md-primary" ng-href="{% url book_list %}" ng-click="closeLeft()">List</md-button>
-                            <md-button class="md-primary" ng-href="{% url camera %}" ng-click="closeLeft()">Camera</md-button>
+                            <md-button class="md-primary" ng-href="{% url barcode %}" ng-click="closeLeft()">Barcode</md-button>
                     </md-list>
+
+                </md-content>
+                <md-content layout="column" layout-align="center center">
+                    <p>place holder for account information</p>
                 </md-content>
             </md-sidenav>
             <div layout="column" class="right-wrapper">

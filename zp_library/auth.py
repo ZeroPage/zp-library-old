@@ -7,7 +7,7 @@ USER_TYPE_NEW = 'new'
 
 
 def get_library_user():
-    google_user = users.get_current_user()
+    google_user = get_google_user()
 
     if not google_user:
         return None
@@ -20,13 +20,8 @@ def get_library_user():
     return library_user
 
 
-def get_google_id():
-    google_user = users.get_current_user()
-
-    if not google_user:
-        return None
-
-    return google_user.user_id()
+def get_google_user():
+    return users.get_current_user()
 
 
 def get_login_url(dest='/'):

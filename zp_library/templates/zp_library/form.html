@@ -1,8 +1,25 @@
 {% extends "zp_library/base.html" %}
 
 {% block content %}
-	<form action="" method="post">
-		{% csrf_token %}
+
+    {% if form_title or form_desc %}
+    <md-card>
+        {% if form_title %}
+        <md-toolbar class="md-padding">
+            <h2 class="md-toolbar-tools">{{ form_title }}</h2>
+        </md-toolbar>
+        {% endif %}
+        {% if form_desc %}
+        <md-card-content>
+            <p>{{ form_desc }}</p>
+        </md-card-content>
+        {% endif %}
+    </md-card>
+    {% endif %}
+
+
+    <form action="" method="post">
+        {% csrf_token %}
         {% for field in form %}
             <md-input-container>
                 <label>{{ field.label }}</label>
@@ -14,6 +31,11 @@
                 </div>
             </md-input-container>
         {% endfor %}
-		<input type="submit"/>
-	</form>
+        <md-button class="md-primary" type="submit">
+            SUBMIT
+        </md-button>
+
+    </form>
+
+
 {% endblock %}

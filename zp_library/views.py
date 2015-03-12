@@ -6,6 +6,8 @@ from zp_library.forms import *
 from zp_library.models import *
 from zp_library import auth
 
+import logging
+
 import urllib2
 import json
 
@@ -155,14 +157,14 @@ class ParseView(TemplateView):
         return context
 
 
-class CameraView(TemplateView):
-    template_name = 'zp_library/camera.html'
+class BarcodeView(TemplateView):
+    template_name = 'zp_library/barcode.html'
 
     def dispatch(self, request, *args, **kwargs):
-        return super(CameraView, self).dispatch(request, *args, **kwargs)
+        return super(BarcodeView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(CameraView, self).get_context_data(**kwargs)
+        context = super(BarcodeView, self).get_context_data(**kwargs)
 
         return context
 
@@ -182,6 +184,11 @@ class ISBNAddView(FormView):
 
         return super(ISBNAddView, self).dispatch(request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super(ISBNAddView, self).get_context_data(**kwargs)
+        context['form_title'] = 'test'
+        return context
+
     def form_valid(self, form):
         form.action()
 
@@ -199,10 +206,16 @@ class SignUpView(FormView):
         if library_user:
             return HttpResponseRedirect('/')
 
-        if not auth.get_google_id():
+        if not auth.get_google_user():
             return HttpResponseRedirect(auth.get_login_url())
 
         return super(SignUpView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(SignUpView, self).get_context_data(**kwargs)
+        context['form_title'] = 'Sign up as ' + auth.get_google_user().email()
+        context['form_desc'] = 'You need to signup to use this service.'
+        return context
 
     def form_valid(self, form):
         form.action()
