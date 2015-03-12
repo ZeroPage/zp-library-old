@@ -43,3 +43,7 @@ body {
   max-width: 800px;
   margin: auto;
 }
+
+.small_thumb {
+  width: 96px;
+}

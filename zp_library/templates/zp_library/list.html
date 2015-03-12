@@ -1,7 +1,27 @@
 {% extends "zp_library/base.html" %}
 
 {% block content %}
-    {% for book in books %}
+
+    <md-list layout="column">
+        {% for book in books %}
+
+            <md-button ng-href="/book_detail/?isbn={{ book.ISBN }}" md-no-ink layout-fill>
+                <md-item>
+                    <md-item-content>
+                        <div class="md-tile-left">
+                            <img class="small_thumb" ng-src="{{ book.thumbnail }}" onerror="this.src='/static/img/no_image.png'">
+                        </div>
+                        <div class="md-tile-content" layout="column" layout-align="center start" layout-margin>
+                            <h3>{{ book.title }}</h3>
+                            <h4>{{ book.author }}</h4>
+                        </div>
+                    </md-item-content>
+                </md-item>
+            </md-button>
+
+
+
+    <!--
     <div>
         <p><a href="/book_detail/?isbn={{ book.ISBN }}">책 제목: {{ book.title|escape }}</a></p>
         <p>저자: {{ book.author|escape }}</p>
@@ -9,7 +29,10 @@
             <p style="text-align: right"><a href="/book_delete/?isbn={{ book.ISBN }}">삭제</a></p>
         {% endif %}
     </div>
+    -->
     {% endfor %}
+    </md-list>
+
     <div class="pagination">
         <span class="step-links">
             {% if books.has_previous %}
