@@ -137,6 +137,7 @@ class ParseView(TemplateView):
     template_name = 'zp_library/parse.html'
     isbn = ''
 
+
     def dispatch(self, request, *args, **kwargs):
         self.isbn = request.GET.get('isbn', '9788966260546')
 
