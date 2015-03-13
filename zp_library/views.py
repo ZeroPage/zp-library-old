@@ -111,6 +111,8 @@ class BookListView(TemplateView):
         context['is_first'] = self.current_page == 1
         context['is_last'] = self.current_page == paginator.num_pages
 
+        context['no_img_url'] = "/static/img/no_image.png"
+
         return context
 
 

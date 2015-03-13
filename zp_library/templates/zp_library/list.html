@@ -10,7 +10,7 @@
                     <md-item>
                         <md-item-content>
                             <div class="md-tile-left" hide-sm>
-                                <img class="small_thumb" ng-src="{{ book.thumbnail }}" onerror="this.src='/static/img/no_image.png'">
+                                <img class="small_thumb" ng-src="{{ book.thumbnail }}" onerror="if (this.src != '{{ no_img_url }}') this.src = '{{ no_img_url }}';">
                             </div>
                             <div class="md-tile-content" layout="column" layout-align="center start" layout-margin>
                                 <h3>{{ book.title }}</h3>
