@@ -114,6 +114,47 @@ class BookDetailView(TemplateView):
         return context
 
 
+class BookEditView(FormView):
+    template_name = 'zp_library/form.html'
+    form_class = BookEditForm
+    success_url = '/'
+    isbn = ''
+
+    def dispatch(self, request, *args, **kwargs):
+        library_user = auth.get_library_user()
+        self.isbn = request.GET.get('isbn')
+
+        if not library_user:
+            return HttpResponseRedirect(auth.get_login_url('/book_edit'))
+
+        if not library_user.type == auth.USER_TYPE_ADMIN:
+            return HttpResponse(status=401)
+
+        return super(BookEditView, self).dispatch(request, *args, **kwargs)
+
+    def get_initial(self):
+        initial = super(BookEditView, self).get_initial()
+
+        book = ndb.Key(Book, self.isbn).get()
+
+        initial['ISBN'] = book.ISBN
+        initial['title'] = book.title
+        initial['author'] = book.author
+        initial['translator'] = book.translator
+        initial['publisher'] = book.publisher
+        initial['publishedDate'] = book.publishedDate
+        initial['description'] = book.description
+        initial['category'] = book.category
+        initial['language'] = book.language
+        initial['smallThumbnail'] = book.smallThumbnail
+        initial['thumbnail'] = book.thumbnail
+        initial['pageCount'] = book.pageCount
+        initial['bookCount'] = book.bookCount
+        initial['donor'] = book.donor
+
+        return initial
+
+
 class BookDeleteView(TemplateView):
 
     def dispatch(self, request, *args, **kwargs):

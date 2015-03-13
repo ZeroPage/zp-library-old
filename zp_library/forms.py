@@ -46,6 +46,45 @@ class BookForm(forms.Form):
             book.put()
 
 
+class BookEditForm(forms.Form):
+    title = forms.CharField()
+    author = forms.CharField()
+    translator = forms.CharField(required=False)
+    publisher = forms.CharField(required=False)
+    publishedDate = forms.DateField(required=False)
+    description = forms.CharField(widget=forms.Textarea, required=False)
+    category = forms.CharField(required=False)
+    language = forms.CharField(required=False)
+    smallThumbnail = forms.CharField(required=False)
+    thumbnail = forms.CharField(required=False)
+    pageCount = forms.IntegerField(required=False)
+    bookCount = forms.IntegerField(required=False)
+    donor = forms.CharField(required=False)
+
+    def action(self):
+        if self.is_valid():
+            book = ndb.Key(Book, self.cleaned_data['ISBN'])
+
+            book.title = self.cleaned_data['title']
+            book.author = self.cleaned_data['author']
+            book.translator = self.cleaned_data['translator']
+            book.publisher = self.cleaned_data['publisher']
+            book.publishedDate = self.cleaned_data['publishedDate']
+            book.description = self.cleaned_data['description']
+            book.category = self.cleaned_data['category']
+            book.language = self.cleaned_data['language']
+            book.smallThumbnail = self.cleaned_data['smallThumbnail']
+            book.thumbnail = self.cleaned_data['thumbnail']
+            book.pageCount = self.cleaned_data['pageCount']
+            if not self.cleaned_data['bookCount']:
+                book.bookCount = 1
+            else:
+                book.bookCount = self.cleaned_data['bookCount']
+            book.donor = self.cleaned_data['donor']
+            book.key = ndb.Key(Book, self.cleaned_data['ISBN'])
+            book.put()
+
+
 class ISBNForm(forms.Form):
     isbn = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'multiple items allowed (split by enter)'}))
 
