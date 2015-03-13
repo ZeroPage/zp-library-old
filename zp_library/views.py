@@ -2,9 +2,11 @@
 from django.views.generic import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from google.appengine.api import search
+
 from zp_library.forms import *
 from zp_library.models import *
-from zp_library import auth
+from zp_library import auth, library_search
 
 import logging
 
@@ -69,9 +71,11 @@ class BookListView(TemplateView):
     template_name = 'zp_library/list.html'
     current_page = 1
     paginate_by = 10
+    query_string = ''
 
     def dispatch(self, request, *args, **kwargs):
         self.current_page = request.GET.get('page')
+        self.query_string = request.GET.get('q')
 
         return super(BookListView, self).dispatch(request, *args, **kwargs)
 
@@ -80,7 +84,22 @@ class BookListView(TemplateView):
 
         context['library_user'] = auth.get_library_user()
 
-        books_query = Book.query().order(Book.title)
+        if self.query_string:
+            context['list_title'] = "Search result for '" + self.query_string + "'"
+            search_results = library_search.search_book_title(self.query_string)
+
+            search_isbn = []
+            for result in search_results.results:
+                search_isbn.append(result.doc_id)
+
+            if not search_isbn:
+                search_isbn = ['-']
+
+            books_query = Book.query(Book.ISBN.IN(search_isbn)).order(Book.title)
+        else:
+            context['list_title'] = 'All books'
+            books_query = Book.query().order(Book.title)
+
         paginator = Paginator(books_query.fetch(), self.paginate_by)
 
         try:
@@ -169,6 +188,7 @@ class BookDeleteView(TemplateView):
 
         if library_user.type == auth.USER_TYPE_ADMIN:
             ndb.Key(Book, isbn).delete()
+            library_search.delete_book(isbn)
             return HttpResponseRedirect('/book_list')
 
         return super(BookDeleteView, self).dispatch(request, *args, **kwargs)
@@ -177,7 +197,6 @@ class BookDeleteView(TemplateView):
 class ParseView(TemplateView):
     template_name = 'zp_library/parse.html'
     isbn = ''
-
 
     def dispatch(self, request, *args, **kwargs):
         self.isbn = request.GET.get('isbn', '9788966260546')

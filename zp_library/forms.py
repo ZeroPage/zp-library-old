@@ -1,6 +1,6 @@
 from django import forms
 from zp_library.models import *
-from zp_library import auth
+from zp_library import auth, library_search
 from google.appengine.api import users
 from google.appengine.ext import ndb
 from zp_library.book_api import book_api
@@ -44,6 +44,8 @@ class BookForm(forms.Form):
                 book.bookCount = self.cleaned_data['bookCount']
             book.donor = self.cleaned_data['donor']
             book.key = ndb.Key(Book, self.cleaned_data['ISBN'])
+
+            library_search.add_book(book.ISBN, book.title)
             book.put()
 
 
@@ -84,6 +86,7 @@ class BookEditForm(forms.Form):
                 book.bookCount = self.cleaned_data['bookCount']
             book.donor = self.cleaned_data['donor']
 
+            library_search.add_book(book.ISBN, book.title)
             book.put()
 
 
@@ -116,7 +119,7 @@ class ISBNForm(forms.Form):
                     "smallThumbnail": daum.result["cover_s_url"],
                     "thumbnail": daum.result["cover_l_url"],
                     "pageCount": google.result["pageCount"],
-                    "bookCount": None,
+                    "bookCount": 1,
                     "donor": None,
                 }
                 book_form = BookForm(data)

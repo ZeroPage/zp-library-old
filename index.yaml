@@ -11,6 +11,11 @@ indexes:
 # your application using appcfg.py.
 
 - kind: Book
+  properties:
+  - name: ISBN
+  - name: title
+
+- kind: Book
   ancestor: yes
   properties:
   - name: title

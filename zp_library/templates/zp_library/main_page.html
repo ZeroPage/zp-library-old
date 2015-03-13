@@ -9,9 +9,12 @@
             <p>{{ message }}</p>
         </md-card-content>
     </md-card>
-    <section layout="row" layout-sm="column" layout-align="center center" layout-padding layout-margin layout-fill>
-        <md-button flex ng-href="/user" class="md-raised" >User Page</md-button>
-        <md-button flex ng-href="/book_list" class="md-raised" >Book List</md-button>
-        <md-button flex ng-disabled="true" class="md-raised" >Search</md-button>
-    </section>
+    <form action="{% url book_list %}" method="get" layout="row">
+        <md-input-container flex>
+            <label>Search</label>
+            <input type="text" name="q">
+        </md-input-container>
+        <md-button type="submit" md-no-ripple>FIND</md-button>
+    </form>
+
 {% endblock %}
