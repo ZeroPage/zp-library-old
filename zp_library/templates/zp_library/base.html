@@ -27,7 +27,7 @@
         <title>{% block title %}ZP Library{% endblock %}</title>
     </head>
     <body ng-controller="LibraryControl">
-        <div class="body-wrapper" layout="row" flex>
+        <div class="height-full width-full" layout="row" flex>
             <md-sidenav class="sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-md')" layout="column">
                 <md-toolbar class="">
                     <div class="md-toolbar-tools">
@@ -47,20 +47,20 @@
                     <p>place holder for account information</p>
                 </md-content>
             </md-sidenav>
-            <div layout="column" class="right-wrapper">
+            <div layout="column" class="width-full height-full background-gray">
                 <md-toolbar layout="row" class="md-primary md-whiteframe-z2">
-                    <md-button class="menu-button" ng-click="openLeft()" hide-gt-md>
+                    <md-button class="width-narrow" ng-click="openLeft()" hide-gt-md>
                         MENU
                     </md-button>
                     <div>
-                        <p class="md-toolbar-tools nowrap">
+                        <p class="md-toolbar-tools text-nowrap">
                             <strong>ZP Library</strong>
                         </p>
                     </div>
 
                 </md-toolbar>
 
-                <div md-scroll-y flex class="content-wrapper">
+                <div md-scroll-y flex class="height-full scrollable-y">
                     <md-content class="contents md-padding md-whiteframe-z1">
                         {% block content %}
                         {% endblock %}

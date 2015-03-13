@@ -7,36 +7,24 @@ body {
   height: 100%;
 }
 
-.menu-button {
-  width: 80px
+
+.sidenav-list * {
+  padding: 16px;
 }
 
-.body-wrapper {
-  width: 100%;
-  height: 100%
-}
-
-.nowrap {
+.text-nowrap {
   white-space: nowrap;
 }
 
-.sidenav {
-
+.text-ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: left;
 }
 
-.sidenav-list * {
-  padding: 15px;
-}
-
-.right-wrapper {
-  width: 100%;
-  height: 100%;
-  background-color: lightgray;
-}
-
-.content-wrapper {
-  height: 100%;
+.scrollable-y {
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .contents {
@@ -44,6 +32,18 @@ body {
   margin: auto;
 }
 
-.small_thumb {
+.background-gray {
+  background-color: lightgray;
+}
+
+.width-narrow {
   width: 96px;
+}
+
+.width-full {
+  width: 100%;
+}
+
+.height-full {
+  height: 100%;
 }
