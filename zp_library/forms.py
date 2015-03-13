@@ -5,6 +5,7 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 from zp_library.book_api import book_api
 
+
 class BookForm(forms.Form):
     ISBN = forms.CharField()
     title = forms.CharField()
@@ -47,6 +48,7 @@ class BookForm(forms.Form):
 
 
 class BookEditForm(forms.Form):
+    ISBN = forms.CharField()
     title = forms.CharField()
     author = forms.CharField()
     translator = forms.CharField(required=False)
@@ -63,7 +65,7 @@ class BookEditForm(forms.Form):
 
     def action(self):
         if self.is_valid():
-            book = ndb.Key(Book, self.cleaned_data['ISBN'])
+            book = ndb.Key(Book, self.cleaned_data['ISBN']).get()
 
             book.title = self.cleaned_data['title']
             book.author = self.cleaned_data['author']
@@ -81,7 +83,7 @@ class BookEditForm(forms.Form):
             else:
                 book.bookCount = self.cleaned_data['bookCount']
             book.donor = self.cleaned_data['donor']
-            book.key = ndb.Key(Book, self.cleaned_data['ISBN'])
+
             book.put()
 
 
