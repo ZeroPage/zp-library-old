@@ -1,4 +1,5 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+import unittest
 
 def convertISBN(isbn):
     checksum = 0
@@ -46,6 +47,11 @@ def checkISBN(isbn):
         return False
 
 
+class TestISBN(unittest.TestCase):
+    def setUp(self):
+        pass
+
+
 if __name__ == "__main__":
-    isbn = str(input())
+    isbn = str(raw_input())
     print(convertISBN(isbn))

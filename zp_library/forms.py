@@ -3,7 +3,7 @@ from zp_library.models import *
 from zp_library import auth
 from google.appengine.api import users
 from google.appengine.ext import ndb
-
+from zp_library.book_api import book_api
 
 class BookForm(forms.Form):
     ISBN = forms.CharField()
@@ -86,27 +86,37 @@ class BookEditForm(forms.Form):
 
 
 class ISBNForm(forms.Form):
-    isbn = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'multiple items allowed (split by enter)'}))
+    isbn_input = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'multiple items allowed (split by enter)'}))
 
     def action(self):
         if self.is_valid():
-            isbns = self.cleaned_data['isbn'].splitlines()
+            isbns = self.cleaned_data["isbn_input"].split()
+            google = book_api.Google()
+            daum = book_api.Daum()
 
             for isbn in isbns:
-                data = {'ISBN': isbn,
-                        'title': 'title',
-                        'author': 'author',
-                        'translator': 'trans',
-                        'publisher': 'pub',
-                        'publishedDate': '2000-1-1',
-                        'description': 'a',
-                        'category': 'cate',
-                        'language': 'lang',
-                        'smallThumbnail': 'small',
-                        'thumbnail': 'thumb',
-                        'pageCount': 3,
-                        'bookCount': 1,
-                        'donor': 'donor'}
+                request_parameters = {
+                    "isbn": isbn
+                }
+                google.request(request_parameters)
+                daum.request(request_parameters)
+
+                google.filter()
+                daum.filter()
+                data = {
+                    "ISBN": google.result["isbn"],
+                    "title": google.result["title"],
+                    "author": daum.result["author"],
+                    "publisher": daum.result["pub_nm"],
+                    "publishedDate": google.result["publishedDate"],
+                    "category": daum.result["category"],
+                    "language": google.result["language"],
+                    "smallThumbnail": daum.result["cover_s_url"],
+                    "thumbnail": daum.result["cover_l_url"],
+                    "pageCount": google.result["pageCount"],
+                    "bookCount": None,
+                    "donor": None,
+                }
                 book_form = BookForm(data)
                 book_form.action()
 
