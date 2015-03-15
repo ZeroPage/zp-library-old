@@ -16,12 +16,8 @@ def add_book(isbn, title):
 
 
 def delete_book(isbn):
-    book_document = search.Document(
-        doc_id=isbn
-    )
-
     index = get_book_index()
-    index.delete(book_document)
+    index.delete(isbn)
 
 
 def search_book_title(title):
