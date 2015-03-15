@@ -128,8 +128,44 @@ class BookDetailView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(BookDetailView, self).get_context_data(**kwargs)
 
-        books_query = Book.query(Book.ISBN == self.isbn)
-        context['books'] = books_query.fetch()
+        book_query = Book.query(Book.key == ndb.Key(Book, self.isbn))
+        book_result = book_query.fetch(limit=1)
+
+        if book_result:
+            book_result = book_result[0]
+            context['book'] = book_result
+
+            basic_info = dict()
+            context['basic_info'] = basic_info
+            if book_result.translator:
+                basic_info['번역자'] = book_result.translator
+
+            if book_result.publisher:
+                basic_info['출판사'] = book_result.publisher
+
+            if book_result.category:
+                basic_info['카테고리'] = book_result.category
+
+            if book_result.language:
+                basic_info['언어'] = book_result.language
+
+            if book_result.pageCount:
+                basic_info['페이지'] = book_result.pageCount
+
+            if book_result.publishedDate:
+                basic_info['출판일'] = book_result.publishedDate
+
+            extra_info = dict()
+            context['extra_info'] = extra_info
+            if book_result.bookCount:
+                extra_info['책 보유수'] = book_result.bookCount
+
+            if book_result.donor:
+                extra_info['기증자'] = book_result.donor
+
+            if book_result.registrationDate:
+                extra_info['등록일자'] = book_result.registrationDate
+
         context['isbn'] = self.isbn
 
         return context

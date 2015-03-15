@@ -1,21 +1,47 @@
 {% extends "zp_library/base.html" %}
 {% block content %}
-    <h2>{{ isbn }}</h2>
-    {% for book in books %}
-        <md-divider></md-divider>
-        <p>책 제목: {{ book.title|escape }}</p>
-        <p>저자: {{ book.author|escape }}</p>
-        <p>번역자: {{ book.translator|escape }}</p>
-        <p>출판사: {{ book.publisher|escape }}</p>
-        <p>출판일: {{ book.publishedDate|escape }}</p>
-        <p>설명: {{ book.description|escape }}</p>
-        <p>카테고리: {{ book.category|escape }}</p>
-        <p>언어: {{ book.language|escape }}</p>
-        <p>쪽 수: {{ book.pageCount|escape }}</p>
-        <p>책 보유수: {{ book.bookCount|escape }}</p>
-        <p>기증자: {{ book.donor|escape }}</p>
-        <p>등록일자: {{ book.registrationDate|escape }}</p>
-    {% endfor %}
-    <a href="/book_edit/?isbn={{ isbn }}">수정</a>
-    <a href="/book_delete/?isbn={{ isbn }}">삭제</a>
+
+    {% if book %}
+        <div flex>
+            <h2>{{ book.title|escape }}</h2>
+            <h3>{{ book.author|escape }}</h3>
+            <md-divider></md-divider>
+        </div>
+        <div>
+            <div layout="row" layout-sm="column">
+                {% if basic_info.items %}
+                    <div flex flex-order="1" flex-order-sm="2">
+                        <h4>기본 정보</h4>
+                        {% for key, value in basic_info.items %}
+                            <p>{{ key }}: {{ value }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% if book.thumbnail %}
+                    <div flex-order="2" flex-order-sm="1" layout-align="center center" layout="row">
+                        <img class="width-medium" ng-src="{{ book.thumbnail }}" onerror="if (this.src != '{{ no_img_url }}') this.src = '{{ no_img_url }}';">
+                    </div>
+                {% endif %}
+            </div>
+            <md-divider></md-divider>
+        </div>
+        {% if book.description %}
+            <div>
+                <h4>설명</h4>
+                <p>{{ book.description|escape }}</p>
+                <md-divider></md-divider>
+            </div>
+        {% endif %}
+        <div>
+            <h4>추가 정보</h4>
+            {% for key, value in extra_info.items %}
+                <p>{{ key }}: {{ value }}</p>
+            {% endfor %}
+            <a href="/book_edit/?isbn={{ isbn }}">수정</a>
+            <a href="/book_delete/?isbn={{ isbn }}">삭제</a>
+        </div>
+    {% else %}
+        <h2>NO RESULT</h2>
+        <p>isbn:{{ isbn }} not found.</p>
+    {% endif %}
 {% endblock %}

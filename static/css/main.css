@@ -40,6 +40,10 @@ body {
   width: 96px;
 }
 
+.width-medium {
+  width: 192px
+}
+
 .width-full {
   width: 100%;
 }
