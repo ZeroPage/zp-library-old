@@ -2,13 +2,10 @@
 from django.views.generic import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from google.appengine.api import search
 
 from zp_library.forms import *
 from zp_library.models import *
 from zp_library import auth, library_search
-
-import logging
 
 import urllib2
 import json
@@ -49,7 +46,7 @@ class UserView(TemplateView):
 class TestView(FormView):
     template_name = 'zp_library/form.html'
     form_class = BookForm
-    success_url = '/'
+    success_url = '/book_list/'
 
     def dispatch(self, request, *args, **kwargs):
         library_user = auth.get_library_user()
@@ -187,6 +184,7 @@ class BookEditView(FormView):
         if not library_user.type == auth.USER_TYPE_ADMIN:
             return HttpResponse(status=401)
 
+        self.success_url = '/book_detail/?isbn='+self.isbn
         return super(BookEditView, self).dispatch(request, *args, **kwargs)
 
     def get_initial(self):
@@ -210,6 +208,11 @@ class BookEditView(FormView):
         initial['donor'] = book.donor
 
         return initial
+
+    def form_valid(self, form):
+        form.action()
+
+        return super(BookEditView, self).form_valid(form)
 
 
 class BookDeleteView(TemplateView):

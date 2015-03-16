@@ -50,7 +50,7 @@ class BookForm(forms.Form):
 
 
 class BookEditForm(forms.Form):
-    ISBN = forms.CharField()
+    ISBN = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
     title = forms.CharField()
     author = forms.CharField()
     translator = forms.CharField(required=False)
