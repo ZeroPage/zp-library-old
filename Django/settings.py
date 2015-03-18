@@ -1,7 +1,7 @@
 import os
 # Django settings for Django_AppEngine project.
 
-DEBUG = True
+DEBUG = os.environ['SERVER_SOFTWARE'].startswith('Development')
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
