@@ -2,7 +2,7 @@
 """
 This module is for Book api.
 """
-import urllib
+import urllib2
 import json
 from zp_library.book_api import isbn as ISBN
 import unittest
@@ -27,34 +27,8 @@ def response_filter(result_items, keys):
     return result_item
 
 
-class Book:
-    def pretty(self, type_):
-        if type_ == "response":
-            obj = self.response
-        elif type_ == "result":
-            obj = self.result
-
-        return json.dumps(
-                obj,
-                indent = 4,
-                separators = (",", ": ")
-            )
-
-    def request(self, request_parameters):
-        try:
-            self.response = json.load(
-                urllib.urlopen(
-                    self.url + 
-                    "&".join([key + ":" + value for key, value in request_parameters.iteritems()])
-                )
-            )
-        except urllib2.HTTPError, e:
-            self.response = e.fp.read()
-
-
-class Daum(Book):
+class Daum():
     """
-
     
     """
     def __init__(self):
@@ -66,10 +40,21 @@ class Daum(Book):
     def filter(self):
         self.result = response_filter(self.response["channel"]["item"], self.parameters)
 
+    def request(self, request_parameters):
+        try:
+            self.response = json.load(
+                urllib2.urlopen(
+                    self.url + 
+                    "+".join([key + ":" + value for key, value in request_parameters.iteritems()])
+                    # TODO : change query for daum
+                )
+            )
+        except urllib2.HTTPError, e:
+            self.response = e.fp.read()
 
-class Google(Book):
+
+class Google():
     """
-    
     Request Parameters:
         intitle: Returns results where the text following this keyword is found in the title.
         inauthor: Returns results where the text following this keyword is found in the author.
@@ -82,7 +67,7 @@ class Google(Book):
     def __init__(self):
         self._api_key = "AIzaSyCEFHrF-qRjKkh3p9hvOpY9lhzdOtsS0UE"
         self.url = "https://www.googleapis.com/books/v1/volumes?key=" + self._api_key + "&q="
-        self.parameters = ("industryIdentifiers", "authors", "title", "publishedDate", "description", "pageCount", "imageLinks", "language")
+        self.parameters = ("title", "authors", "publisher", "publishedDate", "industryIdentifiers", "pageCount", "imageLinks", "language")
         
     def filter(self):
         self.result = response_filter(self.response["items"], self.parameters)
@@ -94,6 +79,18 @@ class Google(Book):
             self.result["isbn"] = isbn
 
         del self.result["industryIdentifiers"]
+
+    def request(self, request_parameters):
+        try:
+            self.response = json.load(
+                urllib2.urlopen(
+                    self.url +
+                    "+".join([key + ":" + value for key, value in request_parameters.iteritems()])
+                )
+            )
+        except urllib2.HTTPError, e:
+            self.response = e.fp.read()
+
 
 
 class TestBookAPI(unittest.TestCase):
