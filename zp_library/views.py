@@ -83,7 +83,7 @@ class BookListView(TemplateView):
 
         if self.query_string:
             context['list_title'] = "Search result for '" + self.query_string + "'"
-            search_results = library_search.search_book_title(self.query_string)
+            search_results = library_search.search_book(self.query_string)
 
             search_isbn = []
             for result in search_results.results:
@@ -228,8 +228,9 @@ class BookDeleteView(TemplateView):
             return HttpResponse(status=401)
 
         if library_user.type == auth.USER_TYPE_ADMIN:
-            ndb.Key(Book, isbn).delete()
-            library_search.delete_book(isbn)
+            book_key = ndb.Key(Book, isbn)
+            library_search.delete_book(book_key.get())
+            book_key.delete()
             return HttpResponseRedirect('/book_list')
 
         return super(BookDeleteView, self).dispatch(request, *args, **kwargs)

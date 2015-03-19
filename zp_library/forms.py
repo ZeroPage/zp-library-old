@@ -45,7 +45,7 @@ class BookForm(forms.Form):
             book.donor = self.cleaned_data['donor']
             book.key = ndb.Key(Book, self.cleaned_data['ISBN'])
 
-            library_search.add_book(book.ISBN, book.title)
+            library_search.update_book(book)
             book.put()
 
 
@@ -73,7 +73,7 @@ class BookEditForm(BookForm):
                 book.bookCount = self.cleaned_data['bookCount']
             book.donor = self.cleaned_data['donor']
 
-            library_search.add_book(book.ISBN, book.title)
+            library_search.update_book(book)
             book.put()
 
 
