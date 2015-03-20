@@ -31,8 +31,13 @@ class Daum():
     def __init__(self):
         self._api_key = "19d3273451bd445399b4cc34a4fdbd45a11e5cee"
         self.url = "http://apis.daum.net/search/book?apikey=" + self._api_key +  "&output=json&q="
-        self.parameters = ("author_t", "sale_price", "cover_s_url", "pub_date", "etc_author", "author", "title", "category", "translator", "pub_nm", "isbn", "cover_l_url")
-        # ("translator", "pub_nm", "category")
+        self.parameters = (
+            "author_t", "sale_price", "cover_s_url",
+            "pub_date", "etc_author", "author", "title",
+            "category", "translator", "pub_nm",
+            "isbn",
+            "cover_l_url"
+        )
 
     def filter(self):
         if self.response is None:
@@ -40,8 +45,6 @@ class Daum():
             return None
         self.result = response_filter(self.response["channel"]["item"], self.parameters)
 
-        if len(self.result["isbn"]) == 10:
-            self.result["isbn"] = ISBN.convertISBN(self.result["isbn"])
     def request(self, request_parameters):
         try:
             self.response = json.load(
@@ -50,7 +53,7 @@ class Daum():
                     request_parameters["isbn"] + "&searchType=isbn"
                 )
             )
-            if self.response["channel"]["result"] == 0:
+            if self.response["channel"]["result"] == "0":
                 self.response = None
         except urllib2.HTTPError, e:
             self.response = e.fp.read()
@@ -71,7 +74,11 @@ class Google():
     def __init__(self):
         self._api_key = "AIzaSyCEFHrF-qRjKkh3p9hvOpY9lhzdOtsS0UE"
         self.url = "https://www.googleapis.com/books/v1/volumes?country=KR&key=" + self._api_key + "&q="
-        self.parameters = ("title", "authors", "publisher", "publishedDate", "industryIdentifiers", "pageCount", "imageLinks", "language")
+        self.parameters = (
+            "title", "authors", "publisher",
+            "publishedDate", "industryIdentifiers", "pageCount",
+            "imageLinks", "language"
+        )
         
     def filter(self):
         if self.response is None:
@@ -92,11 +99,14 @@ class Google():
         del self.result["authors"]
         self.result["author"] = author
 
-        smallThumbnail = self.result["imageLinks"]["smallThumbnail"]
-        thumbnail = self.result["imageLinks"]["thumbnail"]
-        del self.result["imageLinks"]
-        self.result["smallThumbnail"] = smallThumbnail
-        self.result["thumbnail"] = thumbnail
+        try:
+            smallThumbnail = self.result["imageLinks"]["smallThumbnail"]
+            thumbnail = self.result["imageLinks"]["thumbnail"]
+            del self.result["imageLinks"]
+            self.result["smallThumbnail"] = smallThumbnail
+            self.result["thumbnail"] = thumbnail
+        except KeyError:
+            pass
 
 
     def request(self, request_parameters):
@@ -111,6 +121,8 @@ class Google():
                 self.response = None
         except urllib2.HTTPError, e:
             self.response = e.fp.read()
+
+            raise e
 
 
 def selectBookData(google_data, daum_data):
@@ -129,26 +141,29 @@ def selectBookData(google_data, daum_data):
     }
 
     for key, value in select_rule.iteritems():
-        if google_data is None and daum_data is None:
-            return None
-        elif google_data is None:
-            if type(value) == type(list()) and value[1] is not None:
-                book_data[key] = daum_data[value[1]]
-            elif type(value) != type(list()):
-                book_data[key] = daum_data[value]
-        elif daum_data is None:
-            if type(value) == type(list()) and value[0] is not None:
-                book_data[key] = google_data[value[0]]
-            elif type(value) != type(list()):
-                book_data[key] = google_data[value]
-        else:
-            if type(value) == type(list()):
-                if value[0] is None:
+        try:
+            if google_data is None and daum_data is None:
+                return None
+            elif google_data is None:
+                if type(value) == type(list()) and value[1] is not None:
                     book_data[key] = daum_data[value[1]]
-                if value[1] is None:
+                elif type(value) != type(list()):
+                    book_data[key] = daum_data[value]
+            elif daum_data is None:
+                if type(value) == type(list()) and value[0] is not None:
                     book_data[key] = google_data[value[0]]
+                elif type(value) != type(list()):
+                    book_data[key] = google_data[value]
             else:
-                book_data[key] = google_data[value]
+                if type(value) == type(list()):
+                    if value[0] is None:
+                        book_data[key] = daum_data[value[1]]
+                    if value[1] is None:
+                        book_data[key] = google_data[value[0]]
+                else:
+                    book_data[key] = google_data[value]
+        except KeyError:
+            pass
 
     return book_data
 

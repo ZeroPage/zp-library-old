@@ -5,7 +5,6 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 from zp_library.book_api import book_api
 
-
 class BookForm(forms.Form):
     ISBN = forms.CharField()
     title = forms.CharField()
@@ -95,20 +94,24 @@ class ISBNForm(forms.Form):
 
                 google.filter()
                 daum.filter()
-                data = {
-                    "ISBN": google.result["isbn"],
-                    "title": google.result["title"],
-                    "author": daum.result["author"],
-                    "publisher": daum.result["pub_nm"],
-                    "publishedDate": google.result["publishedDate"],
-                    "category": daum.result["category"],
-                    "language": google.result["language"],
-                    "smallThumbnail": daum.result["cover_s_url"],
-                    "thumbnail": daum.result["cover_l_url"],
-                    "pageCount": google.result["pageCount"],
-                    "bookCount": 1,
-                    "donor": None,
-                }
+
+                data = book_api.selectBookData(google.result, daum.result)
+
+                # data = {
+                #     "ISBN": google.result["isbn"],
+                #     "title": google.result["title"],
+                #     "author": daum.result["author"],
+                #     "publisher": daum.result["pub_nm"],
+                #     "publishedDate": google.result["publishedDate"],
+                #     "category": daum.result["category"],
+                #     "language": google.result["language"],
+                #     "smallThumbnail": daum.result["cover_s_url"],
+                #     "thumbnail": daum.result["cover_l_url"],
+                #     "pageCount": google.result["pageCount"],
+                #     "bookCount": 1,
+                #     "donor": None,
+                # }
+                
                 book_form = BookForm(data)
                 book_form.action()
 
