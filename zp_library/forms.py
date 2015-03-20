@@ -5,9 +5,6 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 from zp_library.book_api import book_api
 
-import logging
-import traceback
-
 
 class BookForm(forms.Form):
     ISBN = forms.CharField()
@@ -52,21 +49,8 @@ class BookForm(forms.Form):
             book.put()
 
 
-class BookEditForm(forms.Form):
+class BookEditForm(BookForm):
     ISBN = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
-    title = forms.CharField()
-    author = forms.CharField()
-    translator = forms.CharField(required=False)
-    publisher = forms.CharField(required=False)
-    publishedDate = forms.DateField(required=False)
-    description = forms.CharField(widget=forms.Textarea, required=False)
-    category = forms.CharField(required=False)
-    language = forms.CharField(required=False)
-    smallThumbnail = forms.CharField(required=False)
-    thumbnail = forms.CharField(required=False)
-    pageCount = forms.IntegerField(required=False)
-    bookCount = forms.IntegerField(required=False)
-    donor = forms.CharField(required=False)
 
     def action(self):
         if self.is_valid():
@@ -103,38 +87,30 @@ class ISBNForm(forms.Form):
             daum = book_api.Daum()
 
             for isbn in isbns:
-                try:
-                    request_parameters = {
-                        "isbn": isbn
-                    }
-                    google.request(request_parameters)
-                    daum.request(request_parameters)
+                request_parameters = {
+                    "isbn": isbn
+                }
+                google.request(request_parameters)
+                daum.request(request_parameters)
 
-                    google.filter()
-                    daum.filter()
-
-                    data = book_api.selectBookData(google.result, daum.result)
-
-                    # data = {
-                    #     "ISBN": google.result["isbn"],
-                    #     "title": google.result["title"],
-                    #     "author": daum.result["author"],
-                    #     "publisher": daum.result["pub_nm"],
-                    #     "publishedDate": google.result["publishedDate"],
-                    #     "category": daum.result["category"],
-                    #     "language": google.result["language"],
-                    #     "smallThumbnail": daum.result["cover_s_url"],
-                    #     "thumbnail": daum.result["cover_l_url"],
-                    #     "pageCount": google.result["pageCount"],
-                    #     "bookCount": 1,
-                    #     "donor": None,
-                    # }
-                    book_form = BookForm(data)
-                    book_form.action()
-                except Exception:
-                    logging.error("FAILED TO ADD: %s", isbn)
-                    logging.error(traceback.format_exc())
-                    continue
+                google.filter()
+                daum.filter()
+                data = {
+                    "ISBN": google.result["isbn"],
+                    "title": google.result["title"],
+                    "author": daum.result["author"],
+                    "publisher": daum.result["pub_nm"],
+                    "publishedDate": google.result["publishedDate"],
+                    "category": daum.result["category"],
+                    "language": google.result["language"],
+                    "smallThumbnail": daum.result["cover_s_url"],
+                    "thumbnail": daum.result["cover_l_url"],
+                    "pageCount": google.result["pageCount"],
+                    "bookCount": 1,
+                    "donor": None,
+                }
+                book_form = BookForm(data)
+                book_form.action()
 
 
 class NewUserForm(forms.Form):
