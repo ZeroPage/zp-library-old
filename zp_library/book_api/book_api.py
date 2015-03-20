@@ -28,9 +28,6 @@ def response_filter(result_items, keys):
 
 
 class Daum():
-    """
-    
-    """
     def __init__(self):
         self._api_key = "19d3273451bd445399b4cc34a4fdbd45a11e5cee"
         self.url = "http://apis.daum.net/search/book?apikey=" + self._api_key +  "&output=json&q="
@@ -51,14 +48,12 @@ class Daum():
                 urllib2.urlopen(
                     self.url + 
                     request_parameters["isbn"] + "&searchType=isbn"
-                    # TODO : change query for daum
                 )
             )
+            if self.response["channel"]["result"] == 0:
+                self.response = None
         except urllib2.HTTPError, e:
             self.response = e.fp.read()
-
-        if self.response["channel"]["result"] == 0:
-            self.response = None
 
 
 class Google():
@@ -75,7 +70,7 @@ class Google():
     # Google thumbnail size use zoom option, it means thumbnail size is eqaul.
     def __init__(self):
         self._api_key = "AIzaSyCEFHrF-qRjKkh3p9hvOpY9lhzdOtsS0UE"
-        self.url = "https://www.googleapis.com/books/v1/volumes?key=" + self._api_key + "&q="
+        self.url = "https://www.googleapis.com/books/v1/volumes?country=KR&key=" + self._api_key + "&q="
         self.parameters = ("title", "authors", "publisher", "publishedDate", "industryIdentifiers", "pageCount", "imageLinks", "language")
         
     def filter(self):
@@ -97,7 +92,6 @@ class Google():
         del self.result["authors"]
         self.result["author"] = author
 
-
     def request(self, request_parameters):
         try:
             self.response = json.load(
@@ -106,11 +100,10 @@ class Google():
                     "+".join([key + ":" + value for key, value in request_parameters.iteritems()])
                 )
             )
+            if self.response["totalItems"] == 0:
+                self.response = None
         except urllib2.HTTPError, e:
             self.response = e.fp.read()
-
-        if self.response["totalItems"] == 0:
-            self.response = None
 
 
 def selectBookData(google_data, daum_data):
@@ -127,6 +120,7 @@ def selectBookData(google_data, daum_data):
         # "thumbnail" : ["", "cover_l_url"], 
         "pageCount" : ["pageCount", None],
     }
+
     for key, value in select_rule.iteritems():
         if google_data is None and daum_data is None:
             return None
@@ -150,8 +144,6 @@ def selectBookData(google_data, daum_data):
                 book_data[key] = google_data[value]
 
     return book_data
-
-
 
 
 class TestBookAPI(unittest.TestCase):
