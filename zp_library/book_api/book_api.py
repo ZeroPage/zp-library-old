@@ -92,6 +92,13 @@ class Google():
         del self.result["authors"]
         self.result["author"] = author
 
+        smallThumbnail = self.result["imageLinks"]["smallThumbnail"]
+        thumbnail = self.result["imageLinks"]["thumbnail"]
+        del self.result["imageLinks"]
+        self.result["smallThumbnail"] = smallThumbnail
+        self.result["thumbnail"] = thumbnail
+
+
     def request(self, request_parameters):
         try:
             self.response = json.load(
@@ -116,8 +123,8 @@ def selectBookData(google_data, daum_data):
         "publisher" : ["publisher", "pub_nm"],
         "publishedDate" : ["publishedDate", "pub_date"],
         "language" : ["language", None],
-        # "smallThumnail" : [False, "cover_s_url"],
-        # "thumbnail" : ["", "cover_l_url"], 
+        "smallThumnail" : ["smallThumbnail", "cover_s_url"],
+        "thumbnail" : ["thumbnail", "cover_l_url"], 
         "pageCount" : ["pageCount", None],
     }
 
