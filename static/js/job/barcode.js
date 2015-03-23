@@ -17,13 +17,12 @@ window.onload = function() {
 
                 if (value.length >= 10) {
                     window.location.replace("/book_detail/?isbn=" + result[i].Value);
+                    resultText.innerHTML="Found. Working...";
                     break;
                 }
-                //tempArray.push(result[i].Format+" : "+result[i].Value);
             }
-            //resultText.innerHTML=tempArray.join("<br />");
 
-            resultText.innerHTML+=" Done. But no ISBN detected. (ISBN should be longer than 10)";
+            resultText.innerHTML+=" Done. But no valid value found.";
         }else{
             if(result.length === 0) {
                 resultText.innerHTML="Decoding failed.";
@@ -50,7 +49,7 @@ window.onload = function() {
         }
         ctx.stroke();
 
-        resultText.innerHTML="Please Wait";
+        resultText.innerHTML="Please Wait...";
     });
 
     if(takePicture && showPicture) {

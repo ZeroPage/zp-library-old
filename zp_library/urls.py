@@ -12,5 +12,5 @@ urlpatterns = [
     url(r'^book_delete/$', BookDeleteView.as_view(), name='book_delete'),
     url(r'^parse/$', ParseView.as_view()),
     url(r'^signup/$', SignUpView.as_view()),
-    url(r'^camera/$', BarcodeView.as_view(), name='barcode')
+    url(r'^barcode/$', BarcodeView.as_view(), name='barcode')
 ]
