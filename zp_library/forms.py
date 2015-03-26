@@ -2,7 +2,7 @@ from google.appengine.api import users
 
 from django import forms
 from zp_library.models import *
-from zp_library.api import book_api, library_search, auth
+from zp_library.api import book_api, auth
 
 
 class BookForm(forms.Form):
@@ -44,7 +44,6 @@ class BookForm(forms.Form):
             book.donor = self.cleaned_data['donor']
             book.key = ndb.Key(Book, self.cleaned_data['ISBN'])
 
-            library_search.update_book(book)
             book.put()
 
 
@@ -72,7 +71,6 @@ class BookEditForm(BookForm):
                 book.bookCount = self.cleaned_data['bookCount']
             book.donor = self.cleaned_data['donor']
 
-            library_search.update_book(book)
             book.put()
 
 

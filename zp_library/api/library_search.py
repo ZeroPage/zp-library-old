@@ -20,9 +20,9 @@ def update_book(book):
     index.put(book_document)
 
 
-def delete_book(book):
+def delete_book(isbn):
     index = get_book_index()
-    index.delete(book.ISBN)
+    index.delete(isbn)
 
 
 def search_book(query):

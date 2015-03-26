@@ -5,7 +5,6 @@ from zp_library.api import library_search, auth
 from zp_library.models import *
 from zp_library.forms import ISBNForm
 
-import logging
 
 class BookDeleteView(View):
     def dispatch(self, request, *args, **kwargs):
@@ -20,7 +19,6 @@ class BookDeleteView(View):
 
         if library_user.type == auth.USER_TYPE_ADMIN:
             book_key = ndb.Key(Book, isbn)
-            library_search.delete_book(book_key.get())
             book_key.delete()
             return HttpResponseRedirect('/book_list')
 
