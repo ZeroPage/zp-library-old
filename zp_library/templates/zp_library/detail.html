@@ -37,11 +37,12 @@
             {% for key, value in extra_info.items %}
                 <p>{{ key }}: {{ value }}</p>
             {% endfor %}
-            <a href="/book_edit/?isbn={{ isbn }}">수정</a>
-            <a href="/book_delete/?isbn={{ isbn }}">삭제</a>
+            <a href="{% url book_edit %}?isbn={{ isbn }}">수정</a>
+            <a href="{% url book_delete %}?isbn={{ isbn }}">삭제</a>
         </div>
     {% else %}
         <h2>NO RESULT</h2>
         <p>isbn:{{ isbn }} not found.</p>
+        <a href="{% url book_add %}?isbn={{ isbn }}">add it? (admin only)</a>
     {% endif %}
 {% endblock %}
