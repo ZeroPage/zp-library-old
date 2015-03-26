@@ -19,7 +19,7 @@
                 {% endif %}
                 {% if book.thumbnail %}
                     <div flex-order="2" flex-order-sm="1" layout-align="center center" layout="row">
-                        <img class="width-medium" ng-src="{{ book.thumbnail }}" onerror="if (this.src != '{{ no_img_url }}') this.src = '{{ no_img_url }}';">
+                        <img class="width-medium" src="{{ book.thumbnail }}" onerror="if (this.src != '{{ no_img_url }}') this.src = '{{ no_img_url }}';">
                     </div>
                 {% endif %}
             </div>

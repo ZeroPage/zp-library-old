@@ -10,7 +10,7 @@
                     <md-item>
                         <md-item-content>
                             <div class="md-tile-left" hide-sm>
-                                <img class="width-narrow" ng-src="{{ book.smallThumbnail }}" onerror="if (this.src != '{{ no_img_url }}') this.src = '{{ no_img_url }}';">
+                                <img class="width-narrow" src="{{ book.smallThumbnail }}" onerror="if (this.src != '{{ no_img_url }}') this.src = '{{ no_img_url }}';">
                             </div>
                             <div class="md-tile-content" layout="column" layout-align="center start" layout-margin>
                                 <h3 class="width-full text-ellipsis">{{ book.title }}</h3>
