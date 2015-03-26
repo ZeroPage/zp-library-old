@@ -2,25 +2,21 @@
 
 {% block content %}
     <div>
-        <a href="/">BACK</a>
+        <p>Hello, {{ library_user.name }}!({{ library_user.type }})</p>
         <a href="{{ logout_url }}">LOGOUT</a>
     </div>
 
     <div>
-        <p>account name: {{ library_user.name }}</p>
-        <p>account type: {{ library_user.type }}</p>
-    </div>
-
-    <div>
     {% if library_user.type == "admin" %}
-
-        <p>insert book data: <a href="/test">manual</a> <a href="/add_isbn">auto</a></p>
+        <h2>ADMIN ONLY</h2>
+        <p>insert book data: <a href="{% url test %}">manual</a> <a href="{% url add_isbn %}">auto</a></p>
+        <p>update all book data (use with caution): <a href="{% url update_all %}">RUN</a></p>
         <p>manage users: not yet. use db manager :/</p>
 
     {% elif library_user.type == "auth" %}
-        <p>book add request: (not yet)</p>
+        <p>You are a zeropager!</p>
     {% else %}
-        <p>ask admin to auth</p>
+        <p>You are not authorized. Ask admin.</p>
     {% endif %}
     </div>
 {% endblock %}

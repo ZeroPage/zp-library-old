@@ -5,6 +5,7 @@ from zp_library.api import library_search, auth
 from zp_library.models import *
 from zp_library.forms import ISBNForm
 
+import logging
 
 class BookDeleteView(View):
     def dispatch(self, request, *args, **kwargs):
@@ -48,3 +49,28 @@ class BookAddView(View):
 
         return super(BookAddView, self).dispatch(request, *args, **kwargs)
 
+
+class UpdateAllView(View):
+    def dispatch(self, request, *args, **kwargs):
+        library_user = auth.get_library_user()
+
+        if not library_user:
+            return HttpResponseRedirect(auth.get_login_url('/'))
+
+        if not library_user.type == auth.USER_TYPE_ADMIN:
+            return HttpResponse(status=401)
+
+        if library_user.type == auth.USER_TYPE_ADMIN:
+            books = Book.query().fetch()
+
+            for book in books:
+                data = {
+                    "isbn_input": book.ISBN
+                }
+                form = ISBNForm(data)
+
+                form.action()
+
+            return HttpResponseRedirect('/book_list')
+
+        return super(UpdateAllView, self).dispatch(request, *args, **kwargs)
