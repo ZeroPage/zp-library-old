@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
+
 def convertISBN(isbn):
     checksum = 0
     if len(isbn) == 13 and isbn[:3] == "978":

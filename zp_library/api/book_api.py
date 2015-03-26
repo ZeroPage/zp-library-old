@@ -4,7 +4,7 @@ This module is for Book api.
 """
 import urllib2
 import json
-from zp_library.book_api import isbn as ISBN
+from zp_library.api import isbn as ISBN
 import unittest
 
 
