@@ -114,3 +114,14 @@ class NewUserForm(forms.Form):
 
             LibraryUser(id=google_user.user_id(), email=google_user.email(),
                         name=self.cleaned_data['name'], type=user_type).put()
+
+
+class NoticeForm(forms.Form):
+    contents = forms.CharField(widget=forms.TextInput)
+
+    def action(self):
+        if self.is_valid():
+            notice = Notice()
+
+            notice.contents = self.cleaned_data['contents']
+            notice.put()

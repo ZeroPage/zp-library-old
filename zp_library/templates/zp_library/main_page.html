@@ -6,7 +6,12 @@
             <h2 class="md-toolbar-tools">Message from server: </h2>
         </md-toolbar>
         <md-card-content>
-            <p>{{ message }}</p>
+            {% if message %}
+                <p>{{ message.contents }}</p>
+                <p>({{ message.date }})</p>
+            {% else %}
+                <p>제로페이지 도서관입니다.</p>
+            {% endif %}
         </md-card-content>
     </md-card>
     <form action="{% url book_list %}" method="get" layout="row">
