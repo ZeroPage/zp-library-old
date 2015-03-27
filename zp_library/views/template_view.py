@@ -6,11 +6,27 @@ from django.views.generic import *
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from zp_library.api import library_search, auth
+from zp_library.api import auth
 from zp_library.models import *
+from zp_library.views.view import LibraryView
 
 
-class MainPageView(TemplateView):
+class LibraryTemplateView(TemplateView, LibraryView):
+    template_name = 'zp_library/base.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(LibraryTemplateView, self).get_context_data(**kwargs)
+
+        context['library_user'] = self.library_user
+        context['google_user'] = self.google_user
+
+        context['login_url'] = auth.get_login_url()
+        context['logout_url'] = auth.get_logout_url()
+
+        return context
+
+
+class MainPageView(LibraryTemplateView):
     template_name = 'zp_library/main_page.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -26,12 +42,12 @@ class MainPageView(TemplateView):
         return context
 
 
-class UserView(TemplateView):
+class UserView(LibraryTemplateView):
     template_name = 'zp_library/user_page.html'
 
     def dispatch(self, request, *args, **kwargs):
 
-        if not auth.get_library_user():
+        if not self.library_user:
             return HttpResponseRedirect(auth.get_login_url('/user'))
 
         return super(UserView, self).dispatch(request, *args, **kwargs)
@@ -40,12 +56,11 @@ class UserView(TemplateView):
         context = super(UserView, self).get_context_data(**kwargs)
 
         context['logout_url'] = auth.get_logout_url()
-        context['library_user'] = auth.get_library_user()
 
         return context
 
 
-class BookListView(TemplateView):
+class BookListView(LibraryTemplateView):
     template_name = 'zp_library/list.html'
     current_page = 1
     paginate_by = 10
@@ -59,8 +74,6 @@ class BookListView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(BookListView, self).get_context_data(**kwargs)
-
-        context['library_user'] = auth.get_library_user()
 
         if self.query_string:
             context['list_title'] = "Search result for '" + self.query_string + "'"
@@ -94,7 +107,7 @@ class BookListView(TemplateView):
         return context
 
 
-class BookDetailView(TemplateView):
+class BookDetailView(LibraryTemplateView):
     template_name = 'zp_library/detail.html'
     isbn = ''
 
@@ -149,7 +162,7 @@ class BookDetailView(TemplateView):
         return context
 
 
-class ParseView(TemplateView):
+class ParseView(LibraryTemplateView):
     template_name = 'zp_library/parse.html'
     isbn = ''
 
@@ -173,13 +186,5 @@ class ParseView(TemplateView):
         return context
 
 
-class BarcodeView(TemplateView):
+class BarcodeView(LibraryTemplateView):
     template_name = 'zp_library/barcode.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        return super(BarcodeView, self).dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(BarcodeView, self).get_context_data(**kwargs)
-
-        return context

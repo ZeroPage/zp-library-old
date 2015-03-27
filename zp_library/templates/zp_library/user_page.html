@@ -2,11 +2,6 @@
 
 {% block content %}
     <div>
-        <p>Hello, {{ library_user.name }}!({{ library_user.type }})</p>
-        <a href="{{ logout_url }}">LOGOUT</a>
-    </div>
-
-    <div>
     {% if library_user.type == "admin" %}
         <h2>ADMIN ONLY</h2>
         <p>insert book data: <a href="{% url test %}">manual</a> <a href="{% url add_isbn %}">auto</a></p>

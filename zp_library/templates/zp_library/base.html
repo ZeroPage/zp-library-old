@@ -39,12 +39,19 @@
                         <md-button class="md-primary" ng-href="{% url main %}" ng-click="closeLeft()">Home</md-button>
                         <md-button class="md-primary" ng-href="{% url user %}" ng-click="closeLeft()">User</md-button>
                         <md-button class="md-primary" ng-href="{% url book_list %}" ng-click="closeLeft()">List</md-button>
-                            <md-button class="md-primary" ng-href="{% url barcode %}" ng-click="closeLeft()">Barcode</md-button>
+                        <md-button class="md-primary" ng-href="{% url barcode %}" ng-click="closeLeft()">Barcode</md-button>
                     </md-list>
-
                 </md-content>
                 <md-content layout="column" layout-align="center center">
-                    <p>place holder for account information</p>
+                    {% if google_user %}
+                    <p>{{ google_user.email }}</p>
+                        {% if library_user %}
+                            <p>{{ library_user.name }} ({{ library_user.type }})</p>
+                        {% endif %}
+                    <md-button class="md-primary width-full" ng-href="{{ logout_url }}">LOGOUT</md-button>
+                    {% else %}
+                    <md-button class="md-primary width-full" ng-href="{{ login_url }}">LOGIN</md-button>
+                    {% endif %}
                 </md-content>
             </md-sidenav>
             <div layout="column" class="width-full height-full background-gray">
