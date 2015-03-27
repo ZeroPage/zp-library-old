@@ -21,7 +21,9 @@ class MainPageView(TemplateView):
 
         notice_query = Notice.query().order(-Notice.date)
         notice_result = notice_query.fetch(limit=1)
-        context['message'] = notice_result[0]
+
+        if notice_result:
+            context['message'] = notice_result[0]
 
         return context
 
