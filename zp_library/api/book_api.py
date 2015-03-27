@@ -135,33 +135,29 @@ def selectBookData(google_data, daum_data):
         "publisher" : ["publisher", "pub_nm"],
         "publishedDate" : ["publishedDate", "pub_date"],
         "language" : ["language", None],
-        "smallThumnail" : ["smallThumbnail", "cover_s_url"],
+        "smallThumbnail" : ["smallThumbnail", "cover_s_url"],
         "thumbnail" : ["thumbnail", "cover_l_url"], 
         "pageCount" : ["pageCount", None],
     }
 
+
+
     for key, value in select_rule.iteritems():
+        if not google_data and not daum_data:
+            break
+
         try:
-            if google_data is None and daum_data is None:
-                return None
-            elif google_data is None:
-                if type(value) == type(list()) and value[1] is not None:
-                    book_data[key] = daum_data[value[1]]
-                elif type(value) != type(list()):
+            if daum_data:
+                if isinstance(value, str):
                     book_data[key] = daum_data[value]
-            elif daum_data is None:
-                if type(value) == type(list()) and value[0] is not None:
+                elif value[1]:
+                    book_data[key] = daum_data[value[1]]
+
+            if google_data:
+                if isinstance(value, str):
+                    book_data[key] = google_data[value]
+                elif value[0]:
                     book_data[key] = google_data[value[0]]
-                elif type(value) != type(list()):
-                    book_data[key] = google_data[value]
-            else:
-                if type(value) == type(list()):
-                    if value[0] is None:
-                        book_data[key] = daum_data[value[1]]
-                    if value[1] is None:
-                        book_data[key] = google_data[value[0]]
-                else:
-                    book_data[key] = google_data[value]
         except KeyError:
             pass
 
