@@ -141,6 +141,14 @@ class AddNoticeView(FormView):
             return HttpResponse(status=401)
         return super(AddNoticeView, self).dispatch(request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super(AddNoticeView, self).get_context_data(**kwargs)
+        notice_query = Notice.query().order(-Notice.date)
+        notice_result = notice_query.fetch()
+        context['list'] = notice_result
+
+        return context
+
     def form_valid(self, form):
         form.action()
 
