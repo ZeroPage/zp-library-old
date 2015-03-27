@@ -18,7 +18,10 @@ class MainPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MainPageView, self).get_context_data(**kwargs)
-        context['message'] = '지피 도서관에 어서오세요.'
+
+        notice_query = Notice.query().order(-Notice.date)
+        notice_result = notice_query.fetch(limit=1)
+        context['message'] = notice_result[0]
 
         return context
 

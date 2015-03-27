@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^add_isbn/$', form_view.ISBNAddView.as_view(), name='add_isbn'),
     url(r'^book_edit/$', form_view.BookEditView.as_view(), name='book_edit'),
     url(r'^signup/$', form_view.SignUpView.as_view()),
+    url(r'^notice/$', form_view.AddNoticeView.as_view(), name="notice"),
 
     url(r'^book_delete/$', view.BookDeleteView.as_view(), name='book_delete'),
     url(r'^book_add/$', view.BookAddView.as_view(), name="book_add"),

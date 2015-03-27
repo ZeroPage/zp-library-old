@@ -35,3 +35,8 @@ class LibraryUser(ndb.Model):
     email = ndb.StringProperty()
     name = ndb.StringProperty(default='default')
     type = ndb.StringProperty(default='new')
+
+
+class Notice(ndb.Model):
+    contents = ndb.StringProperty()
+    date = ndb.DateTimeProperty(auto_now_add=True)

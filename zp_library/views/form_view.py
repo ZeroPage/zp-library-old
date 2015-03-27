@@ -125,3 +125,23 @@ class TestView(FormView):
         form.action()
 
         return super(TestView, self).form_valid(form)
+
+
+class AddNoticeView(FormView):
+    template_name = 'zp_library/notice_write_page.html'
+    form_class = NoticeForm
+    success_url = '/'
+
+    def dispatch(self, request, *args, **kwargs):
+        library_user = auth.get_library_user()
+        if not library_user:
+            return HttpResponseRedirect(auth.get_login_url('/notice'))
+
+        if not library_user.type == auth.USER_TYPE_ADMIN:
+            return HttpResponse(status=401)
+        return super(AddNoticeView, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.action()
+
+        return super(AddNoticeView, self).form_valid(form)
