@@ -6,7 +6,7 @@
     {% if books %}
         <md-list layout="column">
             {% for book in books %}
-                <md-button ng-href="/book_detail/?isbn={{ book.ISBN }}" md-no-ink layout-fill>
+                <md-button ng-href="/book_detail/?isbn={{ book.ISBN }}" md-no-ink layout-fil>
                     <md-item>
                         <md-item-content>
                             <div class="md-tile-left" hide-sm>
@@ -15,6 +15,7 @@
                             <div class="md-tile-content" layout="column" layout-align="center start" layout-margin>
                                 <h3 class="width-full text-ellipsis">{{ book.title }}</h3>
                                 <h4 class="width-full text-ellipsis">{{ book.author }}</h4>
+                                <p class="width-full text-ellipsis">{{ book.description }}</p>
                             </div>
                         </md-item-content>
                     </md-item>

@@ -3,19 +3,38 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 from zp_library.forms import *
 from zp_library.models import *
+from zp_library.views.view import LibraryView
 
 
-class ISBNAddView(FormView):
+class LibraryFormView(FormView, LibraryView):
+    template_name = 'zp_library/form.html'
+    success_url = '/'
+
+    def get_context_data(self, **kwargs):
+        context = super(LibraryFormView, self).get_context_data(**kwargs)
+
+        context['library_user'] = self.library_user
+        context['google_user'] = self.google_user
+
+        context['login_url'] = auth.get_login_url()
+        context['logout_url'] = auth.get_logout_url()
+
+        context['form_title'] = ''
+        context['form_desc'] = ''
+
+        return context
+
+
+class ISBNAddView(LibraryFormView):
     template_name = 'zp_library/form.html'
     form_class = ISBNForm
     success_url = '/'
 
     def dispatch(self, request, *args, **kwargs):
-        library_user = auth.get_library_user()
-        if not library_user:
+        if not self.library_user:
             return HttpResponseRedirect(auth.get_login_url('/add_isbn'))
 
-        if not library_user.type == auth.USER_TYPE_ADMIN:
+        if not self.library_user.type == auth.USER_TYPE_ADMIN:
             return HttpResponse(status=401)
 
         return super(ISBNAddView, self).dispatch(request, *args, **kwargs)
@@ -31,18 +50,16 @@ class ISBNAddView(FormView):
         return super(ISBNAddView, self).form_valid(form)
 
 
-class SignUpView(FormView):
+class SignUpView(LibraryFormView):
     template_name = 'zp_library/form.html'
     form_class = NewUserForm
     success_url = '/'
 
     def dispatch(self, request, *args, **kwargs):
-        library_user = auth.get_library_user()
-
-        if library_user:
+        if self.library_user:
             return HttpResponseRedirect('/')
 
-        if not auth.get_google_user():
+        if not self.google_user:
             return HttpResponseRedirect(auth.get_login_url())
 
         return super(SignUpView, self).dispatch(request, *args, **kwargs)
@@ -59,20 +76,19 @@ class SignUpView(FormView):
         return super(SignUpView, self).form_valid(form)
 
 
-class BookEditView(FormView):
+class BookEditView(LibraryFormView):
     template_name = 'zp_library/form.html'
     form_class = BookEditForm
     success_url = '/'
     isbn = ''
 
     def dispatch(self, request, *args, **kwargs):
-        library_user = auth.get_library_user()
         self.isbn = request.GET.get('isbn')
 
-        if not library_user:
+        if not self.library_user:
             return HttpResponseRedirect(auth.get_login_url('/book_edit'))
 
-        if not library_user.type == auth.USER_TYPE_ADMIN:
+        if not self.library_user.type == auth.USER_TYPE_ADMIN:
             return HttpResponse(status=401)
 
         self.success_url = '/book_detail/?isbn='+self.isbn
@@ -106,17 +122,16 @@ class BookEditView(FormView):
         return super(BookEditView, self).form_valid(form)
 
 
-class TestView(FormView):
+class TestView(LibraryFormView):
     template_name = 'zp_library/form.html'
     form_class = BookForm
     success_url = '/book_list/'
 
     def dispatch(self, request, *args, **kwargs):
-        library_user = auth.get_library_user()
-        if not library_user:
+        if not self.library_user:
             return HttpResponseRedirect(auth.get_login_url('/test'))
 
-        if not library_user.type == auth.USER_TYPE_ADMIN:
+        if not self.library_user.type == auth.USER_TYPE_ADMIN:
             return HttpResponse(status=401)
 
         return super(TestView, self).dispatch(request, *args, **kwargs)
