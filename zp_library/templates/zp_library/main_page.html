@@ -9,6 +9,8 @@
             {% if message %}
                 <p>{{ message.contents }}</p>
                 <p>({{ message.date }})</p>
+            {% else %}
+                <p>제로페이지 도서관입니다.</p>
             {% endif %}
         </md-card-content>
     </md-card>
