@@ -7,8 +7,13 @@ from zp_library.forms import ISBNForm
 
 
 class LibraryView(View):
-    library_user = auth.get_library_user()
-    google_user = auth.get_google_user()
+    @property
+    def library_user(self):
+	return auth.get_library_user()
+
+    @property
+    def google_user(self):
+	return auth.get_google_user()
 
 
 class BookDeleteView(LibraryView):
