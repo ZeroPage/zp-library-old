@@ -1,25 +1,18 @@
 {% extends "zp_library/base.html" %}
 
 {% block content %}
-    <md-card ng-init="showToast()">
-        <md-toolbar class="md-">
-            <h2 class="md-toolbar-tools">Message from server: </h2>
-        </md-toolbar>
-        <md-card-content>
-            {% if message %}
-                <p>{{ message.contents }}</p>
-                <p>({{ message.date }})</p>
-            {% else %}
-                <p>제로페이지 도서관입니다.</p>
-            {% endif %}
-        </md-card-content>
-    </md-card>
-    <form action="{% url book_list %}" method="get" layout="row">
-        <md-input-container flex>
-            <label>Search</label>
-            <input type="text" name="q">
-        </md-input-container>
-        <md-button type="submit" md-no-ripple>FIND</md-button>
-    </form>
+    <div layout="column">
+        <h2 ng-init="showToast()" class="text-center md-display-4">ZeroPage Library</h2>
+        {% if message %}
+            <p class="text-center"><strong>{{ message.contents }}</strong><br/>{{ message.date }}</p>
+            <p class="text-center"></p>
+        {% endif %}
 
+        <form class="md-whiteframe-z1" action="{% url book_list %}" method="get" layout="row" layout-padding>
+            <md-input-container class="search-bar"flex>
+                <input type="text" name="q">
+            </md-input-container>
+            <md-button class="md-primary" type="submit" md-no-ripple>Search</md-button>
+        </form>
+    </div>
 {% endblock %}
