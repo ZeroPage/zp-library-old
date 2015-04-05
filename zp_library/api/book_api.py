@@ -44,6 +44,13 @@ class Daum():
             return None
         self.result = response_filter(self.response["channel"]["item"], self.parameters)
 
+        self.result["isbn"] = ISBN.convertISBN(self.result["isbn"])
+        if len(self.result["pub_date"]) == 8:
+            self.result["pub_date"] = \
+                self.result["pub_date"][:4] + \
+                "-" + self.result["pub_date"][4:6] + \
+                "-" + self.result["pub_date"][6:]
+
     def request(self, request_parameters):
         try:
             self.response = json.load(
@@ -98,6 +105,11 @@ class Google():
                 self.result["publishedDate"] += "-01-01"
             elif len(self.result["publishedDate"]) <= 6:
                 self.result["publishedDate"] += "-01"
+            elif len(self.result["publishedDate"]) <= 8:
+                self.result["publishedDate"] = \
+                    self.result["publishedDate"][:4] + \
+                    "-" + self.result["publishedDate"][4:6] + \
+                    "-" + self.result["publishedDate"][6:]
         except KeyError:
             pass
 
