@@ -2,43 +2,51 @@
 {% block content %}
 
     {% if book %}
-        <div flex>
-            <h2>{{ book.title|escape }}</h2>
-            <h3>{{ book.author|escape }}</h3>
-            <md-divider></md-divider>
+        <div layout="row">
+            <div flex>
+                <h2>{{ book.title|escape }}</h2>
+                <h3>{{ book.author|escape }}</h3>
+            </div>
         </div>
+        <md-divider></md-divider>
+        {% if basic_info.items or book.thumbnail%}
         <div>
-            <div layout="row" layout-sm="column">
+            <h4>기본 정보</h4>
+            <div class="md-whiteframe-z1" layout="row" layout-sm="column">
                 {% if basic_info.items %}
-                    <div flex flex-order="1" flex-order-sm="2">
-                        <h4>기본 정보</h4>
-                        {% for key, value in basic_info.items %}
-                            <p>{{ key }}: {{ value }}</p>
-                        {% endfor %}
-                    </div>
+                <div flex flex-order="1" flex-order-sm="2" layout-padding>
+                    {% for key, value in basic_info.items %}
+                        <p>{{ key }}: {{ value }}</p>
+                    {% endfor %}
+                </div>
                 {% endif %}
                 {% if book.thumbnail %}
-                    <div flex-order="2" flex-order-sm="1" layout-align="center center" layout="row">
+                    <div flex-order="2" flex-order-sm="1" layout-align="center center" layout="row" layout-padding>
                         <img class="width-medium" src="{{ book.thumbnail }}" onerror="if (this.src != '{{ no_img_url }}') this.src = '{{ no_img_url }}';">
                     </div>
                 {% endif %}
             </div>
-            <md-divider></md-divider>
         </div>
+        {% endif %}
         {% if book.description %}
             <div>
                 <h4>설명</h4>
-                <p>{{ book.description|escape }}</p>
-                <md-divider></md-divider>
+                <div class="md-whiteframe-z1" layout-padding>
+                    <p class="text-break">{{ book.description|escape }}</p>
+                </div>
             </div>
         {% endif %}
         <div>
             <h4>추가 정보</h4>
-            {% for key, value in extra_info.items %}
-                <p>{{ key }}: {{ value }}</p>
-            {% endfor %}
-            <a href="{% url book_edit %}?isbn={{ isbn }}">수정</a>
-            <a href="{% url book_delete %}?isbn={{ isbn }}">삭제</a>
+            <div class="md-whiteframe-z1" layout-padding>
+                {% for key, value in extra_info.items %}
+                    <p>{{ key }}: {{ value }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div layout="row" layout-padding>
+            <md-button class="md-primary" ng-href="{% url book_edit %}?isbn={{ isbn }}">수정</md-button>
+            <md-button class="md-warn" ng-href="{% url book_delete %}?isbn={{ isbn }}">삭제</md-button>
         </div>
     {% else %}
         <h2>NO RESULT</h2>

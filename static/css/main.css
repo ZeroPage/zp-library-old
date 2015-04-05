@@ -7,9 +7,27 @@ body {
   height: 100%;
 }
 
+md-sidenav,
+md-sidenav.md-locked-open,
+md-sidenav.md-closed.md-locked-open-add-active {
+  width: 260px;
+  min-width: 260px;
+  max-width: 260px;
+}
 
-.sidenav-list * {
-  padding: 16px;
+.sidenav {
+  width: 260px;
+  min-width: 260px;
+  max-width: 260px;
+}
+
+.sidenav-button {
+  padding: 12px 0 12px 32px;
+  text-align: left;
+}
+
+.search-bar {
+  padding: 0;
 }
 
 .text-nowrap {
@@ -22,18 +40,26 @@ body {
   text-align: left;
 }
 
+.text-center {
+  text-align: center;
+}
+
+.text-break {
+  word-wrap: break-word;
+}
+
 .scrollable-y {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 }
 
 .contents {
-  max-width: 800px;
+  max-width: 900px;
   margin: auto;
 }
 
 .background-gray {
-  background-color: lightgray;
+  background-color: #eee;
 }
 
 .width-narrow {
@@ -41,7 +67,7 @@ body {
 }
 
 .width-medium {
-  width: 192px
+  width: 144px
 }
 
 .width-full {
@@ -51,3 +77,4 @@ body {
 .height-full {
   height: 100%;
 }
+

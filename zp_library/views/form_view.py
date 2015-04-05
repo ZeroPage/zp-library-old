@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.views.generic import *
 from django.http import HttpResponseRedirect, HttpResponse
 
@@ -41,7 +42,8 @@ class ISBNAddView(LibraryFormView):
 
     def get_context_data(self, **kwargs):
         context = super(ISBNAddView, self).get_context_data(**kwargs)
-        context['form_title'] = 'test'
+        context['form_title'] = 'Add by ISBN'
+        context['form_desc'] = 'ISBN을 이용해 책들을 추가할 수 있습니다. ISBN의 구분은 엔터를 이용합니다.'
         return context
 
     def form_valid(self, form):

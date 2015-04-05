@@ -7,7 +7,10 @@
 {% endblock %}
 
 {% block content %}
-    <canvas width="320" height="240" id="picture"></canvas>
-    <input id="Take-Picture" type="file" accept="image/*;capture=camera" />
-    <p id="camera-message"></p>
+    <md-card>
+        <canvas width="320" height="240" id="picture"></canvas>
+        <input id="Take-Picture" type="file" accept="image/*;capture=camera" />
+        <p id="camera-message">Select or Take a picture</p>
+    </md-card>
+
 {% endblock %}
