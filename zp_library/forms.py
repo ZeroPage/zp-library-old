@@ -73,7 +73,6 @@ class BookEditForm(BookForm):
 
             book.put()
 
-
 class ISBNForm(forms.Form):
     isbn_input = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'multiple items allowed (split by enter)'}))
 
@@ -84,7 +83,6 @@ class ISBNForm(forms.Form):
             daum = book_api.Daum()
 
             for isbn in isbns:
-
                 request_parameters = {
                     "isbn": isbn
                 }

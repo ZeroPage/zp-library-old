@@ -49,7 +49,7 @@ class Daum():
         try:
             self.response = json.load(
                 urllib2.urlopen(
-                    self.url + 
+                    self.url +
                     request_parameters["isbn"] + "&searchType=isbn"
                 )
             )
@@ -79,7 +79,7 @@ class Google():
             "publishedDate", "industryIdentifiers", "pageCount",
             "imageLinks", "language"
         )
-        
+
     def filter(self):
         if self.response is None:
             self.result = None
@@ -136,11 +136,9 @@ def selectBookData(google_data, daum_data):
         "publishedDate" : ["publishedDate", "pub_date"],
         "language" : ["language", None],
         "smallThumbnail" : ["smallThumbnail", "cover_s_url"],
-        "thumbnail" : ["thumbnail", "cover_l_url"], 
+        "thumbnail" : ["thumbnail", "cover_l_url"],
         "pageCount" : ["pageCount", None],
     }
-
-
 
     for key, value in select_rule.iteritems():
         if not google_data and not daum_data:
@@ -162,39 +160,3 @@ def selectBookData(google_data, daum_data):
             pass
 
     return book_data
-
-
-class TestBookAPI(unittest.TestCase):
-    def setUp(self):
-        self.request_parameters = {
-            "isbn": "9788979149883"
-        }
-
-    def test_google_response(self):
-        google_api = Google()
-        google_api.request(self.request_parameters)
-        self.assertIsNotNone(google_api.response)
-
-    def test_google_filtering(self):
-        google_api = Google()
-        google_api.request(self.request_parameters)
-        google_api.filter()
-        print(google_api.pretty("result"))
-
-    def test_daum_response(self):
-        daum_api = Daum()
-        daum_api.request(self.request_parameters)
-        self.assertIsNotNone(daum_api.response)
-
-    def test_daum_filtering(self):
-        daum_api = Daum()
-        daum_api.request(self.request_parameters)
-        daum_api.filter()
-        print(daum_api.pretty("result"))
-
-
-if __name__ == "__main__":
-    import isbn as ISBN
-
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestBookAPI)
-    unittest.TextTestRunner(verbosity=4).run(suite)
