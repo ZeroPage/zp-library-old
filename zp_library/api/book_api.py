@@ -35,8 +35,7 @@ class Daum():
             "author_t", "sale_price", "cover_s_url",
             "pub_date", "etc_author", "author", "title",
             "category", "translator", "pub_nm",
-            "isbn",
-            "cover_l_url"
+            "isbn", "cover_l_url"
         )
 
     def filter(self):
@@ -60,16 +59,6 @@ class Daum():
 
 
 class Google():
-    """
-    Request Parameters:
-        intitle: Returns results where the text following this keyword is found in the title.
-        inauthor: Returns results where the text following this keyword is found in the author.
-        inpublisher: Returns results where the text following this keyword is found in the publisher.
-        subject: Returns results where the text following this keyword is listed in the category list of the volume.
-        isbn: Returns results where the text following this keyword is the ISBN number.
-        lccn: Returns results where the text following this keyword is the Library of Congress Control Number.
-        oclc: Returns results where the text following this keyword is the Online Computer Library Center number
-    """
     # Google thumbnail size use zoom option, it means thumbnail size is eqaul.
     def __init__(self):
         self._api_key = "AIzaSyCEFHrF-qRjKkh3p9hvOpY9lhzdOtsS0UE"
@@ -85,7 +74,6 @@ class Google():
             self.result = None
             return None
         self.result = response_filter(self.response["items"], self.parameters)
-
 
         isbn = self.result["industryIdentifiers"][0]["identifier"]
         if len(isbn) == 10:
@@ -105,9 +93,13 @@ class Google():
             del self.result["imageLinks"]
             self.result["smallThumbnail"] = smallThumbnail
             self.result["thumbnail"] = thumbnail
+
+            if len(self.result["publishedDate"]) <= 4:
+                self.result["publishedDate"] += "-01-01"
+            elif len(self.result["publishedDate"]) <= 6:
+                self.result["publishedDate"] += "-01"
         except KeyError:
             pass
-
 
     def request(self, request_parameters):
         try:
@@ -122,7 +114,8 @@ class Google():
         except urllib2.HTTPError, e:
             self.response = e.fp.read()
 
-            raise e
+
+            # raise e
 
 
 def selectBookData(google_data, daum_data):
