@@ -18,12 +18,14 @@ def recursive_dictionary_search(dict_item, keys, found_item):
 
 def response_filter(result_items, keys):
     result_item = {}
-    for item in result_items:
-        for key, value in item.iteritems():
-            if key in keys:
-                result_item[key] = value
-            elif type(item[key]) is dict:
-                recursive_dictionary_search(item[key], keys, result_item)
+    item = result_items[0]
+
+    for key, value in item.iteritems():
+        if key in keys:
+            result_item[key] = value
+        elif type(item[key]) is dict:
+            recursive_dictionary_search(item[key], keys, result_item)
+
     return result_item
 
 
@@ -35,7 +37,7 @@ class Daum():
             "author_t", "sale_price", "cover_s_url",
             "pub_date", "etc_author", "author", "title",
             "category", "translator", "pub_nm",
-            "isbn", "cover_l_url"
+            "isbn", "cover_l_url", "description"
         )
 
     def filter(self):
@@ -73,7 +75,7 @@ class Google():
         self.parameters = (
             "title", "authors", "publisher",
             "publishedDate", "industryIdentifiers", "pageCount",
-            "imageLinks", "language"
+            "imageLinks", "language", "description"
         )
 
     def filter(self):
@@ -143,6 +145,7 @@ def selectBookData(google_data, daum_data):
         "smallThumbnail" : ["smallThumbnail", "cover_s_url"],
         "thumbnail" : ["thumbnail", "cover_l_url"],
         "pageCount" : ["pageCount", None],
+        "description" : "description",
     }
 
     for key, value in select_rule.iteritems():
