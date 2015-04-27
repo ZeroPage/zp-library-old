@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^book_delete/$', view.BookDeleteView.as_view(), name='book_delete'),
     url(r'^book_add/$', view.BookAddView.as_view(), name="book_add"),
     url(r'^update_all/$', view.UpdateAllView.as_view(), name="update_all"),
+    url(r'^book_borrow/$', view.BookBorrowView.as_view(), name="book_borrow"),
 ]

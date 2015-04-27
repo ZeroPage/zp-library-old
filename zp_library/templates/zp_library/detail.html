@@ -44,6 +44,15 @@
                 {% endfor %}
             </div>
         </div>
+        <div>
+            <h4>대여 현황</h4>
+            <div class="md-whiteframe-z1" layout-padding>
+                {% for borrow_record in borrows %}
+                    <p>{{ borrow_record.name }} / {{ borrow_record.borrowDate }} ~ {{ borrow_record.returnDate }}</p>
+                {% endfor %}
+                <md-button class="md-primary" ng-href="{% url book_borrow %}?isbn={{ isbn }}">대여/반납</md-button>
+            </div>
+        </div>
         <div layout="row" layout-padding>
             <md-button class="md-primary" ng-href="{% url book_edit %}?isbn={{ isbn }}">수정</md-button>
             <md-button class="md-warn" ng-href="{% url book_delete %}?isbn={{ isbn }}">삭제</md-button>

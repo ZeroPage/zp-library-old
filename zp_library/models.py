@@ -40,3 +40,20 @@ class LibraryUser(ndb.Model):
 class Notice(ndb.Model):
     contents = ndb.StringProperty()
     date = ndb.DateTimeProperty(auto_now_add=True)
+
+
+class BookBorrow(ndb.Model):
+    ISBN = ndb.StringProperty()
+    userID = ndb.StringProperty()
+    borrowDate = ndb.DateProperty(auto_now_add=True)
+    returnDate = ndb.DateProperty()
+
+    def _pre_put_hook(self):
+        book_result = Book.query(Book.key == ndb.Key(Book, self.ISBN)).fetch(limit=1)
+        user_result = LibraryUser.query(LibraryUser.id == self.userID).fetch(limit=1)
+
+        if not book_result:
+            raise Exception('book is not exist')
+
+        if not user_result:
+            raise Exception('user is not exist')

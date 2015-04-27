@@ -20,6 +20,17 @@ indexes:
   properties:
   - name: title
 
+- kind: BookBorrow
+  properties:
+  - name: ISBN
+  - name: returnDate
+
+- kind: BookBorrow
+  properties:
+  - name: ISBN
+  - name: userID
+  - name: returnDate
+
 - kind: Greeting
   ancestor: yes
   properties:

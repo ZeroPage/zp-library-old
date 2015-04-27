@@ -6,13 +6,16 @@ USER_TYPE_AUTH = 'auth'
 USER_TYPE_NEW = 'new'
 
 
-def get_library_user():
-    google_user = get_google_user()
+def get_library_user(user_id=None):
+    if not user_id:
+        google_user = get_google_user()
 
-    if not google_user:
-        return None
+        if not google_user:
+            return None
 
-    library_user = LibraryUser.query(LibraryUser.id == google_user.user_id()).get()
+        user_id = google_user.user_id()
+
+    library_user = LibraryUser.query(LibraryUser.id == user_id).get()
 
     if not library_user:
         return None

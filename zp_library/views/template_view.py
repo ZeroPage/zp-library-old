@@ -57,7 +57,8 @@ class UserView(LibraryTemplateView):
     def get_context_data(self, **kwargs):
         context = super(UserView, self).get_context_data(**kwargs)
 
-        context['logout_url'] = auth.get_logout_url()
+        my_borrow_result = BookBorrow.query(BookBorrow.userID == self.library_user.id).fetch()
+        context['borrows'] = my_borrow_result
 
         return context
 
@@ -123,6 +124,22 @@ class BookDetailView(LibraryTemplateView):
 
         book_query = Book.query(Book.key == ndb.Key(Book, self.isbn))
         book_result = book_query.fetch(limit=1)
+
+        borrow_query = BookBorrow.query(BookBorrow.ISBN == self.isbn)
+        borrow_result = borrow_query.fetch()
+
+        borrows = []
+
+        for borrow_record in borrow_result:
+            borrower = auth.get_library_user(borrow_record.userID)
+
+            borrows.append({
+                'name': borrower.name,
+                'borrowDate': borrow_record.borrowDate,
+                'returnDate': borrow_record.returnDate,
+            })
+
+        context['borrows'] = borrows
 
         if book_result:
             book_result = book_result[0]

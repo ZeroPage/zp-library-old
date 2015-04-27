@@ -2,15 +2,23 @@
 
 {% block content %}
     <div>
-    {% if library_user.type == "admin" %}
-        <h2>ADMIN ONLY</h2>
-        <p>insert book data: <a href="{% url test %}">manual</a> <a href="{% url add_isbn %}">auto</a></p>
-        <p>update all book data (use with caution): <a href="{% url update_all %}">RUN</a></p>
-        <p>change notice message: <a href="{% url notice %}">click here</a> </p>
-        <p>manage users: not yet. use db manager :/</p>
 
-    {% elif library_user.type == "auth" %}
-        <p>You are a zeropager!</p>
+    {% if library_user.type == "auth" or library_user.type == "admin" %}
+        {% if library_user.type == "admin" %}
+            <h2>ADMIN ONLY</h2>
+            <div class="md-whiteframe-z1" layout-padding>
+                <p>insert book data: <a href="{% url test %}">manual</a> <a href="{% url add_isbn %}">auto</a></p>
+                <p>update all book data (use with caution): <a href="{% url update_all %}">RUN</a></p>
+                <p>change notice message: <a href="{% url notice %}">click here</a> </p>
+                <p>manage users: not yet. use db manager :/</p>
+            </div>
+        {% endif %}
+        <h2>대여 현황</h2>
+        <div class="md-whiteframe-z1" layout-padding>
+            {% for borrow_record in borrows %}
+                <p><a href="{% url book_detail %}?isbn={{ borrow_record.ISBN }}">{{ borrow_record.ISBN }}</a> / {{ borrow_record.borrowDate }} ~ {{ borrow_record.returnDate }}</p>
+            {% endfor %}
+        </div>
     {% else %}
         <p>You are not authorized. Ask admin.</p>
     {% endif %}
