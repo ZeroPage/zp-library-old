@@ -13,6 +13,12 @@ from zp_library.views.view import LibraryView
 
 class LibraryTemplateView(TemplateView, LibraryView):
     template_name = 'zp_library/base.html'
+    toast_message = ''
+
+    def dispatch(self, request, *args, **kwargs):
+        self.toast_message = request.GET.get('toast')
+
+        return super(LibraryTemplateView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(LibraryTemplateView, self).get_context_data(**kwargs)
@@ -22,6 +28,8 @@ class LibraryTemplateView(TemplateView, LibraryView):
 
         context['login_url'] = auth.get_login_url()
         context['logout_url'] = auth.get_logout_url()
+
+        context['toast_message'] = self.toast_message
 
         return context
 
@@ -34,6 +42,8 @@ class MainPageView(LibraryTemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MainPageView, self).get_context_data(**kwargs)
+
+        context['toast_message'] = 'Notice - Under Development!'
 
         notice_query = Notice.query().order(-Notice.date)
         notice_result = notice_query.fetch(limit=1)

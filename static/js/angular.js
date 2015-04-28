@@ -10,12 +10,13 @@ app.controller('LibraryControl', function($scope, $timeout, $mdSidenav, $mdToast
         $mdSidenav('left').close();
     };
 
-    $scope.showToast = function() {
+    $scope.showToast = function(message) {
         $mdToast.show(
             $mdToast.simple()
-                .content('NOTICE - Under Development!')
+                .content(message)
                 .action('OK')
-                .hideDelay(0)
+                .hideDelay(6000)
+                .position('bottom right')
         );
     };
 });

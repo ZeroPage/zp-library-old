@@ -29,6 +29,9 @@
     </head>
     <body ng-controller="LibraryControl">
         <div class="height-full width-full" layout="row" flex>
+            {% if toast_message %}
+            <div ng-init="showToast('{{ toast_message }}')"></div>
+            {% endif %}
             <md-sidenav class="md-sidenav-left sidenav md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-md')" layout="column">
                 <md-toolbar class="">
                     <div class="md-toolbar-tools">
