@@ -6,7 +6,7 @@ from django.views.generic import *
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from zp_library.api import auth
+from zp_library.api import auth, borrow
 from zp_library.models import *
 from zp_library.views.view import LibraryView
 
@@ -57,8 +57,7 @@ class UserView(LibraryTemplateView):
     def get_context_data(self, **kwargs):
         context = super(UserView, self).get_context_data(**kwargs)
 
-        my_borrow_result = BookBorrow.query(BookBorrow.userID == self.library_user.id).fetch()
-        context['borrows'] = my_borrow_result
+        context['borrows'] = borrow.get_borrows(user_id=self.library_user.id)
 
         return context
 
@@ -125,12 +124,11 @@ class BookDetailView(LibraryTemplateView):
         book_query = Book.query(Book.key == ndb.Key(Book, self.isbn))
         book_result = book_query.fetch(limit=1)
 
-        borrow_query = BookBorrow.query(BookBorrow.ISBN == self.isbn)
-        borrow_result = borrow_query.fetch()
+        raw_borrows = borrow.get_borrows(self.isbn)
 
         borrows = []
 
-        for borrow_record in borrow_result:
+        for borrow_record in raw_borrows:
             borrower = auth.get_library_user(borrow_record.userID)
 
             borrows.append({

@@ -23,13 +23,38 @@ indexes:
 - kind: BookBorrow
   properties:
   - name: ISBN
+  - name: borrowDate
+
+- kind: BookBorrow
+  properties:
+  - name: ISBN
+  - name: borrowDate
+    direction: desc
+
+- kind: BookBorrow
+  properties:
+  - name: ISBN
   - name: returnDate
+
+- kind: BookBorrow
+  properties:
+  - name: ISBN
+  - name: returnDate
+  - name: userID
+  - name: borrowDate
+    direction: desc
 
 - kind: BookBorrow
   properties:
   - name: ISBN
   - name: userID
   - name: returnDate
+
+- kind: BookBorrow
+  properties:
+  - name: userID
+  - name: borrowDate
+    direction: desc
 
 - kind: Greeting
   ancestor: yes

@@ -1,12 +1,9 @@
 from django.views.generic import View
 from django.http import HttpResponseRedirect, HttpResponse
 
-from zp_library.api import auth
 from zp_library.models import *
+from zp_library.api import auth, borrow
 from zp_library.forms import ISBNForm
-
-from datetime import datetime
-import logging
 
 
 class LibraryView(View):
@@ -66,30 +63,14 @@ class BookBorrowView(LibraryView):
         if not self.library_user:
             return HttpResponseRedirect(auth.get_login_url('/'))
 
-        borrow_query = BookBorrow.query(BookBorrow.ISBN == isbn, BookBorrow.returnDate == None)
-        my_borrow_query = borrow_query.filter(BookBorrow.userID == self.library_user.id)
-
-        my_borrow_result = my_borrow_query.fetch()
-
-        logging.info(my_borrow_result)
-
-        if my_borrow_result:
-            for borrow_record in my_borrow_result:
-                borrow_record.returnDate = datetime.now()
-                borrow_record.put()
-        else:
-            borrow_result = borrow_query.fetch()
-            logging.info(borrow_result)
-
-
-            book_result = Book.query(Book.ISBN == isbn).fetch(limit=1)[0]
-
-            if book_result and len(borrow_result) < book_result.bookCount:
-                new_borrow = BookBorrow()
-                new_borrow.ISBN = isbn
-                new_borrow.userID = self.library_user.id
-
-                new_borrow.put()
+        try:
+            if borrow.get_borrows(isbn, self.library_user.id, True):
+                borrow.book_return(isbn, self.library_user.id)
+            else:
+                borrow.book_borrow(isbn, self.library_user.id)
+        except(borrow.NoBorrowException, borrow.NoBookFoundException, borrow.MaxBorrowException):
+            # fixme - show error to the user
+            pass
 
         return HttpResponseRedirect('/book_detail/?isbn=' + isbn)
 
