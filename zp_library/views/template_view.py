@@ -1,12 +1,12 @@
 # coding=utf-8
 import urllib2
 import json
+import math
 
 from django.views.generic import *
 from django.http import HttpResponseRedirect
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from zp_library.api import auth, borrow
+from zp_library.api import auth, borrow, book
 from zp_library.models import *
 from zp_library.views.view import LibraryView
 
@@ -79,7 +79,7 @@ class BookListView(LibraryTemplateView):
     query_string = ''
 
     def dispatch(self, request, *args, **kwargs):
-        self.current_page = request.GET.get('page')
+        self.current_page = int(request.GET.get('page') or 1)
         self.query_string = request.GET.get('q')
 
         return super(BookListView, self).dispatch(request, *args, **kwargs)
@@ -98,23 +98,18 @@ class BookListView(LibraryTemplateView):
             if not search_isbn:
                 search_isbn = ['-']
 
-            books_query = Book.query(Book.ISBN.IN(search_isbn)).order(Book.title)
         else:
             context['list_title'] = 'All books'
-            books_query = Book.query().order(Book.title)
+            search_isbn = []
 
-        paginator = Paginator(books_query.fetch(), self.paginate_by)
+        context['books'] = book.get_books((self.current_page - 1) * self.paginate_by, self.paginate_by, search_isbn)
 
-        try:
-            context['books'] = paginator.page(self.current_page)
-        except (PageNotAnInteger, EmptyPage):
-            context['books'] = paginator.page(1)
-
-        context['page_range'] = range(1, paginator.num_pages + 1)
-        context['is_first'] = self.current_page == 1
-        context['is_last'] = self.current_page == paginator.num_pages
-
-        context['no_img_url'] = "/static/img/no_image.png"
+        if context['books']:
+            context['page_range'] = range(1, int(math.ceil(book.get_books_count() / self.paginate_by)) + 1)
+            context['page'] = self.current_page
+            context['is_first'] = self.current_page == context['page_range'][0]
+            context['is_last'] = self.current_page == context['page_range'][-1]
+            context['no_img_url'] = "/static/img/no_image.png"
 
         return context
 
@@ -131,9 +126,7 @@ class BookDetailView(LibraryTemplateView):
     def get_context_data(self, **kwargs):
         context = super(BookDetailView, self).get_context_data(**kwargs)
 
-        book_query = Book.query(Book.key == ndb.Key(Book, self.isbn))
-        book_result = book_query.fetch(limit=1)
-
+        book_result = book.get_book(self.isbn)
         raw_borrows = borrow.get_borrows(self.isbn)
 
         borrows = []
@@ -150,7 +143,6 @@ class BookDetailView(LibraryTemplateView):
         context['borrows'] = borrows
 
         if book_result:
-            book_result = book_result[0]
             context['book'] = book_result
 
             basic_info = dict()

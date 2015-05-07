@@ -1,4 +1,5 @@
 from zp_library.models import BookBorrow, Book
+from zp_library.api import book
 from datetime import datetime
 
 
@@ -7,11 +8,6 @@ class NoBorrowException(Exception):
 
 
 class MaxBorrowException(Exception):
-    pass
-
-
-# fixme - new book api should have NoBookFoundException
-class NoBookFoundException(Exception):
     pass
 
 
@@ -44,10 +40,7 @@ def book_return(isbn, user_id):
 
 def book_borrow(isbn, user_id):
     unreturned_borrow_count = BookBorrow.query(BookBorrow.ISBN == isbn, BookBorrow.returnDate == None).count()
-    book_result = Book.query(Book.ISBN == isbn).fetch()[0]
-
-    if not book_result:
-        raise NoBookFoundException('No Book')
+    book_result = book.get_book(isbn)
 
     if unreturned_borrow_count >= book_result.bookCount:
         raise MaxBorrowException('Max borrow reached')

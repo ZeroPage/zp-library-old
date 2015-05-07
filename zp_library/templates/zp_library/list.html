@@ -27,11 +27,11 @@
             <div class="pagination" flex>
                 <span class="step-links" layout="row">
                     {% if books.has_previous %}
-                        <md-button ng-href="?page={{ books.previous_page_number }}">PREV</md-button>
+                        <md-button ng-href="?page={{ page|add:-1 }}">PREV</md-button>
                     {% endif %}
                     <div layout="row" layout-align="center center" flex>
                         {% for i in page_range %}
-                            {% if i == books.number %}
+                            {% if i == page %}
                                 <md-button class="md-primary" ng-href="?page={{ i }}">{{ i }}</md-button>
                             {% else %}
                                 <md-button ng-href="?page={{ i }}">{{ i }}</md-button>
@@ -39,7 +39,7 @@
                         {% endfor %}
                     </div>
                     {% if books.has_next %}
-                        <md-button ng-href="?page={{ books.next_page_number }}">NEXT</md-button>
+                        <md-button ng-href="?page={{ page|add:1 }}">NEXT</md-button>
                     {% endif %}
                 </span>
             </div>

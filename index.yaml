@@ -16,6 +16,13 @@ indexes:
   - name: title
 
 - kind: Book
+  properties:
+  - name: title
+  - name: ISBN
+  - name: author
+  - name: smallThumbnail
+
+- kind: Book
   ancestor: yes
   properties:
   - name: title
