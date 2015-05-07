@@ -67,7 +67,19 @@ class UserView(LibraryTemplateView):
     def get_context_data(self, **kwargs):
         context = super(UserView, self).get_context_data(**kwargs)
 
-        context['borrows'] = borrow.get_borrows(user_id=self.library_user.id)
+        borrow_records = borrow.get_borrows(user_id=self.library_user.id)
+        borrow_refined = []
+
+        for borrow_record in borrow_records:
+            new_borrow = {}
+            new_borrow['title'] = book.get_book(borrow_record.ISBN).title
+            new_borrow['ISBN'] = borrow_record.ISBN
+            new_borrow['borrowDate'] = borrow_record.borrowDate
+            new_borrow['returnDate'] = borrow_record.returnDate
+
+            borrow_refined.append(new_borrow)
+
+        context['borrows'] = borrow_refined
 
         return context
 
