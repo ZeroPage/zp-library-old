@@ -1,26 +1,22 @@
 {% extends "zp_library/base.html" %}
 
 {% block content %}
-    <div layout="column" layout-margin>
-        <h2 flex>{{ list_title }}</h2>
+    <div layout="column" layout-padding>
+        <h2>{{ list_title }}</h2>
 
         {% if books %}
-            <md-list class="md-whiteframe-z1" layout="column" flex>
+            <md-list class="md-whiteframe-z1" layout="column">
                 {% for book in books %}
-                    <md-button ng-href="/book_detail/?isbn={{ book.ISBN }}" md-no-ink layout-fil>
-                        <md-item>
-                            <md-item-content>
-                                <div class="md-tile-left" hide-sm>
-                                    <img class="width-narrow" src="{{ book.smallThumbnail }}" onerror="if (this.src != '{{ no_img_url }}') this.src = '{{ no_img_url }}';">
-                                </div>
-                                <div class="md-tile-content" layout="column" layout-align="center start" layout-margin>
-                                    <h3 class="width-full text-ellipsis"><strong>{{ book.title }}</strong></h3>
-                                    <h4 class="width-full text-ellipsis">{{ book.author }}</h4>
-                                    <p class="width-full text-ellipsis">{{ book.description }}</p>
-                                </div>
-                            </md-item-content>
-                        </md-item>
-                    </md-button>
+
+                        <md-list-item class="md-3-line" ng-click="toURL('/book_detail/?isbn={{ book.ISBN }}')">
+                            <img class="md-avatar" src="{{ book.smallThumbnail }}" onerror="if (this.src != '{{ no_img_url }}') this.src = '{{ no_img_url }}';" hide-sm>
+                            <div class="md-list-item-text">
+                                <h3><strong>{{ book.title }}</strong></h3>
+                                <h4>{{ book.author }}</h4>
+                                <p>{{ book.description|truncatechars:150 }}</p>
+                            </div>
+                        </md-list-item>
+
                 {% endfor %}
             </md-list>
 

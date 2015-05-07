@@ -43,13 +43,34 @@ class MainPageView(LibraryTemplateView):
     def get_context_data(self, **kwargs):
         context = super(MainPageView, self).get_context_data(**kwargs)
 
+        # toast
         context['toast_message'] = 'Notice - Under Development!'
 
+        # notice
         notice_query = Notice.query().order(-Notice.date)
         notice_result = notice_query.fetch(limit=1)
 
         if notice_result:
             context['message'] = notice_result[0]
+
+        # borrow history
+
+        borrow_records = borrow.get_borrows()[:5]  # fixme: limit needed
+        borrow_refined = []
+
+        for borrow_record in borrow_records:
+            new_borrow = {
+                'title': book.get_book(borrow_record.ISBN).title,
+                'user_name': auth.get_library_user(borrow_record.userID).name,
+                'ISBN': borrow_record.ISBN,
+                'borrowDate': borrow_record.borrowDate,
+                'returnDate': borrow_record.returnDate
+            }
+
+            borrow_refined.append(new_borrow)
+
+        context['borrows'] = borrow_refined
+        context['new_books'] = book.get_books(limit=5, sort=-Book.registrationDate)
 
         return context
 

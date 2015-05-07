@@ -1,18 +1,48 @@
 {% extends "zp_library/base.html" %}
 
 {% block content %}
-    <div layout="column">
-        <h2 class="text-center md-display-4">ZeroPage Library</h2>
+    <div layout="column" layout-padding>
+        <h2 class="text-center md-display-3" hide-s>ZeroPage Library</h2>
         {% if message %}
-            <p class="text-center"><strong>{{ message.contents }}</strong><br/>{{ message.date }}</p>
-            <p class="text-center"></p>
+            <div>
+                <h3 class="text-center">NOTICE</h3>
+                <p class="text-center"><strong>{{ message.contents }}</strong><br/>{{ message.date }}</p>
+            </div>
         {% endif %}
-
         <form class="md-whiteframe-z1" action="{% url book_list %}" method="get" layout="row" layout-padding>
             <md-input-container class="search-bar"flex>
                 <input type="text" name="q">
             </md-input-container>
             <md-button class="md-primary" type="submit" md-no-ripple>Search</md-button>
         </form>
+        <div layout="row" layout-sm="column">
+            <div flex>
+                <h3>최근 추가 도서</h3>
+                <md-list class="md-whiteframe-z1">
+                    {% for book in new_books %}
+                        <md-list-item>
+                            <p><a href="{% url book_detail %}?isbn={{ book.ISBN }}">{{ book.title }}</a></p>
+                        </md-list-item>
+                    {% endfor %}
+                </md-list>
+            </div>
+            <div flex="5"></div>
+            <div flex>
+                <h3>최근 대여</h3>
+                <md-list class="md-whiteframe-z1">
+                    {% for borrow in borrows %}
+                        <md-list-item>
+                            <div>
+                                <h4><a href="{% url book_detail %}?isbn={{ borrow.ISBN }}">{{ borrow.title }}</a></h4>
+                                <p>{{ borrow.user_name }} / {{ borrow.borrowDate }} ~ {{ borrow.returnDate }}</p>
+                            </div>
+                        </md-list-item>
+                    {% endfor %}
+                </md-list>
+            </div>
+
+        </div>
+
+
     </div>
 {% endblock %}

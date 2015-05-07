@@ -1,6 +1,6 @@
 var app = angular.module('LibraryApp', ['ngMaterial']);
 
-app.controller('LibraryControl', function($scope, $timeout, $mdSidenav, $mdToast) {
+app.controller('LibraryControl', function($scope, $timeout, $mdSidenav, $mdToast, $window) {
     $scope.openLeft = function() {
         $mdSidenav('left').open();
     };
@@ -19,4 +19,8 @@ app.controller('LibraryControl', function($scope, $timeout, $mdSidenav, $mdToast
                 .position('bottom right')
         );
     };
+
+    $scope.toURL = function(url) {
+        $window.location.href = url;
+    }
 });

@@ -6,11 +6,11 @@ class NoBookFoundException(Exception):
     pass
 
 
-def get_books(offset=0, limit=10, isbn_list=None):
+def get_books(offset=0, limit=10, isbn_list=None, sort=Book.title):
     if isbn_list:
-        query = Book.query(Book.ISBN.IN(isbn_list)).order(Book.title)
+        query = Book.query(Book.ISBN.IN(isbn_list)).order(sort)
     else:
-        query = Book.query().order(Book.title)
+        query = Book.query().order(sort)
 
     return query.fetch(offset=offset, limit=limit)
 
