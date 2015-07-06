@@ -30,8 +30,8 @@ def response_filter(result_items, keys):
 
 
 class Daum():
-    def __init__(self):
-        self._api_key = "19d3273451bd445399b4cc34a4fdbd45a11e5cee"
+    def __init__(self, api_key):
+        self._api_key = api_key
         self.url = "http://apis.daum.net/search/book?apikey=" + self._api_key +  "&output=json&q="
         self.parameters = (
             "author_t", "sale_price", "cover_s_url",
@@ -69,8 +69,8 @@ class Daum():
 
 class Google():
     # Google thumbnail size use zoom option, it means thumbnail size is eqaul.
-    def __init__(self):
-        self._api_key = "AIzaSyCEFHrF-qRjKkh3p9hvOpY9lhzdOtsS0UE"
+    def __init__(self, api_key):
+        self._api_key = api_key
         self.url = "https://www.googleapis.com/books/v1/volumes?country=KR&key=" + self._api_key + "&q="
         self.parameters = (
             "title", "authors", "publisher",

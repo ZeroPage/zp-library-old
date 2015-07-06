@@ -1,6 +1,7 @@
 # coding=utf-8
 from django.views.generic import *
 from django.http import HttpResponseRedirect, HttpResponse
+from django.core.urlresolvers import reverse
 
 from zp_library.forms import *
 from zp_library.models import *
@@ -152,6 +153,42 @@ class TestView(LibraryFormView):
 
         return super(TestView, self).form_valid(form)
 
+class ExtraVariableView(LibraryFormView):
+    template_name = 'zp_library/form.html'
+    form_class = ExtraVariableForm
+    success_url = '/extra_variable/'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.library_user:
+            return HttpResponseRedirect(auth.get_login_url('/extra_variable/'))
+
+        if not self.library_user.type == auth.USER_TYPE_ADMIN:
+            return HttpResponse(status=401)
+
+        return super(ExtraVariableView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(ExtraVariableView, self).get_context_data(**kwargs)
+
+        desc_str = ''
+
+        for key in key_list:
+            desc_str += key + ': '
+
+            try:
+                desc_str += get_extra_variable(key)
+            except(ExtraVariableKeyError):
+                pass
+
+            desc_str += '\n'
+
+        context['form_desc'] = desc_str
+        return context
+
+    def form_valid(self, form):
+        form.action()
+
+        return super(ExtraVariableView, self).form_valid(form)
 
 class AddNoticeView(FormView):
     template_name = 'zp_library/notice_write_page.html'

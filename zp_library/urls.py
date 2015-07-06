@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^book_edit/$', form_view.BookEditView.as_view(), name='book_edit'),
     url(r'^signup/$', form_view.SignUpView.as_view()),
     url(r'^notice/$', form_view.AddNoticeView.as_view(), name="notice"),
+    url(r'^extra_variable/$', form_view.ExtraVariableView.as_view(), name='extra_variable'),
 
     url(r'^book_delete/$', view.BookDeleteView.as_view(), name='book_delete'),
     url(r'^book_add/$', view.BookAddView.as_view(), name="book_add"),

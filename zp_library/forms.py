@@ -3,6 +3,7 @@ from google.appengine.api import users
 from django import forms
 from zp_library.models import *
 from zp_library.api import book_api, auth
+from zp_library.api.extra_variable import *
 
 
 class BookForm(forms.Form):
@@ -79,8 +80,8 @@ class ISBNForm(forms.Form):
     def action(self):
         if self.is_valid():
             isbns = self.cleaned_data["isbn_input"].split()
-            google = book_api.Google()
-            daum = book_api.Daum()
+            google = book_api.Google(get_extra_variable(GOOGLE_BOOK_API_KEY))
+            daum = book_api.Daum(get_extra_variable(DAUM_BOOK_API_KEY))
 
             for isbn in isbns:
                 request_parameters = {
@@ -123,3 +124,11 @@ class NoticeForm(forms.Form):
 
             notice.contents = self.cleaned_data['contents']
             notice.put()
+
+class ExtraVariableForm(forms.Form):
+    key = forms.CharField(widget=forms.TextInput)
+    value = forms.CharField(widget=forms.TextInput)
+
+    def action(self):
+        if self.is_valid():
+            set_extra_variable(self.cleaned_data['key'], self.cleaned_data['value'])

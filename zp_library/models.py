@@ -57,3 +57,6 @@ class BookBorrow(ndb.Model):
 
         if not user_result:
             raise Exception('user is not exist')
+
+class ExtraVariable(ndb.Model):
+    value = ndb.StringProperty()
