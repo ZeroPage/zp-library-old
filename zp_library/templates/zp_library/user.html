@@ -5,20 +5,45 @@
 
     {% if library_user.type == "auth" or library_user.type == "admin" %}
         {% if library_user.type == "admin" %}
-            <h2>ADMIN ONLY</h2>
-            <div class="md-whiteframe-z1" layout-padding>
-                <p>insert book data: <a href="{% url book_add %}">manual</a> <a href="{% url book_add_isbn %}">auto</a></p>
-                <p>update all book data (use with caution): <a href="{% url book_update_all %}">RUN</a></p>
-                <p>change notice message: <a href="{% url notice %}">click here</a> </p>
-                <p>manage extra variables: <a href="{% url extra_variable %}">click here</a></p>
-                <p>manage users: not yet. use db manager :/</p>
+            <h2>ADMIN ONLY MENU</h2>
+            <div class="md-whiteframe-z1">
+                <md-list>
+                    <md-subheader class="md-no-sticky">Book Data Management</md-subheader>
+                    <md-list-item class="md-1-line" ng-click="toURL('{% url book_add %}')">
+                        <p>Insert Book Data (Manual)</p>
+                    </md-list-item>
+                    <md-list-item class="md-1-line" ng-click="toURL('{% url book_add_isbn %}')">
+                        <p>Insert Book Data (Auto)</p>
+                    </md-list-item>
+                    <md-list-item class="md-1-line" ng-click="toURL('{% url book_update_all %}')">
+                        <p>Update all book data <strong>(USE WITH CAUTION)</strong></p>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-subheader class="md-no-sticky">General Data Management</md-subheader>
+                    <md-list-item class="md-1-line" ng-click="toURL('{% url notice %}')">
+                        <p>Change notice message</p>
+                    </md-list-item>
+                    <md-list-item class="md-1-line" ng-click="toURL('{% url extra_variable %}')">
+                        <p>Change extra variable</p>
+                    </md-list-item>
+                    <md-list-item class="md-1-line">
+                        <p>Manage Users (Not implemented)</p>
+                    </md-list-item>
+                </md-list>
             </div>
         {% endif %}
         <h2>대여 현황</h2>
-        <div class="md-whiteframe-z1" layout-padding>
-            {% for borrow_record in borrows %}
-                <p><a href="{% url book_detail %}?isbn={{ borrow_record.ISBN }}">{{ borrow_record.title }}</a> / {{ borrow_record.borrowDate }} ~ {{ borrow_record.returnDate }}</p>
-            {% endfor %}
+        <div class="md-whiteframe-z1">
+            <md-list>
+                {% for borrow_record in borrows %}
+                    <md-list-item class="md-2-line" ng-click="toURL('{% url book_detail %}?isbn={{ borrow_record.ISBN }}')">
+                        <div class="md-list-item-text">
+                            <h3>{{ borrow_record.title }}</h3>
+                            <p>{{ borrow_record.borrowDate }} ~ {{ borrow_record.returnDate }}</p>
+                        </div>
+                    </md-list-item>
+                {% endfor %}
+            </md-list>
         </div>
     {% else %}
         <p>You are not authorized. Ask admin.</p>
