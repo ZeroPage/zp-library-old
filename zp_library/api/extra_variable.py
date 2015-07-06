@@ -1,12 +1,14 @@
 from google.appengine.ext import ndb
 from zp_library.models import ExtraVariable
 
+SITE_NAME = 'site_name'
 DAUM_BOOK_API_KEY = 'daum_book_api'
 GOOGLE_BOOK_API_KEY = 'google_book_api'
 
 key_list = [
     DAUM_BOOK_API_KEY,
     GOOGLE_BOOK_API_KEY,
+    SITE_NAME,
 ]
 
 class ExtraVariableKeyError(Exception):

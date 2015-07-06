@@ -2,7 +2,9 @@
 
 {% block content %}
     <div layout="column" layout-padding>
-        <h2 class="text-center md-display-3" hide-s>ZeroPage Library</h2>
+        {% if site_name %}
+        <h2 class="text-center md-display-3" hide-s>{{ site_name }}</h2>
+        {% endif %}
         {% if message %}
             <div>
                 <h3 class="text-center">NOTICE</h3>

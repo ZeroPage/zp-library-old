@@ -25,7 +25,7 @@
 
         {% block head %}{% endblock %}
 
-        <title>{% block title %}ZP Library{% endblock %}</title>
+        <title>{% block title %}{{ site_name }}{% endblock %}</title>
     </head>
     <body ng-controller="LibraryControl">
         <div class="height-full width-full" layout="row" flex>
@@ -35,7 +35,7 @@
             <md-sidenav class="md-sidenav-left sidenav md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
                 <md-toolbar class="">
                     <div class="md-toolbar-tools">
-                        <h1 class="md-toolbar-tools">ZP Library</h1>
+                        <h1 class="md-toolbar-tools">{{ site_name }}</h1>
                     </div>
                 </md-toolbar>
                 <md-content layout="column" flex>
@@ -76,7 +76,7 @@
                     </md-button>
                     <div>
                         <p class="md-toolbar-tools text-nowrap">
-                            <strong>ZP Library</strong>
+                            <strong><!-- TODO --></strong>
                         </p>
                     </div>
                 </md-toolbar>

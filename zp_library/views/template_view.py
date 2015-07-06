@@ -6,7 +6,7 @@ import math
 from django.views.generic import *
 from django.http import HttpResponseRedirect
 
-from zp_library.api import auth, borrow, book
+from zp_library.api import auth, borrow, book, extra_variable
 from zp_library.models import *
 from zp_library.views.view import LibraryView
 
@@ -22,6 +22,11 @@ class LibraryTemplateView(TemplateView, LibraryView):
 
     def get_context_data(self, **kwargs):
         context = super(LibraryTemplateView, self).get_context_data(**kwargs)
+
+        try:
+            context['site_name'] = extra_variable.get_extra_variable(extra_variable.SITE_NAME)
+        except extra_variable.ExtraVariableKeyError:
+            pass
 
         context['library_user'] = self.library_user
         context['google_user'] = self.google_user
