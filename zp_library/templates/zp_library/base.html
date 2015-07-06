@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
 
         <!-- Angulars Material CSS now available via Google CDN;-->
-        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.0/angular-material.min.css">
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.css">
         <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
         <link rel="stylesheet" href="/static/css/main.css">
 
@@ -19,7 +19,7 @@
 
 
         <!-- Angular Material Javascript now available via Google CDN;-->
-        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.0/angular-material.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.js"></script>
 
         <script src="/static/js/angular.js"></script>
 
@@ -40,11 +40,21 @@
                 </md-toolbar>
                 <md-content layout="column" flex>
                     <md-list class="sidenav-list" layout="column" layout-align="start">
-                        <md-button class="md-primary sidenav-button" ng-href="{% url main %}" ng-click="closeLeft()">HOME</md-button>
-                        <md-button class="md-primary sidenav-button" ng-href="{% url user %}" ng-click="closeLeft()">User</md-button>
-                        <md-button class="md-primary sidenav-button" ng-href="{% url book_list %}" ng-click="closeLeft()">List</md-button>
-                        <md-button class="md-primary sidenav-button" ng-href="{% url barcode %}" ng-click="closeLeft()">Barcode</md-button>
-                        <md-button class="md-primary sidenav-button" ng-href="https://github.com/zeropage/zp-library" ng-click="closeLeft()">Get Involved*</md-button>
+                        <md-list-item ng-click="toURL('{% url main %}');">
+                            <p>Home</p>
+                        </md-list-item>
+                        <md-list-item ng-click="toURL('{% url user %}');">
+                            <p>User</p>
+                        </md-list-item>
+                        <md-list-item ng-click="toURL('{% url book_list %}');">
+                            <p>List</p>
+                        </md-list-item>
+                        <md-list-item ng-click="toURL('{% url barcode %}');">
+                            <p>Barcode</p>
+                        </md-list-item>
+                        <md-list-item ng-click="toURL('https://github.com/zeropage/zp-library');">
+                            <p>Get Involved *</p>
+                        </md-list-item>
                     </md-list>
                 </md-content>
                 <md-content layout="column" layout-align="center center">
