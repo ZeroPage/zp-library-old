@@ -3,11 +3,11 @@
 {% block content %}
     <div layout="column" layout-padding>
         {% if site_name %}
-        <h2 class="text-center md-display-3" hide-s>{{ site_name }}</h2>
+        <h1 class="text-center md-display-3" hide-s>{{ site_name }}</h1>
         {% endif %}
         {% if message %}
             <div>
-                <h3 class="text-center">NOTICE</h3>
+                <h2 class="text-center">NOTICE</h2>
                 <p class="text-center"><strong>{{ message.contents }}</strong><br/>{{ message.date }}</p>
             </div>
         {% endif %}
@@ -19,23 +19,26 @@
         </form>
         <div layout="row" layout-sm="column">
             <div flex>
-                <h3>최근 추가 도서</h3>
+                <h2>최근 추가 도서</h2>
                 <md-list class="md-whiteframe-z1">
                     {% for book in new_books %}
-                        <md-list-item>
-                            <p><a href="{% url book_detail %}?isbn={{ book.ISBN }}">{{ book.title }}</a></p>
+                        <md-list-item class="md-2-line" ng-click="toURL('{% url book_detail %}?isbn={{ book.ISBN }}')">
+                            <div class="md-list-item-text">
+                                <h3>{{ book.title }}</h3>
+                                <p>{{ book.registrationDate }}</p>
+                            </div>
                         </md-list-item>
                     {% endfor %}
                 </md-list>
             </div>
             <div flex="5"></div>
             <div flex>
-                <h3>최근 대여</h3>
+                <h2>최근 대여</h2>
                 <md-list class="md-whiteframe-z1">
                     {% for borrow in borrows %}
-                        <md-list-item>
-                            <div>
-                                <h4><a href="{% url book_detail %}?isbn={{ borrow.ISBN }}">{{ borrow.title }}</a></h4>
+                        <md-list-item class="md-2-line" ng-click="toURL('{% url book_detail %}?isbn={{ borrow.ISBN }}')">
+                            <div class="md-list-item-text">
+                                <h3>{{ borrow.title }}</h3>
                                 <p>{{ borrow.user_name }} / {{ borrow.borrowDate }} ~ {{ borrow.returnDate }}</p>
                             </div>
                         </md-list-item>
