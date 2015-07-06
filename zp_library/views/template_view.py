@@ -40,7 +40,7 @@ class LibraryTemplateView(TemplateView, LibraryView):
 
 
 class MainPageView(LibraryTemplateView):
-    template_name = 'zp_library/main_page.html'
+    template_name = 'zp_library/main.html'
 
     def dispatch(self, request, *args, **kwargs):
         return super(MainPageView, self).dispatch(request, *args, **kwargs)
@@ -81,7 +81,7 @@ class MainPageView(LibraryTemplateView):
 
 
 class UserView(LibraryTemplateView):
-    template_name = 'zp_library/user_page.html'
+    template_name = 'zp_library/user.html'
 
     def dispatch(self, request, *args, **kwargs):
 
@@ -217,31 +217,6 @@ class BookDetailView(LibraryTemplateView):
         context['isbn'] = self.isbn
 
         return context
-
-
-class ParseView(LibraryTemplateView):
-    template_name = 'zp_library/parse.html'
-    isbn = ''
-
-    def dispatch(self, request, *args, **kwargs):
-        self.isbn = request.GET.get('isbn', '9788966260546')
-
-        return super(ParseView, self).dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(ParseView, self).get_context_data(**kwargs)
-
-        try:
-            json_result = json.load(urllib2.urlopen('https://www.googleapis.com/books/v1/volumes?'
-                                                    + 'q=isbn:' + self.isbn
-                                                    + '&key=AIzaSyCEFHrF-qRjKkh3p9hvOpY9lhzdOtsS0UE'
-                                                    + '&country=KR'))
-            context['result'] = json.dumps(json_result, indent=4, ensure_ascii=False, separators=(',', ': '))
-        except urllib2.HTTPError, e:
-            context['result'] = e.fp.read()
-
-        return context
-
 
 class BarcodeView(LibraryTemplateView):
     template_name = 'zp_library/barcode.html'

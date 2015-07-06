@@ -1,1 +1,0 @@
-__all__ = ['form_view', 'template_view', 'view']

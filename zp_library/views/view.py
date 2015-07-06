@@ -2,7 +2,7 @@ from django.views.generic import View
 from django.http import HttpResponseRedirect, HttpResponse
 
 from zp_library.models import *
-from zp_library.api import auth, borrow
+from zp_library.api import auth, borrow, book
 from zp_library.forms import ISBNForm
 
 
@@ -68,7 +68,7 @@ class BookBorrowView(LibraryView):
                 borrow.book_return(isbn, self.library_user.id)
             else:
                 borrow.book_borrow(isbn, self.library_user.id)
-        except(borrow.NoBorrowException, borrow.NoBookFoundException, borrow.MaxBorrowException):
+        except(borrow.NoBorrowException, book.NoBookFoundException, borrow.MaxBorrowException):
             # fixme - show error to the user
             pass
 
@@ -86,9 +86,9 @@ class UpdateAllView(LibraryView):
         if self.library_user.type == auth.USER_TYPE_ADMIN:
             books = Book.query().fetch()
 
-            for book in books:
+            for current_book in books:
                 data = {
-                    "isbn_input": book.ISBN
+                    "isbn_input": current_book.ISBN
                 }
                 form = ISBNForm(data)
 

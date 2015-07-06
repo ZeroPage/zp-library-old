@@ -42,7 +42,7 @@ class LibraryFormView(FormView, LibraryView):
         return context
 
 
-class ISBNAddView(LibraryFormView):
+class BookAddISBNView(LibraryFormView):
     template_name = 'zp_library/form.html'
     form_class = ISBNForm
     success_url = '/'
@@ -54,10 +54,10 @@ class ISBNAddView(LibraryFormView):
         if not self.library_user.type == auth.USER_TYPE_ADMIN:
             return HttpResponse(status=401)
 
-        return super(ISBNAddView, self).dispatch(request, *args, **kwargs)
+        return super(BookAddISBNView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(ISBNAddView, self).get_context_data(**kwargs)
+        context = super(BookAddISBNView, self).get_context_data(**kwargs)
         context['form_title'] = 'Add by ISBN'
         context['form_desc'] = 'ISBN을 이용해 책들을 추가할 수 있습니다. ISBN의 구분은 엔터를 이용합니다.'
         return context
@@ -65,7 +65,7 @@ class ISBNAddView(LibraryFormView):
     def form_valid(self, form):
         form.action()
 
-        return super(ISBNAddView, self).form_valid(form)
+        return super(BookAddISBNView, self).form_valid(form)
 
 
 class SignUpView(LibraryFormView):
@@ -140,7 +140,7 @@ class BookEditView(LibraryFormView):
         return super(BookEditView, self).form_valid(form)
 
 
-class TestView(LibraryFormView):
+class BookAddView(LibraryFormView):
     template_name = 'zp_library/form.html'
     form_class = BookForm
     success_url = '/book_list/'
@@ -152,12 +152,12 @@ class TestView(LibraryFormView):
         if not self.library_user.type == auth.USER_TYPE_ADMIN:
             return HttpResponse(status=401)
 
-        return super(TestView, self).dispatch(request, *args, **kwargs)
+        return super(BookAddView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.action()
 
-        return super(TestView, self).form_valid(form)
+        return super(BookAddView, self).form_valid(form)
 
 class ExtraVariableView(LibraryFormView):
     template_name = 'zp_library/form.html'
@@ -197,7 +197,7 @@ class ExtraVariableView(LibraryFormView):
         return super(ExtraVariableView, self).form_valid(form)
 
 class AddNoticeView(FormView):
-    template_name = 'zp_library/notice_write_page.html'
+    template_name = 'zp_library/notice.html'
     form_class = NoticeForm
     success_url = '/'
 
