@@ -27,7 +27,7 @@
 
         <title>{% block title %}{{ site_name }}{% endblock %}</title>
     </head>
-    <body ng-controller="LibraryControl">
+    <body ng-controller="LibraryControl" md-swipe-right="openLeft()" md-swipe-left="closeLeft()">
         <div class="height-full width-full" layout="row" flex>
             {% if messages %}
             {% for message in messages %}
