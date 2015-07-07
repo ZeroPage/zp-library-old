@@ -5,6 +5,7 @@ import math
 
 from django.views.generic import *
 from django.http import HttpResponseRedirect
+from django.contrib import messages
 
 from zp_library.api import auth, borrow, book, extra_variable
 from zp_library.models import *
@@ -13,12 +14,6 @@ from zp_library.views.view import LibraryView
 
 class LibraryTemplateView(TemplateView, LibraryView):
     template_name = 'zp_library/base.html'
-    toast_message = ''
-
-    def dispatch(self, request, *args, **kwargs):
-        self.toast_message = request.GET.get('toast')
-
-        return super(LibraryTemplateView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(LibraryTemplateView, self).get_context_data(**kwargs)
@@ -34,8 +29,6 @@ class LibraryTemplateView(TemplateView, LibraryView):
         context['login_url'] = auth.get_login_url()
         context['logout_url'] = auth.get_logout_url()
 
-        context['toast_message'] = self.toast_message
-
         return context
 
 
@@ -43,13 +36,12 @@ class MainPageView(LibraryTemplateView):
     template_name = 'zp_library/main.html'
 
     def dispatch(self, request, *args, **kwargs):
+        messages.info(request, 'Under Development!')
+
         return super(MainPageView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(MainPageView, self).get_context_data(**kwargs)
-
-        # toast
-        context['toast_message'] = 'Notice - Under Development!'
 
         # notice
         notice_query = Notice.query().order(-Notice.date)

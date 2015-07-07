@@ -1,5 +1,6 @@
 from django.views.generic import View
 from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib import messages
 
 from zp_library.models import *
 from zp_library.api import auth, borrow, book
@@ -66,11 +67,12 @@ class BookBorrowView(LibraryView):
         try:
             if borrow.get_borrows(isbn, self.library_user.id, True):
                 borrow.book_return(isbn, self.library_user.id)
+                messages.success(request, 'Return succeed')
             else:
                 borrow.book_borrow(isbn, self.library_user.id)
-        except(borrow.NoBorrowException, book.NoBookFoundException, borrow.MaxBorrowException):
-            # fixme - show error to the user
-            pass
+                messages.success(request, 'Borrow succeed')
+        except(borrow.NoBorrowException, book.NoBookFoundException, borrow.MaxBorrowException) as e:
+            messages.error(request, 'Action failed: ' + str(e))
 
         return HttpResponseRedirect('/book_detail/?isbn=' + isbn)
 

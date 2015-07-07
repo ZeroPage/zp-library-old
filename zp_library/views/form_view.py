@@ -13,13 +13,6 @@ class LibraryFormView(FormView, LibraryView):
     template_name = 'zp_library/form.html'
     success_url = '/'
 
-    toast_message = ''
-
-    def dispatch(self, request, *args, **kwargs):
-        self.toast_message = request.GET.get('toast')
-
-        return super(LibraryFormView, self).dispatch(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super(LibraryFormView, self).get_context_data(**kwargs)
 
@@ -36,8 +29,6 @@ class LibraryFormView(FormView, LibraryView):
 
         context['form_title'] = ''
         context['form_desc'] = ''
-
-        context['toast_message'] = self.toast_message
 
         return context
 

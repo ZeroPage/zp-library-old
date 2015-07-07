@@ -29,8 +29,11 @@
     </head>
     <body ng-controller="LibraryControl">
         <div class="height-full width-full" layout="row" flex>
-            {% if toast_message %}
-            <div ng-init="showToast('{{ toast_message }}')"></div>
+            {% if messages %}
+            {% for message in messages %}
+            <div ng-init="addMessage('{{ message.tags }}', '{{ message }}')"></div>
+            {% endfor %}
+            <div ng-init="openBottomSheet()"></div>
             {% endif %}
             <md-sidenav class="md-sidenav-left sidenav md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
                 <md-toolbar class="">
