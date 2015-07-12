@@ -10,7 +10,8 @@
 
         <!-- Angulars Material CSS now available via Google CDN;-->
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.css">
-        <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="/static/css/main.css">
 
         <!-- Angular Material Dependencies -->
@@ -37,27 +38,32 @@
             {% endfor %}
             <div ng-init="openBottomSheet()"></div>
             {% endif %}
-            <md-sidenav class="md-sidenav-left sidenav md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
+            <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
                 <md-toolbar class="">
                     <div class="md-toolbar-tools">
                         <h1 class="md-toolbar-tools">{{ site_name }}</h1>
                     </div>
                 </md-toolbar>
                 <md-content layout="column" flex>
-                    <md-list class="sidenav-list" layout="column" layout-align="start">
+                    <md-list layout="column">
                         <md-list-item ng-click="toURL('{% url main %}');">
+                            <md-icon class="" md-font-set="material-icons">home</md-icon>
                             <p>Home</p>
                         </md-list-item>
                         <md-list-item ng-click="toURL('{% url user %}');">
+                            <md-icon class="" md-font-set="material-icons">person</md-icon>
                             <p>User</p>
                         </md-list-item>
                         <md-list-item ng-click="toURL('{% url book_list %}');">
+                            <md-icon class="" md-font-set="material-icons">list</md-icon>
                             <p>List</p>
                         </md-list-item>
                         <md-list-item ng-click="toURL('{% url barcode %}');">
+                            <md-icon class="" md-font-set="material-icons">pageview</md-icon>
                             <p>Barcode</p>
                         </md-list-item>
                         <md-list-item ng-click="toURL('https://github.com/zeropage/zp-library');">
+                            <md-icon class="" md-font-set="material-icons">code</md-icon>
                             <p>Get Involved *</p>
                         </md-list-item>
                     </md-list>
@@ -75,9 +81,9 @@
                 </md-content>
             </md-sidenav>
             <div layout="column" class="width-full height-full">
-                <md-toolbar layout="row" class="md-primary md-whiteframe-z2">
-                    <md-button class="width-narrow" ng-click="openLeft()" hide-gt-md>
-                        MENU
+                <md-toolbar class="md-primary md-whiteframe-z2" layout="row" layout-align="start center">
+                    <md-button class="md-icon-button" ng-click="openLeft()" hide-gt-md>
+                        <md-icon md-font-set="material-icons">menu</md-icon>
                     </md-button>
                     <div>
                         <p class="md-toolbar-tools text-nowrap">

@@ -37,6 +37,7 @@ class MainPageView(LibraryTemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         messages.info(request, 'Under Development!')
+        messages.info(request, 'Under Development!')
 
         return super(MainPageView, self).dispatch(request, *args, **kwargs)
 

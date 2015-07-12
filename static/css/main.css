@@ -14,16 +14,6 @@ md-sidenav.md-closed.md-locked-open-add-active {
   max-width: 260px;
 }
 
-.sidenav {
-  width: 260px;
-  min-width: 260px;
-  max-width: 260px;
-}
-
-.sidenav-button {
-  text-align: left;
-}
-
 .search-bar {
   padding: 0;
 }

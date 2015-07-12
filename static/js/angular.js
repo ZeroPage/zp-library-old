@@ -35,6 +35,7 @@ app.controller('LibraryControl', function($scope, $timeout, $mdSidenav, $mdToast
     };
 
     $scope.toURL = function(url) {
+        $scope.closeLeft();
         $window.location.href = url;
     }
 }).controller('MessageControl', function($scope, messageService) {
