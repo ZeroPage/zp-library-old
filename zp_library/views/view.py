@@ -64,6 +64,9 @@ class BookBorrowView(LibraryView):
         if not self.library_user:
             return HttpResponseRedirect(auth.get_login_url('/'))
 
+        if self.library_user.type not in [auth.USER_TYPE_AUTH, auth.USER_TYPE_ADMIN]:
+            return HttpResponse(status=401)
+
         try:
             if borrow.get_borrows(isbn, self.library_user.id, True):
                 borrow.book_return(isbn, self.library_user.id)
