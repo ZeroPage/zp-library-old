@@ -2,7 +2,7 @@ from google.appengine.api import users
 
 from django import forms
 from zp_library.models import *
-from zp_library.api import book_api, auth
+from zp_library.api import book_api, auth, notice
 from zp_library.api.extra_variable import *
 
 
@@ -120,10 +120,7 @@ class NoticeForm(forms.Form):
 
     def action(self):
         if self.is_valid():
-            notice = Notice()
-
-            notice.contents = self.cleaned_data['contents']
-            notice.put()
+            notice.add_notice(self.cleaned_data['contents'])
 
 class ExtraVariableForm(forms.Form):
     key = forms.CharField(widget=forms.TextInput)

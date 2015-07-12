@@ -203,9 +203,7 @@ class AddNoticeView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(AddNoticeView, self).get_context_data(**kwargs)
-        notice_query = Notice.query().order(-Notice.date)
-        notice_result = notice_query.fetch()
-        context['list'] = notice_result
+        context['list'] = notice.get_notice()
 
         return context
 

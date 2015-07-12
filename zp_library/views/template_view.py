@@ -7,7 +7,7 @@ from django.views.generic import *
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 
-from zp_library.api import auth, borrow, book, extra_variable
+from zp_library.api import auth, borrow, book, extra_variable, notice
 from zp_library.models import *
 from zp_library.views.view import LibraryView
 
@@ -44,8 +44,7 @@ class MainPageView(LibraryTemplateView):
         context = super(MainPageView, self).get_context_data(**kwargs)
 
         # notice
-        notice_query = Notice.query().order(-Notice.date)
-        notice_result = notice_query.fetch(limit=1)
+        notice_result = notice.get_notice(1)
 
         if notice_result:
             context['message'] = notice_result[0]
