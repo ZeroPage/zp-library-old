@@ -1,8 +1,7 @@
 # coding=utf-8
 from django.views.generic import *
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.contrib import messages
-from django.core.urlresolvers import reverse
 
 from zp_library.forms import *
 from zp_library.models import *
@@ -183,7 +182,7 @@ class ExtraVariableView(LibraryFormView):
 
             try:
                 desc_str += get_extra_variable(key)
-            except(ExtraVariableKeyError):
+            except extra_variable.ExtraVariableKeyError:
                 pass
 
             desc_str += '\n'
