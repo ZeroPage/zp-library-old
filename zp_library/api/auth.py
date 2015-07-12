@@ -1,3 +1,6 @@
+from django.http import HttpResponseRedirect
+from django.contrib import messages
+
 from zp_library.models import LibraryUser
 from google.appengine.api import users
 
@@ -77,3 +80,8 @@ def add_user(name):
 
     LibraryUser(id=google_user.user_id(), email=google_user.email(),
                 name=name, type=user_type).put()
+
+def not_authorized(request, dest='/'):
+    messages.error(request, 'not authorized.')
+
+    return HttpResponseRedirect(dest)

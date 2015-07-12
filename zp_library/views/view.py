@@ -25,7 +25,7 @@ class BookDeleteView(LibraryView):
             return HttpResponseRedirect(auth.get_login_url('/book_delete'))
 
         if not self.library_user.type == auth.USER_TYPE_ADMIN:
-            return HttpResponse(status=401)
+            return auth.not_authorized(request)
 
         if self.library_user.type == auth.USER_TYPE_ADMIN:
             book_key = ndb.Key(Book, isbn)
@@ -43,7 +43,7 @@ class BookAddView(LibraryView):
             return HttpResponseRedirect(auth.get_login_url('/'))
 
         if not self.library_user.type == auth.USER_TYPE_ADMIN:
-            return HttpResponse(status=401)
+            return auth.not_authorized(request)
 
         if self.library_user.type == auth.USER_TYPE_ADMIN:
             data = {
@@ -65,7 +65,7 @@ class BookBorrowView(LibraryView):
             return HttpResponseRedirect(auth.get_login_url('/'))
 
         if self.library_user.type not in [auth.USER_TYPE_AUTH, auth.USER_TYPE_ADMIN]:
-            return HttpResponse(status=401)
+            return auth.not_authorized(request)
 
         try:
             if borrow.get_borrows(isbn, self.library_user.id, True):
@@ -86,7 +86,7 @@ class UpdateAllView(LibraryView):
             return HttpResponseRedirect(auth.get_login_url('/'))
 
         if not self.library_user.type == auth.USER_TYPE_ADMIN:
-            return HttpResponse(status=401)
+            return auth.not_authorized(request)
 
         if self.library_user.type == auth.USER_TYPE_ADMIN:
             books = Book.query().fetch()

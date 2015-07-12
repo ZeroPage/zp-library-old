@@ -44,7 +44,7 @@ class BookAddISBNView(LibraryFormView):
             return HttpResponseRedirect(auth.get_login_url('/add_isbn'))
 
         if not self.library_user.type == auth.USER_TYPE_ADMIN:
-            return HttpResponse(status=401)
+            return auth.not_authorized(request)
 
         return super(BookAddISBNView, self).dispatch(request, *args, **kwargs)
 
@@ -103,7 +103,7 @@ class BookEditView(LibraryFormView):
             return HttpResponseRedirect(auth.get_login_url('/book_edit'))
 
         if not self.library_user.type == auth.USER_TYPE_ADMIN:
-            return HttpResponse(status=401)
+            return auth.not_authorized(request)
 
         self.success_url = '/book_detail/?isbn='+self.isbn
         return super(BookEditView, self).dispatch(request, *args, **kwargs)
@@ -148,7 +148,7 @@ class BookAddView(LibraryFormView):
             return HttpResponseRedirect(auth.get_login_url('/test'))
 
         if not self.library_user.type == auth.USER_TYPE_ADMIN:
-            return HttpResponse(status=401)
+            return auth.not_authorized(request)
 
         return super(BookAddView, self).dispatch(request, *args, **kwargs)
 
@@ -169,7 +169,7 @@ class ExtraVariableView(LibraryFormView):
             return HttpResponseRedirect(auth.get_login_url('/extra_variable/'))
 
         if not self.library_user.type == auth.USER_TYPE_ADMIN:
-            return HttpResponse(status=401)
+            return auth.not_authorized(request)
 
         return super(ExtraVariableView, self).dispatch(request, *args, **kwargs)
 
@@ -209,7 +209,8 @@ class AddNoticeView(FormView):
             return HttpResponseRedirect(auth.get_login_url('/notice'))
 
         if not library_user.type == auth.USER_TYPE_ADMIN:
-            return HttpResponse(status=401)
+            return auth.not_authorized(request)
+
         return super(AddNoticeView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
