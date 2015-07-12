@@ -188,7 +188,7 @@ class ExtraVariableView(LibraryFormView):
         return super(ExtraVariableView, self).form_valid(form)
 
 class AddNoticeView(FormView):
-    template_name = 'zp_library/notice.html'
+    template_name = 'zp_library/form_notice.html'
     form_class = NoticeForm
     success_url = '/'
 
