@@ -1,6 +1,7 @@
 # coding=utf-8
 from django.views.generic import *
 from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib import messages
 from django.core.urlresolvers import reverse
 
 from zp_library.forms import *
@@ -56,6 +57,8 @@ class BookAddISBNView(LibraryFormView):
     def form_valid(self, form):
         form.action()
 
+        messages.success(self.request, 'added {} book(s)'.format(form.total_count))
+
         return super(BookAddISBNView, self).form_valid(form)
 
 
@@ -81,6 +84,8 @@ class SignUpView(LibraryFormView):
 
     def form_valid(self, form):
         form.action()
+
+        messages.success(self.request, 'sign up complete. welcome.')
 
         return super(SignUpView, self).form_valid(form)
 
@@ -128,6 +133,8 @@ class BookEditView(LibraryFormView):
     def form_valid(self, form):
         form.action()
 
+        messages.success(self.request, 'edited book.')
+
         return super(BookEditView, self).form_valid(form)
 
 
@@ -147,6 +154,8 @@ class BookAddView(LibraryFormView):
 
     def form_valid(self, form):
         form.action()
+
+        messages.success(self.request, 'added new book.')
 
         return super(BookAddView, self).form_valid(form)
 
@@ -185,6 +194,8 @@ class ExtraVariableView(LibraryFormView):
     def form_valid(self, form):
         form.action()
 
+        messages.success(self.request, 'changed "{}" to "{}".'.format(form.cleaned_data['key'], form.cleaned_data['value']))
+
         return super(ExtraVariableView, self).form_valid(form)
 
 class AddNoticeView(FormView):
@@ -209,5 +220,7 @@ class AddNoticeView(FormView):
 
     def form_valid(self, form):
         form.action()
+
+        messages.success(self.request, 'added new notice.')
 
         return super(AddNoticeView, self).form_valid(form)
