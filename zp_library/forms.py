@@ -103,16 +103,8 @@ class NewUserForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'type real name'}))
 
     def action(self):
-        google_user = users.get_current_user()
-
-        if self.is_valid() and google_user and not LibraryUser.query(LibraryUser.id == google_user.user_id()).get():
-            if users.is_current_user_admin():
-                user_type = auth.USER_TYPE_ADMIN
-            else:
-                user_type = auth.USER_TYPE_NEW
-
-            LibraryUser(id=google_user.user_id(), email=google_user.email(),
-                        name=self.cleaned_data['name'], type=user_type).put()
+        if self.is_valid():
+            auth.add_user(self.cleaned_data['name'])
 
 
 class NoticeForm(forms.Form):
