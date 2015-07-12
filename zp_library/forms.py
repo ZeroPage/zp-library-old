@@ -76,6 +76,7 @@ class BookEditForm(BookForm):
 
 class ISBNForm(forms.Form):
     isbn_input = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'multiple items allowed (split by enter)'}))
+    total_count = 0
 
     def action(self):
         if self.is_valid():
@@ -97,6 +98,8 @@ class ISBNForm(forms.Form):
 
                 book_form = BookForm(data)
                 book_form.action()
+
+                self.total_count += 1
 
 
 class NewUserForm(forms.Form):
