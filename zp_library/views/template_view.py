@@ -36,7 +36,8 @@ class MainPageView(LibraryTemplateView):
     template_name = 'zp_library/main.html'
 
     def dispatch(self, request, *args, **kwargs):
-        messages.info(request, 'Under Development!')
+        if not self.library_user:
+            messages.info(request, 'Under Development!')
 
         return super(MainPageView, self).dispatch(request, *args, **kwargs)
 
