@@ -30,6 +30,8 @@ class LibraryFormView(FormView, LibraryView):
         context['form_title'] = ''
         context['form_desc'] = ''
 
+        context['page_title'] = ''
+
         return context
 
 
@@ -49,7 +51,8 @@ class BookAddISBNView(LibraryFormView):
 
     def get_context_data(self, **kwargs):
         context = super(BookAddISBNView, self).get_context_data(**kwargs)
-        context['form_title'] = 'Add by ISBN'
+
+        context['page_title'] = 'Add by ISBN'
         context['form_desc'] = 'ISBN을 이용해 책들을 추가할 수 있습니다. ISBN의 구분은 엔터를 이용합니다.'
         return context
 
@@ -77,8 +80,10 @@ class SignUpView(LibraryFormView):
 
     def get_context_data(self, **kwargs):
         context = super(SignUpView, self).get_context_data(**kwargs)
-        context['form_title'] = 'Sign up as ' + auth.get_google_user().email()
-        context['form_desc'] = 'You need to signup to use this service.'
+        context['page_title'] = 'Sign up'
+        context['form_desc'] = 'Sign up as ' + auth.get_google_user().email() + '.\n' \
+                                + 'You need to signup to use this service.'
+
         return context
 
     def form_valid(self, form):
@@ -129,6 +134,12 @@ class BookEditView(LibraryFormView):
 
         return initial
 
+    def get_context_data(self, **kwargs):
+        context = super(BookEditView, self).get_context_data(**kwargs)
+        context['page_title'] = 'Edit book'
+
+        return context
+
     def form_valid(self, form):
         form.action()
 
@@ -150,6 +161,12 @@ class BookAddView(LibraryFormView):
             return auth.not_authorized(request)
 
         return super(BookAddView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(BookAddView, self).get_context_data(**kwargs)
+        context['page_title'] = 'Add book'
+
+        return context
 
     def form_valid(self, form):
         form.action()
@@ -175,6 +192,7 @@ class ExtraVariableView(LibraryFormView):
     def get_context_data(self, **kwargs):
         context = super(ExtraVariableView, self).get_context_data(**kwargs)
 
+        context['page_title'] = 'Edit Extra variable'
         desc_str = ''
 
         for key in key_list:
@@ -214,6 +232,8 @@ class AddNoticeView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(AddNoticeView, self).get_context_data(**kwargs)
+
+        context['page_title'] = 'Add notice'
         context['list'] = notice.get_notice()
 
         return context

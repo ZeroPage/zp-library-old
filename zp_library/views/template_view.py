@@ -29,6 +29,8 @@ class LibraryTemplateView(TemplateView, LibraryView):
         context['login_url'] = auth.get_login_url()
         context['logout_url'] = auth.get_logout_url()
 
+        context['page_title'] = ''
+
         return context
 
 
@@ -44,6 +46,9 @@ class MainPageView(LibraryTemplateView):
     def get_context_data(self, **kwargs):
         context = super(MainPageView, self).get_context_data(**kwargs)
 
+        # page title
+        context['page_title'] = 'Home'
+
         # notice
         notice_result = notice.get_notice(1)
 
@@ -51,7 +56,6 @@ class MainPageView(LibraryTemplateView):
             context['message'] = notice_result[0]
 
         # borrow history
-
         borrow_records = borrow.get_borrows()[:5]  # fixme: limit needed
         borrow_refined = []
 
@@ -84,6 +88,8 @@ class UserView(LibraryTemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserView, self).get_context_data(**kwargs)
+
+        context['page_title'] = 'User'
 
         borrow_records = borrow.get_borrows(user_id=self.library_user.id)
         borrow_refined = []
@@ -118,7 +124,7 @@ class BookListView(LibraryTemplateView):
         context = super(BookListView, self).get_context_data(**kwargs)
 
         if self.query_string:
-            context['list_title'] = "Search result for '" + self.query_string + "'"
+            context['page_title'] = "Search result for '" + self.query_string + "'"
             search_results = library_search.search_book(self.query_string)
 
             search_isbn = []
@@ -129,7 +135,7 @@ class BookListView(LibraryTemplateView):
                 search_isbn = ['-']
 
         else:
-            context['list_title'] = 'All books'
+            context['page_title'] = 'All books'
             search_isbn = []
 
         context['books'] = book.get_books((self.current_page - 1) * self.paginate_by, self.paginate_by, search_isbn)
@@ -155,6 +161,8 @@ class BookDetailView(LibraryTemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(BookDetailView, self).get_context_data(**kwargs)
+
+        context['page_title'] = 'Book details'
 
         book_result = book.get_book(self.isbn)
         raw_borrows = borrow.get_borrows(self.isbn)
@@ -212,3 +220,10 @@ class BookDetailView(LibraryTemplateView):
 
 class BarcodeView(LibraryTemplateView):
     template_name = 'zp_library/barcode.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(BarcodeView, self).get_context_data(**kwargs)
+
+        context['page_title'] = 'Barcode'
+
+        return context

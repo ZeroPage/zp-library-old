@@ -2,18 +2,11 @@
 
 {% block content %}
 
-    {% if form_title or form_desc %}
+    {% if form_desc %}
     <md-card>
-        {% if form_title %}
-        <md-toolbar class="md-padding">
-            <h2 class="md-toolbar-tools">{{ form_title }}</h2>
-        </md-toolbar>
-        {% endif %}
-        {% if form_desc %}
         <md-card-content>
             <p>{{ form_desc|linebreaks }}</p>
         </md-card-content>
-        {% endif %}
     </md-card>
     {% endif %}
 
