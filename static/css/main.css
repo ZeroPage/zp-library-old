@@ -17,6 +17,10 @@ md-sidenav.md-closed.md-locked-open-add-active {
   padding: 0;
 }
 
+#notice {
+  padding: 50px;
+}
+
 .text-nowrap {
   white-space: nowrap;
 }

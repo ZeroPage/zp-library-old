@@ -3,20 +3,23 @@
 {% block content %}
     <div layout="column" layout-padding>
         {% if site_name %}
-        <h1 class="text-center md-display-3" hide-s>{{ site_name }}</h1>
+        <h1 class="text-center md-display-4" hide-s>{{ site_name }}</h1>
         {% endif %}
-        {% if message %}
-            <div>
-                <h2 class="text-center">NOTICE</h2>
-                <p class="text-center"><strong>{{ message.contents }}</strong><br/>{{ message.date }}</p>
-            </div>
-        {% endif %}
+
         <form class="md-whiteframe-z1" action="{% url book_list %}" method="get" layout="row" layout-padding>
             <md-input-container class="search-bar"flex>
                 <input type="text" name="q">
             </md-input-container>
-            <md-button class="md-primary" type="submit" md-no-ripple>Search</md-button>
+            <md-button class="md-primary md-icon-button" type="submit" md-no-ripple>
+                <md-icon class="" md-font-set="material-icons">search</md-icon>
+            </md-button>
         </form>
+
+        {% if message %}
+        <p id="notice" class="text-center"><strong>{{ message.contents }}</strong><br/>{{ message.date }}</p>
+        {% endif %}
+
+        <md-divider></md-divider>
         <div layout="row" layout-sm="column">
             <div flex>
                 <h2>최근 추가 도서</h2>
@@ -45,9 +48,6 @@
                     {% endfor %}
                 </md-list>
             </div>
-
         </div>
-
-
     </div>
 {% endblock %}
