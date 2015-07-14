@@ -5,7 +5,7 @@
         <div layout="row" layout-sm="column">
             {% if book.thumbnail %}
             <div flex-order="1" layout-align="center center" layout="row" layout-padding>
-                <img class="width-medium" src="{{ book.thumbnail }}" onerror="if (this.src != '{{ no_img_url }}') this.src = '{{ no_img_url }}';">
+                <img class="width-wide" src="{{ book.thumbnail }}" onerror="if (this.src != '{{ no_img_url }}') this.src = '{{ no_img_url }}';">
             </div>
             {% endif %}
             <div flex flex-order="2" layout="column">
@@ -33,31 +33,25 @@
 
         {% if book.description %}
         <div>
-            <h3>설명</h3>
-            <md-content class="md-whiteframe-z1" layout-padding>
-                <p>{{ book.description|escape }}</p>
-            </md-content>
+            <h3 class="md-headline">설명</h3>
+            <p>{{ book.description|escape }}</p>
         </div>
         {% endif %}
 
         <div>
-            <h3>대여 현황</h3>
-            <md-content class="md-whiteframe-z1" layout-padding>
-                {% if borrows %}
-                <md-list>
-                    {% for borrow_record in borrows %}
-                    <md-list-item class="md-2-line">
-                        <div class="md-list-item-text">
-                            <h3>{{ borrow_record.name }}</h3>
-                            <p>{{ borrow_record.borrowDate }} ~ {{ borrow_record.returnDate }}</p>
-                        </div>
-                    </md-list-item>
-                    {% endfor %}
-                </md-list>
-                {% else %}
-                <p>대여자가 없습니다.</p>
-                {% endif %}
-            </md-content>
+            <h3 class="md-headline">대여 현황</h3>
+            {% if borrows %}
+            <div layout="row" layout-margin layout-padding layout-wrap>
+                {% for borrow_record in borrows %}
+                <div class="md-whiteframe-z1 background-gray" flex="20" flex-md="30" flex-sm="45">
+                    <h3 class="md-title">{{ borrow_record.name }}</h3>
+                    <p class="md-caption">{{ borrow_record.borrowDate }} ~ </br>{{ borrow_record.returnDate }}</p>
+                </div>
+                {% endfor %}
+            </md-list>
+            {% else %}
+            <p>대여자가 없습니다.</p>
+            {% endif %}
         </div>
 
         <div layout="row" layout-padding>
