@@ -4,6 +4,8 @@ var app = angular.module('LibraryApp', ['ngMaterial']).config(function($interpol
 });
 
 app.controller('LibraryControl', function($scope, $timeout, $mdSidenav, $mdToast, $window, $mdBottomSheet, messageService) {
+    $scope.loading = false;
+
     $scope.openLeft = function() {
         $mdSidenav('left').open();
     };
@@ -36,8 +38,10 @@ app.controller('LibraryControl', function($scope, $timeout, $mdSidenav, $mdToast
 
     $scope.toURL = function(url) {
         $scope.closeLeft();
+        $scope.loading = true;
         $window.location.href = url;
-    }
+    };
+
 }).controller('MessageControl', function($scope, messageService) {
     $scope.messages = messageService.getMessages();
 }).service('messageService', function() {

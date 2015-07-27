@@ -81,16 +81,20 @@
                 </md-content>
             </md-sidenav>
             <div layout="column" class="width-full height-full">
-                <md-toolbar class="md-primary md-whiteframe-z2" layout="row" layout-align="start center">
-                    <md-button class="md-icon-button" ng-click="openLeft()" hide-gt-md>
-                        <md-icon md-font-set="material-icons">menu</md-icon>
-                    </md-button>
-                    <div>
-                        <p class="md-toolbar-tools text-nowrap">
-                            <strong>{{ page_title }}</strong>
-                        </p>
-                    </div>
-                </md-toolbar>
+                    <md-toolbar class="md-primary md-whiteframe-z2" layout="column">
+                        <div layout="row" layout-align="start center">
+                            <md-button class="md-icon-button" ng-click="openLeft()" hide-gt-md>
+                                <md-icon md-font-set="material-icons">menu</md-icon>
+                            </md-button>
+                            <div>
+                                <p class="md-toolbar-tools text-nowrap">
+                                    <strong>{{ page_title }}</strong>
+                                </p>
+                            </div>
+                        </div>
+                        <md-progress-linear md-mode="indeterminate" ng-show="loading"></md-progress-linear>
+
+                    </md-toolbar>
                 <md-content md-scroll-y flex class="scrollable-y">
                     <div class="contents height-full" layout-padding>
                         {% block content %}
