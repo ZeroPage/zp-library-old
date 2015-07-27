@@ -16,7 +16,9 @@ def update_book(book):
 
         for noun, tag in nouns:
             description += noun + " "
-            description += TextBlob(noun).translate(to='ko').string + " "
+
+            if len(noun) > 2:
+                description += TextBlob(noun).translate(to='ko').string + " "
 
     else:
         description = book.description
