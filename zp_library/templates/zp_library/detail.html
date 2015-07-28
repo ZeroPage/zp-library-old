@@ -53,12 +53,25 @@
             <p>대여자가 없습니다.</p>
             {% endif %}
         </div>
-
-        <div layout="row" layout-padding>
-            <md-button class="md-primary" ng-href="{% url book_borrow %}?isbn={{ isbn }}">대여/반납</md-button>
-            <md-button class="md-primary" ng-href="{% url book_edit %}?isbn={{ isbn }}">수정</md-button>
-            <md-button class="md-warn" ng-href="{% url book_delete %}?isbn={{ isbn }}">삭제</md-button>
-        </div>
+        <md-fab-speed-dial class="md-scale" md-direction="up">
+            <md-fab-trigger>
+                <md-button class="md-fab" aria-label="Menu">
+                    <md-icon class="" md-font-set="material-icons">keyboard_arrow_up</md-icon>
+                </md-button>
+            </md-fab-trigger>
+            <md-fab-actions>
+                <!--fixme:style used here-->
+                <md-button class="md-fab md-mini md-primary" aria-label="Borrow / Return" ng-click="toURL('{% url book_borrow %}?isbn={{ isbn }}');">
+                    <md-icon style="color:lightgrey" md-font-set="material-icons" >book</md-icon>
+                </md-button>
+                <md-button class="md-fab md-mini md-raised" aria-label="Edit" ng-click="toURL('{% url book_edit %}?isbn={{ isbn }}');">
+                    <md-icon style="color:darkgrey" md-font-set="material-icons">edit</md-icon>
+                </md-button>
+                <md-button class="md-fab md-mini md-raised" aria-label="Delete" ng-click="toURL('{% url book_delete %}?isbn={{ isbn }}');">
+                    <md-icon style="color:darkgrey" md-font-set="material-icons">delete</md-icon>
+                </md-button>
+            </md-fab-actions>
+        </md-fab-speed-dial>
     {% else %}
         <h2>NO RESULT</h2>
         <p>isbn:{{ isbn }} not found.</p>

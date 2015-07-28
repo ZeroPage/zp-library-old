@@ -95,8 +95,8 @@
                         <md-progress-linear md-mode="indeterminate" ng-show="loading"></md-progress-linear>
 
                     </md-toolbar>
-                <md-content md-scroll-y flex class="scrollable-y">
-                    <div class="contents height-full" layout-padding>
+                <md-content layout="column" md-scroll-y flex>
+                    <div class="contents" layout-padding flex>
                         {% block content %}
                         {% endblock %}
                     </div>

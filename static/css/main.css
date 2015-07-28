@@ -13,8 +13,10 @@ md-sidenav.md-closed.md-locked-open-add-active {
   max-width: 260px;
 }
 
-md-progress-linear {
-
+md-fab-speed-dial {
+  position: fixed;
+  bottom: 30px;
+  right: 40px;
 }
 
 .search-bar {
@@ -41,11 +43,6 @@ md-progress-linear {
 
 .text-break {
   word-wrap: break-word;
-}
-
-.scrollable-y {
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
 }
 
 .contents {
@@ -76,4 +73,3 @@ md-progress-linear {
 .height-full {
   height: 100%;
 }
-
